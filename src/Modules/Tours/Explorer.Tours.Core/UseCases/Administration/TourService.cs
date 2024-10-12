@@ -10,11 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Core.UseCases.Administration
+namespace Explorer.Tours.Core.UseCases
 {
     public class TourService : CrudService<TourDto, Tour>, ITourService
     {
-        public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) {}
+        public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) { }
 
         public Result<List<TourDto>> GetByAuthorId(int id)
         {
