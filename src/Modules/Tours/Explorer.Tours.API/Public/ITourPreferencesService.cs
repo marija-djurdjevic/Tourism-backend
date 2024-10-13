@@ -15,5 +15,6 @@ namespace Explorer.Tours.API.Public
         Result<TourPreferencesDto> Create(TourPreferencesDto equipment);
         Result<TourPreferencesDto> Update(TourPreferencesDto equipment);
         Result Delete(int id);
+        Result<TourPreferencesDto> GetByTouristId(int id);
     }
 }
