@@ -32,7 +32,7 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult<ObjectDto> Update(int id, [FromBody] ObjectDto touristObject)
+        public ActionResult<ObjectDto> Update([FromBody] ObjectDto touristObject)
         {
             var result = _objectService.Update( touristObject);
             return CreateResponse(result);

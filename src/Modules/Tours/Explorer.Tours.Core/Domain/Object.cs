@@ -19,6 +19,7 @@ namespace Explorer.Tours.Core.Domain
        
         public Object(int id,string name, string description, string image, ObjectCategory category)
         {
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
 
             Id = id;
             Name = name;
