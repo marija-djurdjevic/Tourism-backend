@@ -29,8 +29,7 @@ namespace Explorer.Blog.Tests.Integration
             var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
             var newEntity = new BlogDto
             {
-                Id = 10,
-                Title = "Title",
+                Title = "NASLOVCINA",
                 Description = "Description",
                 CreationDate = DateTime.UtcNow,
                 Image = "image.png",
