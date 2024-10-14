@@ -12,7 +12,6 @@ namespace Explorer.Tours.Core.Domain
 {
     public class TourReview : Entity
     {
-        public int Id { get; private set; }
         public int Grade { get; private set; }
         public string Comment { get; private set; }
 
@@ -26,11 +25,10 @@ namespace Explorer.Tours.Core.Domain
 
         public DateOnly TourReviewDate { get; private set; }
 
-        public TourReview(int id, int grade, string comment, int tourId, int userId, List<string>images, DateOnly tourVisitDate, DateOnly tourReviewDate)
+        public TourReview(int grade, string comment, int tourId, int userId, List<string>images, DateOnly tourVisitDate, DateOnly tourReviewDate)
         {
             if (string.IsNullOrWhiteSpace(comment)) throw new ArgumentException("Invalid Comment.");
             if (images == null || images.Count == 0) throw new ArgumentException("Tour must have at least one image.");
-            Id = id;
             Grade = grade;
             Comment = comment;
             TourId = tourId;
