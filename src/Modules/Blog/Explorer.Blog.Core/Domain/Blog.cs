@@ -19,17 +19,17 @@ namespace Explorer.Blog.Core.Domain
         public string Title { get; private set; }
         public string Description { get; private set; }
         public DateTime CreationDate { get; private set; }
-        public List<string>? Images { get; private set; }
+        public string? Image { get; private set; }
         public BlogStatus Status { get; private set; }
 
-        public Blogs(string title, string description, List<string>? images = null)
+        public Blogs(string title, string description, string? image = null)
         {
             if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Invalid title.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid description.");
             Title = title;
             Description = description;
             CreationDate = DateTime.Now;
-            Images = images;
+            Image = image;
             Status = BlogStatus.Draft;
         }
     }

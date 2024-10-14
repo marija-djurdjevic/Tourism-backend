@@ -19,7 +19,7 @@ namespace Explorer.Blog.API.Dtos
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime CreationDate { get; set; }
-        public List<string> Images { get; set; }
+        public string Image { get; set; }
         public BlogStatus Status { get; set; }
     }
 }
