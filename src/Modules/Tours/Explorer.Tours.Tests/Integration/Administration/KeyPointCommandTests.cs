@@ -28,7 +28,7 @@ namespace Explorer.Tours.Tests.Integration.Administration
             var newEntity = new KeyPointDto
             {
                 Id = 10,
-                AuthorId = 1,
+                TourId = 1,
                 Name = "Test",
                 Description = "desc test",
                 Longitude = 20,
