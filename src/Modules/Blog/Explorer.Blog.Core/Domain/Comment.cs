@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,20 +11,22 @@ namespace Explorer.Blog.Core.Domain
 {
     public class Comment : Entity
     {
+        [ForeignKey(nameof(AuthorId))]
         public int AuthorId { get; private set; }
         public DateTime CreationDate { get; private set; }
         public string Text { get; private set; }
         public DateTime EditDate { get; private set; }
-        //public int BlogId { get; private set; }
+        [ForeignKey(nameof(BlogId))]
+        public int BlogId { get; private set; }
 
-        public Comment(int authorId, string text)
+        public Comment(int authorId, string text, DateTime creationDate, DateTime editDate, int blogId)
         {
             AuthorId = authorId;
-            CreationDate = DateTime.Now;
+            CreationDate = creationDate;
             if (string.IsNullOrWhiteSpace(text)) throw new ArgumentException("Invalid comment.");
             Text = text;
-            EditDate = DateTime.Now;
-            //BlogId = blogId;
+            EditDate = editDate;
+            BlogId = blogId;
         }
     }
 }

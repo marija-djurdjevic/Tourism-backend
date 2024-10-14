@@ -33,8 +33,9 @@ namespace Explorer.Blog.Tests.Integration
             {
                 AuthorId = 1,
                 Text = "komeeeeeeeeentar",
-                CreationDate = DateTime.Now,
-                EditDate = DateTime.Now,
+                CreationDate = DateTime.UtcNow,
+                EditDate = DateTime.UtcNow,
+                BlogId = 1,
             };
 
             // Act
@@ -59,7 +60,7 @@ namespace Explorer.Blog.Tests.Integration
             var controller = CreateController(scope);
             var updatedEntity = new CommentDto
             {
-                Text = "Test"
+                CreationDate = DateTime.UtcNow
             };
 
             // Act
@@ -82,8 +83,9 @@ namespace Explorer.Blog.Tests.Integration
                 Id = -1,
                 AuthorId = 1,
                 Text = "komeeeeeeeeentar",
-                CreationDate = DateTime.Now,
-                EditDate = DateTime.Now,
+                CreationDate = DateTime.UtcNow,
+                EditDate = DateTime.UtcNow,
+                BlogId = 1,
             };
 
             // Act
