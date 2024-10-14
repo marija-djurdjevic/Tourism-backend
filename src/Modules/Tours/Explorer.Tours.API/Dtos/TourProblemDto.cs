@@ -15,11 +15,12 @@ namespace Explorer.Tours.API.Dtos
             RoadObstacles,
             UnreachablePart
         }
+        public int Id { get; set; }
         public int TourId { get;  set; }
         public ProblemCategory Category { get;  set; }
         public int ProblemPriority { get;  set; }
         public string Description { get;  set; }
-        public DateOnly Date { get;  set; }
+        public TimeOnly Time { get;  set; }
 
     }
     

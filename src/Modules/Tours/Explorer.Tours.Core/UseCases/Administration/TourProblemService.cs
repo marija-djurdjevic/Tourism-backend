@@ -15,5 +15,12 @@ namespace Explorer.Tours.Core.UseCases.Administration
     public class TourProblemService : CrudService<TourProblemDto, TourProblem>, ITourProblemService
     {
         public TourProblemService(ICrudRepository<TourProblem> repository, IMapper mapper) : base(repository, mapper) { }
+
+        public override Result<TourProblemDto> Create(TourProblemDto problem)
+        {
+            problem.Time = TimeOnly.FromDateTime(DateTime.Now);
+            return base.Create(problem);
+        }
+
     }
 }
