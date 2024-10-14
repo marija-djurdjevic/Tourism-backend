@@ -19,6 +19,13 @@ namespace Explorer.API.Controllers.Tourist
         }
 
         [HttpGet]
+        public ActionResult<TourPreferencesDto> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var result = _tourPreferencesService.GetPaged(page, pageSize);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("GetByTouristId")]
         public ActionResult<TourPreferencesDto> GetByTouristId(int id)
         {
             var result = _tourPreferencesService.GetByTouristId(id);

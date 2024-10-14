@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace Explorer.Tours.API.Dtos
     public class TourPreferencesDto
     {
         public int Id { get; set; }
-        public int TouristId { get; set; }
+        public int TouristId {get; set; }
         public DifficultyStatus? Difficulty { get; set; }
         public int WalkingRating { get; set; }
         public int CyclingRating { get; set; }
