@@ -7,9 +7,9 @@ namespace Explorer.Tours.Core.Domain
         public enum ProblemCategory
         {
             Other,
-            UnclearInstructions ,
+            UnclearInstructions,
             RoadObstacles,
-            UnreachablePart      
+            UnreachablePart
         }
         public int TourId { get; private set; }
         public  ProblemCategory Category { get; private set; }
@@ -17,13 +17,10 @@ namespace Explorer.Tours.Core.Domain
         public string Description { get; private set; }
         public DateOnly Date { get; private set; }
 
-        public TourProblem(int tourId, ProblemCategory problemCategory, int problemPriority, string description, DateOnly date) 
+        public TourProblem(int tourId, ProblemCategory category, int problemPriority, string description, DateOnly date) 
         {           
             if (problemPriority < 1 || problemPriority > 5)
                 throw new ArgumentException("Problem priority must be chosen, a number between 1 and 5.", nameof(problemPriority));
-
-            if (!Enum.IsDefined(typeof(ProblemCategory), problemCategory))
-                throw new ArgumentException("Problem category must be specified.", nameof(problemCategory));
 
             if (string.IsNullOrWhiteSpace(description))
                 throw new ArgumentException("Description cannot be empty or whitespace.", nameof(description));
@@ -32,10 +29,11 @@ namespace Explorer.Tours.Core.Domain
                 throw new ArgumentException("Date cannot be in the future.", nameof(date));
 
             TourId = tourId;
-            Category = problemCategory;
+            Category = category;
             ProblemPriority = problemPriority;
             Description = description;
             Date = date;
         }
     }
+   
 }

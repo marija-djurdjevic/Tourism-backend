@@ -13,6 +13,5 @@ namespace Explorer.Tours.API.Public.Administration
     {
         Result<PagedResult<TourProblemDto>> GetPaged(int page, int pageSize);
         Result<TourProblemDto> Create(TourProblemDto tourProblem);
-        Result<List<TourProblemDto>> GetAll();
     }
 }

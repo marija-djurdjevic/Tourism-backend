@@ -15,10 +15,5 @@ namespace Explorer.Tours.Core.UseCases.Administration
     public class TourProblemService : CrudService<TourProblemDto, TourProblem>, ITourProblemService
     {
         public TourProblemService(ICrudRepository<TourProblem> repository, IMapper mapper) : base(repository, mapper) { }
-
-        Result<List<TourProblemDto>>ITourProblemService.GetAll()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

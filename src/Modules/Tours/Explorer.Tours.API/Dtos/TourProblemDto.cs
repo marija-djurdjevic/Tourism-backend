@@ -22,4 +22,5 @@ namespace Explorer.Tours.API.Dtos
         public DateOnly Date { get;  set; }
 
     }
+    
 }
