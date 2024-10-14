@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Explorer.API.Controllers.Author
 {
     [Authorize(Policy = "authorPolicy")]
-    [Route("api/administration/object")]
+    [Route("api/author/object")]
     public class ObjectController : BaseApiController
     {
         private readonly IObjectService _objectService;
