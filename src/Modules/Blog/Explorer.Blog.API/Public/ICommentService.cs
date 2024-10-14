@@ -14,7 +14,6 @@ namespace Explorer.Blog.API.Public
         Result<PagedResult<CommentDto>> GetPaged(int page, int pageSize);
         Result<CommentDto> Create(CommentDto comment);
         Result<CommentDto> Update(CommentDto comment);
-        //Result<CommentDto> GetById(int id);
         Result Delete(int id);
     }
 }

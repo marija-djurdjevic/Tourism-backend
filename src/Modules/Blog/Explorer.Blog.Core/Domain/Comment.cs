@@ -14,15 +14,16 @@ namespace Explorer.Blog.Core.Domain
         public DateTime CreationDate { get; private set; }
         public string Text { get; private set; }
         public DateTime EditDate { get; private set; }
-        public int BlogId { get; private set; }
+        //public int BlogId { get; private set; }
 
-        public Comment(int authorId, string text, int blogId)
+        public Comment(int authorId, string text)
         {
             AuthorId = authorId;
             CreationDate = DateTime.Now;
-            if (string.IsNullOrWhiteSpace(text)) throw new ArgumentException("Invalid Name.");
+            if (string.IsNullOrWhiteSpace(text)) throw new ArgumentException("Invalid comment.");
+            Text = text;
             EditDate = DateTime.Now;
-            BlogId = blogId;
+            //BlogId = blogId;
         }
     }
 }
