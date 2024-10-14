@@ -9,7 +9,6 @@ namespace Explorer.Stakeholders.Core.Domain
 {
     public class UserProfile : Entity
     {
-        public long UserId  { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public string? ImageURL { get; private set; }
@@ -17,9 +16,9 @@ namespace Explorer.Stakeholders.Core.Domain
         public string? Motto { get; private set; }
 
 
-        public UserProfile(long userId,string firstName, string lastName, string imageURL, string biography, string motto)
+        public UserProfile(long id,string firstName, string lastName, string imageURL, string biography, string motto)
         {
-            UserId = userId;
+            Id = id;
             FirstName = firstName;
             LastName = lastName;
             ImageURL = imageURL;

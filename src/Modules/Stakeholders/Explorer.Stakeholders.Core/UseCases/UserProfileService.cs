@@ -12,20 +12,11 @@ using System.Threading.Tasks;
 
 namespace Explorer.Stakeholders.Core.UseCases
 {
-    public class UserProfileService : BaseService<UserProfileDto, UserProfile>,IUserProfileService
+    public class UserProfileService : CrudService<UserProfileDto, UserProfile>,IUserProfileService
     {
-        public UserProfileService(IMapper mapper) : base(mapper)
-        {
-        }
 
-        public Result GetUserProfile(int userId)
+        public UserProfileService(ICrudRepository<UserProfile> repository,IMapper mapper) : base(repository,mapper)
         {
-            throw new NotImplementedException();
-        }
-
-        public Result UpdateUserProfile(UserProfileDto userProfile)
-        {
-            throw new NotImplementedException();
         }
     }
 }

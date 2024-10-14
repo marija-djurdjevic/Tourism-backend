@@ -10,7 +10,7 @@ namespace Explorer.Stakeholders.API.Public
 {
     public interface IUserProfileService
     {
-        Result UpdateUserProfile(UserProfileDto userProfile);
-        Result GetUserProfile(int userId);
+        Result<UserProfileDto> Update(UserProfileDto userProfile);
+        Result<UserProfileDto> Get(int userId);
     }
 }
