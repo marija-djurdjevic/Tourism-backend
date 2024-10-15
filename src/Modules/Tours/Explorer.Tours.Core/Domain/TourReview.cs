@@ -19,16 +19,16 @@ namespace Explorer.Tours.Core.Domain
 
         public int UserId { get; private set; }
 
-        public List<string> Images { get; private set; }
+        public string Images { get; private set; }
 
         public DateOnly TourVisitDate { get; private set; }
 
         public DateOnly TourReviewDate { get; private set; }
 
-        public TourReview(int grade, string comment, int tourId, int userId, List<string>images, DateOnly tourVisitDate, DateOnly tourReviewDate)
+        public TourReview(int grade, string comment, int tourId, int userId, string images, DateOnly tourVisitDate, DateOnly tourReviewDate)
         {
             if (string.IsNullOrWhiteSpace(comment)) throw new ArgumentException("Invalid Comment.");
-            if (images == null || images.Count == 0) throw new ArgumentException("Tour must have at least one image.");
+            if (string.IsNullOrWhiteSpace(images)) throw new ArgumentException("Tour must have at least one image.");
             Grade = grade;
             Comment = comment;
             TourId = tourId;
