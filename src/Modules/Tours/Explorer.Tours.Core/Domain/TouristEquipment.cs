@@ -10,16 +10,16 @@ namespace Explorer.Tours.Core.Domain;
 
 public class TouristEquipment: Entity
 {
-    public int Id { get; private set; }
+    //public int Id { get; private set; }
     public string Name { get; private set; }
     public string? Description { get; private set; }
 
     public int TouristId { get; private set; }
 
-    public TouristEquipment(int id, string name, string? description, int touristId)
+    public TouristEquipment(string name, string? description, int touristId)
     {
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
-        Id = id;
+       // Id = id;
         Name = name;
         Description = description;
         TouristId = touristId;
