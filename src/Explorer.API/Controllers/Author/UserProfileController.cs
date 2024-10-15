@@ -29,6 +29,13 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
+        [HttpGet("{userId:long}")]
+        public ActionResult<UserProfileDto> GetById(int userId)
+        {
+            var result = _userProfileService.Get(userId);
+            return CreateResponse(result);
+        }
+
         [HttpPut]
         public ActionResult<UserProfileDto> Update([FromBody] UserProfileDto profile)
         {
