@@ -24,7 +24,7 @@
 
         public DifficultyStatus Difficulty { get; set; }
 
-        public List<string> Tags { get; set; }
+        public string Tags { get; set; }
         public double Price { get; set; }
     }
 
