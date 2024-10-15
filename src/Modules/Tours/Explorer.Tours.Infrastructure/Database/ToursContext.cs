@@ -6,6 +6,7 @@ namespace Explorer.Tours.Infrastructure.Database;
 public class ToursContext : DbContext
 {
     public DbSet<Equipment> Equipment { get; set; }
+    public DbSet<TourPreferences> TourPreferences { get; set; }
 
     public DbSet<Explorer.Tours.Core.Domain.Object> Object { get; set; }
     
