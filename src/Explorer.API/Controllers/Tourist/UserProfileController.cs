@@ -16,10 +16,16 @@ namespace Explorer.API.Controllers.Tourist
             _userProfileService = userProfileService;
         }
 
-        [HttpGet("{userId:long}")]
-        public ActionResult<UserProfileDto> Get(int userId)
+        [HttpGet]
+        public ActionResult<UserProfileDto> Get()
         {
-            var result = _userProfileService.Get(userId);
+            var userId = User.FindFirst("id")?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var result = _userProfileService.Get(Int32.Parse(userId));
             return CreateResponse(result);
         }
 

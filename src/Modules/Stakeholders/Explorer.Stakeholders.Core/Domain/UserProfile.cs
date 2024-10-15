@@ -24,7 +24,13 @@ namespace Explorer.Stakeholders.Core.Domain
             ImageURL = imageURL;
             Biography = biography;
             Motto = motto;
+            Validate();
+        }
 
+        private void Validate()
+        {
+            if (string.IsNullOrWhiteSpace(FirstName)) throw new ArgumentException("Invalid First Name");
+            if (string.IsNullOrWhiteSpace(LastName)) throw new ArgumentException("Invalid Last Name");
         }
 
     }

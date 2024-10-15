@@ -3,6 +3,7 @@ using Explorer.Stakeholders.API.Public;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace Explorer.API.Controllers.Administrator
 {
     [Authorize(Policy = "administratorPolicy")]
@@ -16,10 +17,15 @@ namespace Explorer.API.Controllers.Administrator
             _userProfileService = userProfileService;
         }
 
-        [HttpGet("{userId:long}")]
-        public ActionResult<UserProfileDto> Get(int userId)
+        [HttpGet]
+        public ActionResult<UserProfileDto> Get()
         {
-            var result = _userProfileService.Get(userId);
+            var userId = User.FindFirst("id")?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+            var result = _userProfileService.Get(Int32.Parse(userId));
             return CreateResponse(result);
         }
 
