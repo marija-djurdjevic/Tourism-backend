@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\repositoryinterfaces\" />
+    <Folder Include="Domain\RepositoryInterfaces\" />
   </ItemGroup>
 
 </Project>
