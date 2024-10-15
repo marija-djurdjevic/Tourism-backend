@@ -11,7 +11,7 @@ namespace Explorer.Stakeholders.API.Public
     public interface IUserRatingService
     {
         // Method to submit a user rating
-        Result<string> SubmitRating(UserRatingDto ratingDto);
+        Result<string> Create(UserRatingDto ratingDto, string userId);
 
         // Method to get all ratings (for admin view)
         Result<List<UserRatingDto>> GetAll();

@@ -27,18 +27,16 @@ namespace Explorer.Stakeholders.Core.UseCases
             return MapToDto(result);
         }
 
-        public Result<string> SubmitRating(UserRatingDto ratingDto)
+        public Result<string> Create(UserRatingDto ratingDto, string userId)
         {
             // Map DTO to domain object
             var userRating = MapToDomain(ratingDto);
+            
 
             try
             {
-                // Create the new user rating in the repository
-                var createdRating = _userRatingRepository.Create(userRating);
-
-                // Map back to DTO and return
-                return Result.Ok<string>("Rating submited successfully!");
+                _userRatingRepository.Create(new UserRating(userRating.Rating, userRating.Comment, int.Parse(userId)));
+                return Result.Ok("Rating submitted successfully!");
             }
             catch (ArgumentException e)
             {
@@ -46,6 +44,8 @@ namespace Explorer.Stakeholders.Core.UseCases
             }
         }
 
-  
+
+
+
     }
 }
