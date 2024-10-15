@@ -52,6 +52,25 @@ namespace Explorer.Tours.Tests.Integration.Administration
             storedEntity.Id.ShouldBe(result.Id);
         }
 
+        [Fact]
+        public void Create_fails_invalid_data()
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            var updatedEntity = new TourDto
+            {
+                Description = "Test"
+            };
+
+            // Act
+            var result = (ObjectResult)controller.Create(updatedEntity).Result;
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.StatusCode.ShouldBe(400);
+        }
+
         private static TourController CreateController(IServiceScope scope)
         {
             return new TourController(scope.ServiceProvider.GetRequiredService<ITourService>())
