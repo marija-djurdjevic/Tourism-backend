@@ -21,11 +21,11 @@ namespace Explorer.Tours.Core.Domain
 
         public string Images { get; private set; }
 
-        public DateOnly TourVisitDate { get; private set; }
+        public DateTime TourVisitDate { get; private set; }
 
-        public DateOnly TourReviewDate { get; private set; }
+        public DateTime TourReviewDate { get; private set; }
 
-        public TourReview(int grade, string comment, int tourId, int userId, string images, DateOnly tourVisitDate, DateOnly tourReviewDate)
+        public TourReview(int grade, string comment, int tourId, int userId, string images, DateTime tourVisitDate, DateTime tourReviewDate)
         {
             if (string.IsNullOrWhiteSpace(comment)) throw new ArgumentException("Invalid Comment.");
             if (string.IsNullOrWhiteSpace(images)) throw new ArgumentException("Tour must have at least one image.");
@@ -35,7 +35,7 @@ namespace Explorer.Tours.Core.Domain
             UserId = userId;
             Images = images;
             TourVisitDate = tourVisitDate;
-            TourReviewDate = tourReviewDate;
+            TourReviewDate = DateTime.UtcNow;
 
         }
     }

@@ -32,9 +32,9 @@ namespace Explorer.Tours.Tests.Integration.Administration
                 Comment = "Nice",
                 TourId = 1,
                 UserId = 1,
-                Images = "slika1test" ,
-                TourVisitDate = DateOnly.FromDateTime(DateTime.Now),
-                TourReviewDate = DateOnly.FromDateTime(DateTime.Now)
+                Images = "slika1test",
+                TourVisitDate = DateTime.Now,
+                TourReviewDate = DateTime.Now
             };
 
             // Act
