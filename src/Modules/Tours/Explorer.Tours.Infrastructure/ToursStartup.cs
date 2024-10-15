@@ -1,5 +1,6 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
+using Explorer.Tours.API.Public;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Mappers;
@@ -26,15 +27,23 @@ public static class ToursStartup
     {
         services.AddScoped<IEquipmentService, EquipmentService>();
 
+
         services.AddScoped<ITourService, TourService>();
 
         services.AddScoped<IKeyPointService, KeyPointService>();
+
+
+        services.AddScoped<IObjectService, ObjectService>();
+        services.AddScoped<ITourPreferencesService, TourPreferencesService>();
+        services.AddScoped<IEquipmentService, EquipmentService>();      
 
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
+        services.AddScoped(typeof(ICrudRepository<TourPreferences>), typeof(CrudDatabaseRepository<TourPreferences, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Equipment>), typeof(CrudDatabaseRepository<Equipment, ToursContext>));
+        services.AddScoped(typeof(ICrudRepository<Explorer.Tours.Core.Domain.Object>), typeof(CrudDatabaseRepository<Explorer.Tours.Core.Domain.Object, ToursContext>));
 
         services.AddScoped(typeof(ICrudRepository<Tour>), typeof(CrudDatabaseRepository<Tour, ToursContext>));
 
@@ -44,4 +53,11 @@ public static class ToursStartup
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "tours")));
     }
+
+
+
+
+    
+
+
 }
