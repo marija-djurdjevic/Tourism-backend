@@ -23,13 +23,5 @@ namespace Explorer.API.Controllers.Administrator
             return CreateResponse(result);
         }
 
-        [HttpPost]
-        public ActionResult<UserRatingDto> Create([FromBody] UserRatingDto rating)
-        {
-            var userId = User.FindFirst("id").Value;
-            var result = _userRatingService.Create(rating, userId);
-            return CreateResponse(result);
-        }
-
     }
 }
