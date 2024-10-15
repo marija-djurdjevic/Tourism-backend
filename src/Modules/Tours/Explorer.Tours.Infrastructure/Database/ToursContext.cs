@@ -12,6 +12,8 @@ public class ToursContext : DbContext
     public DbSet<KeyPoint> KeyPoints { get; set; }
     public DbSet<Explorer.Tours.Core.Domain.Object> Object { get; set; }
 
+    public DbSet<TourReview> TourReview { get; set; }
+
     public ToursContext(DbContextOptions<ToursContext> options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
