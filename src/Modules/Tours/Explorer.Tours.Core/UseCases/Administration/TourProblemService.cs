@@ -12,13 +12,15 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.UseCases.Administration
 {
-    public class TourService : CrudService<TourDto, Tour>, ITourService
+    public class TourProblemService : CrudService<TourProblemDto, TourProblem>, ITourProblemService
     {
-        public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) { }
+        public TourProblemService(ICrudRepository<TourProblem> repository, IMapper mapper) : base(repository, mapper) { }
 
-        public Result<List<TourDto>> GetByAuthorId(int id)
+        public override Result<TourProblemDto> Create(TourProblemDto problem)
         {
-            throw new NotImplementedException();
+            problem.Time = TimeOnly.FromDateTime(DateTime.Now);
+            return base.Create(problem);
         }
+
     }
 }
