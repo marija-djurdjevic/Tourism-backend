@@ -26,25 +26,27 @@ public static class ToursStartup
     private static void SetupCore(IServiceCollection services)
     {
         services.AddScoped<IEquipmentService, EquipmentService>();
+        services.AddScoped<ITourEquipmentService, TourEquipmentService>();
         services.AddScoped<ITourReviewService, TourReviewService>();
         services.AddScoped<ITourProblemService, TourProblemService>();
         services.AddScoped<ITourService, TourService>();
         services.AddScoped<IKeyPointService, KeyPointService>();
         services.AddScoped<IObjectService, ObjectService>();
         services.AddScoped<ITourPreferencesService, TourPreferencesService>();
-     
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped(typeof(ICrudRepository<TourPreferences>), typeof(CrudDatabaseRepository<TourPreferences, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Equipment>), typeof(CrudDatabaseRepository<Equipment, ToursContext>));
+        services.AddScoped(typeof(ICrudRepository<TourEquipment>), typeof(CrudDatabaseRepository<TourEquipment, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<TourReview>), typeof(CrudDatabaseRepository<TourReview, ToursContext>));
       
         services.AddScoped(typeof(ICrudRepository<Explorer.Tours.Core.Domain.Object>), typeof(CrudDatabaseRepository<Explorer.Tours.Core.Domain.Object, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Tour>), typeof(CrudDatabaseRepository<Tour, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<KeyPoint>), typeof(CrudDatabaseRepository<KeyPoint, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<TourProblem>), typeof(CrudDatabaseRepository<TourProblem, ToursContext>));
+
         services.AddDbContext<ToursContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "tours")));
