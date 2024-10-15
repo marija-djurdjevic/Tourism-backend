@@ -11,5 +11,6 @@ namespace Explorer.Tours.API.Dtos
         public int Id { get; set; }
         public int TourId { get; set; }
         public int EquipmentId { get; set; }
+        public EquipmentDto? Equipment { get; set; }
     }
 }
