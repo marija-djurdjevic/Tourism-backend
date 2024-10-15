@@ -10,4 +10,5 @@ public interface IEquipmentService
     Result<EquipmentDto> Create(EquipmentDto equipment);
     Result<EquipmentDto> Update(EquipmentDto equipment);
     Result Delete(int id);
+    Result<List<EquipmentDto>> GetPagedbyTourId(Result<List<TourEquipmentDto>> tourEqupments, int page, int pageSize);
 }
