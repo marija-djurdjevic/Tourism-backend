@@ -16,7 +16,6 @@ namespace Explorer.Blog.Core.Domain
         public DateTime CreationDate { get; private set; }
         public string Text { get; private set; }
         public DateTime EditDate { get; private set; }
-        [ForeignKey(nameof(BlogId))]
         public int BlogId { get; private set; }
 
         public Comment(int authorId, string text, DateTime creationDate, DateTime editDate, int blogId)
