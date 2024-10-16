@@ -57,7 +57,7 @@ public class AccountTests : BaseStakeholdersIntegrationTest
     //    {
     //        Id = -1,
     //        Username = "Marija",
-    //        Role = "Administrator",
+    //        Role = UserRole.Administrator,
     //        IsActive = true
     //    };
 
@@ -73,9 +73,9 @@ public class AccountTests : BaseStakeholdersIntegrationTest
     //    // Assert - Database
     //    var storedEntity = dbContext.Users.FirstOrDefault(i => i.Username == "Marija");
     //    storedEntity.ShouldNotBeNull();
-    //    //storedEntity.Role.ShouldBe(updatedEntity.Role);
-    //    //var oldEntity = dbContext.Users.FirstOrDefault(i => i.Role == Administrator);
-    //    //oldEntity.ShouldBeNull();
+    //    storedEntity.IsActive.ShouldBe(true);
+    //    var oldEntity = dbContext.Users.FirstOrDefault(i => i.Role == Core.Domain.UserRole.Administrator);
+    //    oldEntity.ShouldBeNull();
     //}
 
     //[Fact]
@@ -87,6 +87,9 @@ public class AccountTests : BaseStakeholdersIntegrationTest
     //    var updatedEntity = new AccountReviewDto
     //    {
     //        Id = -1000,
+    //        Username = "Ana",
+    //        Role = UserRole.Administrator,
+    //        IsActive = true
     //    };
 
     //    // Act
