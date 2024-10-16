@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Explorer.API.Controllers.Author
 {
     [Authorize(Policy = "authorPolicy")]
-    [Route("api/authors/comments")]
+    [Route("api/author/comment")]
     public class CommentController : BaseApiController
     {
         private readonly ICommentService _commentService;
