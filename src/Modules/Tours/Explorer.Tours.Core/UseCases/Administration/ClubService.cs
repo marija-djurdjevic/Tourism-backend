@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.UseCases.Administration
 {
-    public class TourService : CrudService<TourDto, Tour>, ITourService
+    public class ClubService : CrudService<ClubDto, Club>, IClubService
     {
-        public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) { }
+        public ClubService(ICrudRepository<Club> repository, IMapper mapper) : base(repository, mapper) { }
 
-        public Result<List<TourDto>> GetByAuthorId(int id)
+        public Result<List<ClubDto>> GetAll()
         {
             throw new NotImplementedException();
         }
