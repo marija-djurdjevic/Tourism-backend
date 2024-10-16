@@ -20,16 +20,13 @@ namespace Explorer.Stakeholders.Core.UseCases
 
         public Result<List<UserRatingDto>> GetAll()
         {
-            // Retrieve all ratings from the repository
             var result = _userRatingRepository.GetAll(); 
 
-            // Map to DTO and return
             return MapToDto(result);
         }
 
         public Result<string> Create(UserRatingDto ratingDto, string userId)
         {
-            // Map DTO to domain object
             var userRating = MapToDomain(ratingDto);
             
 
