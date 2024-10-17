@@ -2,6 +2,7 @@
 using Explorer.Blog.API.Dtos;
 using Explorer.Blog.API.Public;
 using Explorer.Blog.Core.Domain;
+using Explorer.Blog.Core.Domain.RepositoryInterfaces;
 using Explorer.BuildingBlocks.Core.UseCases;
 using FluentResults;
 using System;
@@ -14,7 +15,15 @@ namespace Explorer.Blog.Core.UseCases
 {
     public class CommentService : CrudService<CommentDto, Comment>, ICommentService
     {
-        public CommentService(ICrudRepository<Comment> repository, IMapper mapper) : base(repository, mapper) { }
+        private readonly ICommentRepository commentRepository;
+        public CommentService(ICommentRepository commentRepository, IMapper mapper) : base(commentRepository, mapper) {
+            this.commentRepository = commentRepository;
+        }
+
+        public Result<List<CommentDto>> GetByBlogId(int blogId)
+        {
+            return MapToDto(commentRepository.GetByBlogId(blogId));
+        }
 
     }
 }
