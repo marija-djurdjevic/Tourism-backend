@@ -9,23 +9,23 @@ namespace Explorer.Tours.Core.Domain
 {
     public class Object : Entity
     {
-       
-        public int Id { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public string Image { get; private set; }
+        public int ImageId { get; private set; }
         public ObjectCategory Category { get; private set; }
+        public float Longitude { get; private set; }
+        public float Latitude { get; private set; }
 
        
-        public Object(int id,string name, string description, string image, ObjectCategory category)
+        public Object(string name, string description, int imageId, ObjectCategory category, float longitude, float latitude)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
-
-            Id = id;
             Name = name;
             Description = description;
-            Image = image;
+            ImageId = imageId;
             Category = category;
+            this.Longitude = longitude;
+            this.Latitude = latitude;
         }
     }
 

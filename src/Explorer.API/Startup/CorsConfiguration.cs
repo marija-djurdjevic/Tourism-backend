@@ -12,8 +12,8 @@ public static class CorsConfiguration
                 builder =>
                 {
                     builder.WithOrigins(ParseCorsOrigins())
-                        .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "access_token")
-                        .WithMethods("GET", "PUT", "POST", "PATCH", "DELETE", "OPTIONS");
+                        .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "access_token", "Content-Disposition") // Dodaj Content-Disposition ako je potrebno
+                        .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"); // Osiguraj da je POST uključen
                 });
         });
         return services;
