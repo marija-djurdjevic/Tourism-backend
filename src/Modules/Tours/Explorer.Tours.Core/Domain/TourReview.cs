@@ -19,20 +19,24 @@ namespace Explorer.Tours.Core.Domain
 
         public int UserId { get; private set; }
 
+        public string Username { get; private set; }
+
         public string Images { get; private set; }
 
         public DateTime TourVisitDate { get; private set; }
 
         public DateTime TourReviewDate { get; private set; }
 
-        public TourReview(int grade, string comment, int tourId, int userId, string images, DateTime tourVisitDate, DateTime tourReviewDate)
+        public TourReview(int grade, string comment, int tourId, int userId, string username, string images, DateTime tourVisitDate, DateTime tourReviewDate)
         {
             if (string.IsNullOrWhiteSpace(comment)) throw new ArgumentException("Invalid Comment.");
+            if (string.IsNullOrWhiteSpace(username)) throw new ArgumentException("Tourist must have username.");
             if (string.IsNullOrWhiteSpace(images)) throw new ArgumentException("Tour must have at least one image.");
             Grade = grade;
             Comment = comment;
             TourId = tourId;
             UserId = userId;
+            Username = username;
             Images = images;
             TourVisitDate = tourVisitDate;
             TourReviewDate = DateTime.UtcNow;
