@@ -32,9 +32,10 @@ namespace Explorer.Tours.Tests.Integration.Administration
                 Comment = "Nice",
                 TourId = 1,
                 UserId = 1,
+                Username = "Test",
                 Images = "slika1test",
-                TourVisitDate = DateTime.Now,
-                TourReviewDate = DateTime.Now
+                TourVisitDate = DateTime.UtcNow,
+                TourReviewDate = DateTime.UtcNow
             };
 
             // Act
@@ -46,6 +47,8 @@ namespace Explorer.Tours.Tests.Integration.Administration
             result.Grade.ShouldBe(newEntity.Grade);
             result.Comment.ShouldBe(newEntity.Comment);
             result.TourId.ShouldBe(newEntity.TourId);
+            result.UserId.ShouldBe(newEntity.UserId);
+            result.Username.ShouldBe(newEntity.Username);
             result.Images.ShouldBe(newEntity.Images);
             result.TourVisitDate.ShouldBe(newEntity.TourVisitDate);
             result.TourReviewDate.ShouldBe(newEntity.TourReviewDate);
@@ -58,7 +61,7 @@ namespace Explorer.Tours.Tests.Integration.Administration
        
         private static TourReviewController CreateController(IServiceScope scope)
         {
-            return new TourReviewController(scope.ServiceProvider.GetRequiredService<ITourReviewService>())
+            return new TourReviewController(scope.ServiceProvider.GetRequiredService<ITourReviewService>(),scope.ServiceProvider.GetRequiredService<ITourService>())
             {
                 ControllerContext = BuildContext("-1")
             };

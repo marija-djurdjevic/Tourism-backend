@@ -37,7 +37,7 @@ namespace Explorer.Tours.Tests.Integration.Administration
 
         private static TourReviewController CreateController(IServiceScope scope)
         {
-            return new TourReviewController(scope.ServiceProvider.GetRequiredService<ITourReviewService>())
+            return new TourReviewController(scope.ServiceProvider.GetRequiredService<ITourReviewService>(), scope.ServiceProvider.GetRequiredService<ITourService>())
             {
                 ControllerContext = BuildContext("-1")
             };
