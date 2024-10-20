@@ -26,10 +26,10 @@ namespace Explorer.API.Controllers.Administrator.Administration
             return CreateResponse(result);
         }
 
-        [HttpPut("{id:int}")]
-        public ActionResult<AccountReviewDto> Update([FromBody] AccountReviewDto accountReview)
+        [HttpPut("block-account")]
+        public ActionResult<AccountReviewDto> BlockAccount([FromBody] AccountReviewDto accountReview)
         {
-            var result = _accountService.Update(accountReview);
+            var result = _accountService.BlockAccount(accountReview);
             return CreateResponse(result);
         }
     }

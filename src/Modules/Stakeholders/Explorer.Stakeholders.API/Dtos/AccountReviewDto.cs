@@ -8,17 +8,10 @@ namespace Explorer.Stakeholders.API.Dtos
 {
     public class AccountReviewDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Username { get; set; }
-        public UserRole Role { get; set; }
+        public string Role { get; set; }
         public bool IsActive { get; set; }
-        //public string Email { get; set; }
-    }
-
-    public enum UserRole
-    {
-        Administrator,
-        Author,
-        Tourist
+        public string Email { get; set; }
     }
 }

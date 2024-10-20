@@ -12,6 +12,6 @@ namespace Explorer.Stakeholders.API.Public
     public interface IAccountService
     {
         Result<PagedResult<AccountReviewDto>> GetPaged(int page, int pageSize);
-        Result<AccountReviewDto> Update(AccountReviewDto accountReview);
+        Result<AccountReviewDto> BlockAccount(AccountReviewDto accountReview);
     }
 }
