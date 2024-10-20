@@ -42,7 +42,7 @@ namespace Explorer.API.Controllers.Tourist
                 return CreateResponse(result);
             }
            
-            return CreateResponse(Result.Fail("This user doesn't have preference settings"));
+            return CreateResponse(Result.Fail("Tour with this id doesn't exist"));
         }
 
         [HttpPut("{id:int}")]

@@ -28,7 +28,7 @@ namespace Explorer.Tours.Tests.Integration.Administration
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var newEntity = new TourProblemDto
             {
-                TourId = 101, 
+                TourId = 1, 
                 Category = 0,
                 ProblemPriority = 3, 
                 Description = "Na stazi se javlja znak zabranjen prolaz.",
@@ -72,7 +72,7 @@ namespace Explorer.Tours.Tests.Integration.Administration
 
         private static TourProblemController CreateController(IServiceScope scope)
         {
-            return new TourProblemController(scope.ServiceProvider.GetRequiredService<ITourProblemService>())
+            return new TourProblemController(scope.ServiceProvider.GetRequiredService<ITourProblemService>(), scope.ServiceProvider.GetRequiredService<ITourService>())
             {
                 ControllerContext = BuildContext("-1")
             };
