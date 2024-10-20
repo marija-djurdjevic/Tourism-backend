@@ -38,7 +38,7 @@ namespace Explorer.Tours.Tests.Integration.Administration
 
         private static TourProblemController CreateController(IServiceScope scope)
         {
-            return new TourProblemController(scope.ServiceProvider.GetRequiredService<ITourProblemService>())
+            return new TourProblemController(scope.ServiceProvider.GetRequiredService<ITourProblemService>(), scope.ServiceProvider.GetRequiredService<ITourService>())
             {
                 ControllerContext = BuildContext("-1")
             };
