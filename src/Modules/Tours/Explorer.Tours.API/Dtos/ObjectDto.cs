@@ -10,10 +10,12 @@ namespace Explorer.Tours.API.Dtos
 
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Image { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public int ImageId { get; set; }
         public ObjectCategory Category { get; set; }
+        public float Longitude { get; set; }
+        public float Latitude { get; set; }
 
 
         public enum ObjectCategory
