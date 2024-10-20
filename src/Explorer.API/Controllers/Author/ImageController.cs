@@ -5,9 +5,10 @@ using Explorer.BuildingBlocks.Core.Domain;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Explorer.API.Controllers
+namespace Explorer.API.Controllers.Author
 {
-    [Route("api/image")]
+    [Authorize(Policy = "authorPolicy")]
+    [Route("api/author/image")]
     public class ImageController : ControllerBase
     {
         private readonly StakeholdersContext _context;
