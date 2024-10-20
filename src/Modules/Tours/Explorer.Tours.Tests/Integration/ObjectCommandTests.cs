@@ -30,7 +30,7 @@ namespace Explorer.Tours.Tests.Integration
             {
                 Name = "Test Object",
                 Description = "Test description for object",
-                Image = "aa.jpg",
+                ImageId = -1,
                 Category = ObjectDto.ObjectCategory.WC
 
             };
@@ -83,7 +83,7 @@ namespace Explorer.Tours.Tests.Integration
                 Id = -1,
                 Name = "wce",
                 Description = "Voda ili druga tečnost koja hidrira. Preporuka je pola litre tečnosti na sat vremena umerene aktivnosti po umerenoj temperaturi.",
-                Image="zeka.jpg",
+                ImageId=-1,
                 Category = (ObjectDto.ObjectCategory)ObjectCategory.WC
 
 
@@ -115,7 +115,7 @@ namespace Explorer.Tours.Tests.Integration
                 Id = -1000,
                 Name = "wce",
                 Description = "Voda ili druga tečnost koja hidrira. Preporuka je pola litre tečnosti na sat vremena umerene aktivnosti po umerenoj temperaturi.",
-                Image = "zeka.jpg",
+                ImageId = -1,
                 Category = (ObjectDto.ObjectCategory)ObjectCategory.WC
 
             };

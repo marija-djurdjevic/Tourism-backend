@@ -1,6 +1,7 @@
 ﻿using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.Core.Domain;
 using Microsoft.EntityFrameworkCore;
+using Explorer.BuildingBlocks.Core.Domain;
 
 namespace Explorer.Stakeholders.Infrastructure.Database;
 
@@ -9,8 +10,8 @@ public class StakeholdersContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Person> People { get; set; }
     public DbSet<UserRating> UserRatings { get; set; }
-
     public DbSet<UserProfile> UsersProfiles { get; set; }
+    public DbSet<Image> Images { get; set; }
 
     public StakeholdersContext(DbContextOptions<StakeholdersContext> options) : base(options) {}
 
