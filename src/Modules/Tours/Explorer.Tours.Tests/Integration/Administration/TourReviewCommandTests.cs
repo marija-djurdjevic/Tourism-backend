@@ -30,8 +30,8 @@ namespace Explorer.Tours.Tests.Integration.Administration
             {
                 Grade = 5,
                 Comment = "Nice",
-                TourId = 1,
-                UserId = 1,
+                TourId = -1,
+                UserId = -1,
                 Username = "Test",
                 Images = "slika1test",
                 TourVisitDate = DateTime.UtcNow,

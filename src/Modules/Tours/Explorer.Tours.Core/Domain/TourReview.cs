@@ -39,7 +39,7 @@ namespace Explorer.Tours.Core.Domain
             Username = username;
             Images = images;
             TourVisitDate = tourVisitDate;
-            TourReviewDate = DateTime.UtcNow;
+            TourReviewDate = tourReviewDate;
 
         }
     }
