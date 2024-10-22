@@ -12,26 +12,26 @@ namespace Explorer.API.Controllers.Tourist
     [Route("api/tourist/touristEquipment")]
     public class TouristEquipmentController : BaseApiController
     {
-        private readonly ITouristEquipmentService _TouristEquipmentService;
-        private readonly IEquipmentService _EquipmentService;
+        private readonly ITouristEquipmentService _touristEquipmentService;
+        private readonly IEquipmentService _equipmentService;
 
         public TouristEquipmentController(ITouristEquipmentService TouristEquipmentService, IEquipmentService equipmentService)
         {
-            _TouristEquipmentService = TouristEquipmentService;
-            _EquipmentService = equipmentService;
+            _touristEquipmentService = TouristEquipmentService;
+            _equipmentService = equipmentService;
         }
 
-        [HttpGet]
+       /* [HttpGet]
         public ActionResult<PagedResult<TouristEquipmentDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _TouristEquipmentService.GetPaged(page, pageSize);
             return CreateResponse(result);
-        }
+        }*/
 
         [HttpPost]
         public ActionResult<TouristEquipmentDto> Create([FromBody] TouristEquipmentDto TouristEquipment)
         {
-            var result = _TouristEquipmentService.Create(TouristEquipment);
+            var result = _touristEquipmentService.Create(TouristEquipment);
             return CreateResponse(result);
         }
 
@@ -39,18 +39,18 @@ namespace Explorer.API.Controllers.Tourist
         [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
-            var result = _TouristEquipmentService.Delete(id);
+            var result = _touristEquipmentService.Delete(id);
             return CreateResponse(result);
         }
 
         [HttpGet("byTouristId")]
-        public ActionResult<PagedResult<TouristEquipmentDto>> GetEquipmentbyTouristId([FromQuery] int touristId, [FromQuery] int page, [FromQuery] int pageSize)
+        public ActionResult<PagedResult<TouristEquipmentDto>> GetEquipmentbyTouristId([FromQuery] int touristId)
         {
-            var touristEquipmentList = _TouristEquipmentService.GetByTouristId(touristId);
+            var touristEquipmentList = _touristEquipmentService.GetByTouristId(touristId);
             var result = new List<TouristEquipmentDto>();
             foreach (var item in touristEquipmentList.Value)
             {
-                var equipment = _EquipmentService.GetById(item.EquipmentId).Value;
+                var equipment = _equipmentService.Get(item.EquipmentId).Value;
                 result.Add(new TouristEquipmentDto
                 {
                     Id = item.Id,
@@ -60,11 +60,20 @@ namespace Explorer.API.Controllers.Tourist
                 });
 
             }
-            var paginatedResult = result
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-            return CreateResponse(Result.Ok(paginatedResult));
+            
+            return CreateResponse(Result.Ok(result));
         }
+
+       
+
+        [HttpGet]
+        public ActionResult<PagedResult<EquipmentDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var result = _equipmentService.GetPaged(page, pageSize);
+            return CreateResponse(result);
+        }
+
+
+
     }
 }

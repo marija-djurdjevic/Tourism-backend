@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Administrator.Administration
 {
-   // [Authorize(Policy = "administratorPolicy")]
+    [Authorize(Policy = "administratorPolicy")]
     [Route("api/administration/equipment")]
     public class EquipmentController : BaseApiController
     {
@@ -49,12 +49,7 @@ namespace Explorer.API.Controllers.Administrator.Administration
             return CreateResponse(result);
         }
 
-        [HttpGet("{id:int}")]
-        public ActionResult GetById(int id)
-        {
-            var result = _equipmentService.GetById(id);
-            return CreateResponse(result);
-        }
+        
 
         
     }
