@@ -27,9 +27,7 @@
 
 
   <ItemGroup>
-
 	<Folder Include="Controllers\Tourist\" /> 
-
   </ItemGroup>
 
 </Project>
