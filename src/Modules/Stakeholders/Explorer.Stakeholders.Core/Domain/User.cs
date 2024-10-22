@@ -1,7 +1,9 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Explorer.Stakeholders.Core.Domain;
 
+//[Table("Users", Schema = "stakeholders")]  
 public class User : Entity
 {
     public string Username { get; private set; }

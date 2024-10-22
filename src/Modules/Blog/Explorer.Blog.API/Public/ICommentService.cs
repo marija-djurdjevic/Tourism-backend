@@ -12,6 +12,7 @@ namespace Explorer.Blog.API.Public
     public interface ICommentService
     {
         Result<PagedResult<CommentDto>> GetPaged(int page, int pageSize);
+        Result<List<CommentDto>> GetByBlogId(int blogId);
         Result<CommentDto> Create(CommentDto comment);
         Result<CommentDto> Update(CommentDto comment);
         Result Delete(int id);

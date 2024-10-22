@@ -29,6 +29,7 @@ namespace Explorer.API.Controllers.Author
         [HttpPost]
         public ActionResult<BlogDto> Create([FromBody] BlogDto blog)
         {
+            System.Diagnostics.Debug.WriteLine(blog);
             var result = _blogService.Create(blog);
             return CreateResponse(result);
         }
