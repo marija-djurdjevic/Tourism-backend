@@ -12,4 +12,7 @@ public interface IEquipmentService
     Result Delete(int id);
 
     Result<EquipmentDto> GetById(int id);
+
+    Result<List<EquipmentDto>> GetPagedbyTouistrId(Result<List<TouristEquipmentDto>> tourEqupments, int page, int pageSize);
+
 }

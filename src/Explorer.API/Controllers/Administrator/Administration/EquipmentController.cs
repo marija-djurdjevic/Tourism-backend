@@ -56,28 +56,6 @@ namespace Explorer.API.Controllers.Administrator.Administration
             return CreateResponse(result);
         }
 
-        [HttpGet("byTouristId")]
-        public ActionResult<PagedResult<TouristEquipmentDto>> GetEquipmentbyTouristId([FromQuery] int touristId, [FromQuery] int page, [FromQuery] int pageSize)
-        {
-            var touristEquipmentList = _touristEquipmentService.GetByTouristId(touristId);
-            var result = new List<EquipmentDto>();
-            foreach (var item in touristEquipmentList.Value)
-            {
-                var equipment = _equipmentService.GetById(item.EquipmentId).Value;
-                result.Add(new EquipmentDto
-                {
-                    Id = equipment.Id,
-                    Name = equipment.Name,
-                    Description = equipment.Description
-                }) ; 
-               // result.Add(equipment);
-
-            }
-            var paginatedResult = result
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-            return CreateResponse(Result.Ok(paginatedResult));
-        }
+        
     }
 }

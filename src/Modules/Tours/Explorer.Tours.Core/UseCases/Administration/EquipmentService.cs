@@ -32,4 +32,25 @@ public class EquipmentService : CrudService<EquipmentDto, Equipment>, IEquipment
         return Result.Ok(equipment);
     }
 
+    Result<List<EquipmentDto>> IEquipmentService.GetPagedbyTouistrId(Result<List<TouristEquipmentDto>> touristEquipments, int page, int pageSize)
+    {
+
+        var allEquipments = MapToDto(CrudRepository.GetPaged(0, 0));
+
+        var touristEquipmentsList = new List<EquipmentDto>();
+
+        foreach (var touristEqupment in touristEquipments.Value)
+        {
+            touristEquipmentsList.AddRange(allEquipments.Value.Results.ToList().Where(x => x.Id == touristEqupment.EquipmentId).ToList());
+        }
+
+        var paginatedResult = touristEquipmentsList
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
+        .ToList();
+
+        // Vra?anje rezultata sa paginacijom
+        return Result.Ok(paginatedResult);
+    }
+
 }

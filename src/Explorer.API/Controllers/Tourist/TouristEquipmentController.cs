@@ -43,22 +43,28 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(result);
         }
 
-        /*[HttpGet("byTouristId")]
+        [HttpGet("byTouristId")]
         public ActionResult<PagedResult<TouristEquipmentDto>> GetEquipmentbyTouristId([FromQuery] int touristId, [FromQuery] int page, [FromQuery] int pageSize)
         {
             var touristEquipmentList = _TouristEquipmentService.GetByTouristId(touristId);
-            var result = new List<EquipmentDto>();
+            var result = new List<TouristEquipmentDto>();
             foreach (var item in touristEquipmentList.Value)
             {
                 var equipment = _EquipmentService.GetById(item.EquipmentId).Value;
-                result.Add(equipment);
-               
+                result.Add(new TouristEquipmentDto
+                {
+                    Id = item.Id,
+                    EquipmentId = item.Id,
+                    TouristId = item.TouristId,
+                    Equipment = equipment
+                });
+
             }
             var paginatedResult = result
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
             return CreateResponse(Result.Ok(paginatedResult));
-        }*/
+        }
     }
 }
