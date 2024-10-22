@@ -30,6 +30,7 @@ namespace Explorer.Blog.Tests.Integration
             var newEntity = new BlogDto
             {
                 Title = "NASLOVCINA",
+                AuthorId = 1 ,
                 Description = "Description",
                 CreationDate = DateTime.UtcNow,
                 Image = "image.png",
@@ -48,6 +49,7 @@ namespace Explorer.Blog.Tests.Integration
             result.CreationDate.ShouldBe(newEntity.CreationDate);
             result.Image.ShouldBe(newEntity.Image);
             result.Status.ShouldBe(newEntity.Status);
+            result.AuthorId.ShouldBe(newEntity.AuthorId);
 
             // Assert - Database
             var storedEntity = dbContext.Blogs.FirstOrDefault(i => i.Title == newEntity.Title);

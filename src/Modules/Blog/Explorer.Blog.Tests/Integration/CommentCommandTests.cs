@@ -45,6 +45,8 @@ namespace Explorer.Blog.Tests.Integration
             result.ShouldNotBeNull();
             result.Id.ShouldNotBe(0);
             result.Text.ShouldBe(newEntity.Text);
+            result.AuthorId.ShouldBe(newEntity.AuthorId);
+            result.BlogId.ShouldBe(newEntity.BlogId);
 
             // Assert - Database
             var storedEntity = dbContext.Comment.FirstOrDefault(i => i.Text == newEntity.Text);
@@ -98,6 +100,7 @@ namespace Explorer.Blog.Tests.Integration
             result.Text.ShouldBe(updatedEntity.Text);
             result.CreationDate.ShouldBe(updatedEntity.CreationDate);
             result.EditDate.ShouldBe(updatedEntity.EditDate);
+            result.BlogId.ShouldBe(updatedEntity.BlogId);
 
             // Assert - Database
             var storedEntity = dbContext.Comment.FirstOrDefault(i => i.Text == "komeeeeeeeeentar");
