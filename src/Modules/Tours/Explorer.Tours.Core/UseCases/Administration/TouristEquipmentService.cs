@@ -12,8 +12,16 @@ public class TouristEquipmentService : CrudService<TouristEquipmentDto, TouristE
     public TouristEquipmentService(ICrudRepository<TouristEquipment> repository, IMapper mapper) : base(repository, mapper) { }
 
    
-    public Result<TouristEquipmentDto> GetByTouristId(int touristId)
+    
+
+    Result<List<TouristEquipmentDto>> ITouristEquipmentService.GetByTouristId(int touristId)
     {
-        throw new NotImplementedException();
+        var pagedResult = CrudRepository.GetPaged(0, 0);
+
+        var mappedResult = MapToDto(pagedResult);
+
+        var list = mappedResult.Value.Results.ToList().Where(x => x.TouristId == touristId).ToList();
+
+        return Result.Ok(list);
     }
 }

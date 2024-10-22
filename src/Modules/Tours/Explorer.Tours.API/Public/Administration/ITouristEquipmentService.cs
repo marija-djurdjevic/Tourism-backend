@@ -13,7 +13,9 @@ namespace Explorer.Tours.API.Public.Administration
     {
         Result<PagedResult<TouristEquipmentDto>> GetPaged(int page, int pageSize);
         Result<TouristEquipmentDto> Create(TouristEquipmentDto equipment);
-        Result<TouristEquipmentDto> GetByTouristId(int touristId);
+        Result<List<TouristEquipmentDto>> GetByTouristId(int touristId);
         Result Delete(int id);
+
+        
     }
 }

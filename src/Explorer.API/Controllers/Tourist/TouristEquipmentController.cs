@@ -1,6 +1,8 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.Core.UseCases.Administration;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +13,12 @@ namespace Explorer.API.Controllers.Tourist
     public class TouristEquipmentController : BaseApiController
     {
         private readonly ITouristEquipmentService _TouristEquipmentService;
+        private readonly IEquipmentService _EquipmentService;
 
-        public TouristEquipmentController(ITouristEquipmentService TouristEquipmentService)
+        public TouristEquipmentController(ITouristEquipmentService TouristEquipmentService, IEquipmentService equipmentService)
         {
             _TouristEquipmentService = TouristEquipmentService;
+            _EquipmentService = equipmentService;
         }
 
         [HttpGet]
@@ -38,5 +42,23 @@ namespace Explorer.API.Controllers.Tourist
             var result = _TouristEquipmentService.Delete(id);
             return CreateResponse(result);
         }
+
+        /*[HttpGet("byTouristId")]
+        public ActionResult<PagedResult<TouristEquipmentDto>> GetEquipmentbyTouristId([FromQuery] int touristId, [FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var touristEquipmentList = _TouristEquipmentService.GetByTouristId(touristId);
+            var result = new List<EquipmentDto>();
+            foreach (var item in touristEquipmentList.Value)
+            {
+                var equipment = _EquipmentService.GetById(item.EquipmentId).Value;
+                result.Add(equipment);
+               
+            }
+            var paginatedResult = result
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+            return CreateResponse(Result.Ok(paginatedResult));
+        }*/
     }
 }
