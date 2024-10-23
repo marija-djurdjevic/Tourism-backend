@@ -12,7 +12,7 @@ public interface IEquipmentService
     Result Delete(int id);
 
     Result<EquipmentDto> Get(int id);
-
-    Result<List<EquipmentDto>> GetPagedbyTouistrId(Result<List<TouristEquipmentDto>> tourEqupments, int page, int pageSize);
+    Result<List<EquipmentDto>> GetPagedbyTouistrId(Result<List<TouristEquipmentDto>> tourEqupments, int page, int pageSize); //naziv
+    Result<List<EquipmentDto>> GetPagedbyTourId(Result<List<TourEquipmentDto>> tourEqupments, int page, int pageSize);
 
 }

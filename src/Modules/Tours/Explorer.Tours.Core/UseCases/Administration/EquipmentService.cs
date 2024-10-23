@@ -9,11 +9,10 @@ namespace Explorer.Tours.Core.UseCases.Administration;
 
 public class EquipmentService : CrudService<EquipmentDto, Equipment>, IEquipmentService
 {
-    public EquipmentService(ICrudRepository<Equipment> repository, IMapper mapper) : base(repository, mapper) {}
-
-     
+    public EquipmentService(ICrudRepository<Equipment> repository, IMapper mapper) : base(repository, mapper)
 
     Result<List<EquipmentDto>> IEquipmentService.GetPagedbyTouistrId(Result<List<TouristEquipmentDto>> touristEquipments, int page, int pageSize)
+    Result<List<EquipmentDto>> IEquipmentService.GetPagedbyTourId(Result<List<TourEquipmentDto>> tourEqupments, int page, int pageSize)
     {
 
         var allEquipments = MapToDto(CrudRepository.GetPaged(0, 0));
@@ -26,6 +25,16 @@ public class EquipmentService : CrudService<EquipmentDto, Equipment>, IEquipment
         }
 
         var paginatedResult = touristEquipmentsList
+
+        var tourEquipmentsList = new List<EquipmentDto>();
+
+        foreach (var tourEqupment in tourEqupments.Value)
+        {
+            tourEquipmentsList.AddRange(allEquipments.Value.Results.ToList().Where(x => x.Id == tourEqupment.EquipmentId).ToList());
+        }
+
+        var paginatedResult = tourEquipmentsList
+        
         .Skip((page - 1) * pageSize)
         .Take(pageSize)
         .ToList();
@@ -33,5 +42,4 @@ public class EquipmentService : CrudService<EquipmentDto, Equipment>, IEquipment
         // Vra?anje rezultata sa paginacijom
         return Result.Ok(paginatedResult);
     }
-
 }

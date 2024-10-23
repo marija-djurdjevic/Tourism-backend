@@ -14,7 +14,7 @@ namespace Explorer.Tours.Core.UseCases.Administration
 {
     public class TourService : CrudService<TourDto, Tour>, ITourService
     {
-        public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) {}
+        public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) { }
 
         public Result<List<TourDto>> GetByAuthorId(int id)
         {

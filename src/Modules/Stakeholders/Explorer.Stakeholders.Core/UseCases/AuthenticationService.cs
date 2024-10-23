@@ -12,12 +12,14 @@ public class AuthenticationService : IAuthenticationService
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IUserRepository _userRepository;
     private readonly ICrudRepository<Person> _personRepository;
+    private readonly ICrudRepository<UserProfile> _userProfileRepository;
 
-    public AuthenticationService(IUserRepository userRepository, ICrudRepository<Person> personRepository, ITokenGenerator tokenGenerator)
+    public AuthenticationService(ICrudRepository<UserProfile> userProfileRepository,IUserRepository userRepository, ICrudRepository<Person> personRepository, ITokenGenerator tokenGenerator)
     {
         _tokenGenerator = tokenGenerator;
         _userRepository = userRepository;
         _personRepository = personRepository;
+        _userProfileRepository = userProfileRepository;
     }
 
     public Result<AuthenticationTokensDto> Login(CredentialsDto credentials)
@@ -43,9 +45,9 @@ public class AuthenticationService : IAuthenticationService
 
         try
         {
-            var user = _userRepository.Create(new User(account.Username, account.Password, UserRole.Tourist, true));
+            var user = _userRepository.Create(new User(account.Username, account.Password, Core.Domain.UserRole.Tourist, true));
             var person = _personRepository.Create(new Person(user.Id, account.Name, account.Surname, account.Email));
-
+            var profile = _userProfileRepository.Create(new UserProfile(user.Id, account.Name, account.Surname, null, null, null));
             return _tokenGenerator.GenerateAccessToken(user, person.Id);
         }
         catch (ArgumentException e)
