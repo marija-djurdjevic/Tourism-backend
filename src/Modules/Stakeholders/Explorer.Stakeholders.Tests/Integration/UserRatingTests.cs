@@ -20,7 +20,7 @@ namespace Explorer.Stakeholders.Tests.Integration
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21"); // For tourist role
+            var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21", "turista1@gmail.com"); // For tourist role
             var ratingDto = new UserRatingDto
             {
                 Rating = 3,
@@ -42,7 +42,7 @@ namespace Explorer.Stakeholders.Tests.Integration
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController<adminController.UserRatingController>(scope, "Administrator", "-1"); // For admin role
+            var controller = CreateController<adminController.UserRatingController>(scope, "Administrator", "-1", "admin@gmail.com"); // For admin role
 
             // Act
             var result = (ObjectResult)controller.GetAll().Result;
@@ -60,7 +60,7 @@ namespace Explorer.Stakeholders.Tests.Integration
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21"); // For tourist role
+            var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21", "turista1@gmail.com"); // For tourist role
             var invalidRatingDto = new UserRatingDto
             {
                 Rating = 0, // Invalid rating
@@ -80,12 +80,13 @@ namespace Explorer.Stakeholders.Tests.Integration
 
 
 
-        private static TController CreateController<TController>(IServiceScope scope, string role, string userId = "-1") where TController : ControllerBase
+        private static TController CreateController<TController>(IServiceScope scope, string role, string userId = "-1", string username = "user1") where TController : ControllerBase
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userId),
-                new Claim("id", userId), 
+                new Claim("id", userId),
+                new Claim("username", username),
                 new Claim(ClaimTypes.Role, role) 
             }, "TestAuth"));
 
