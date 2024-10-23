@@ -25,14 +25,14 @@ namespace Explorer.Stakeholders.Core.UseCases
             return MapToDto(result);
         }
 
-        public Result<string> Create(UserRatingDto ratingDto, string userId)
+        public Result<string> Create(UserRatingDto ratingDto, string userId, string username)
         {
             var userRating = MapToDomain(ratingDto);
             
 
             try
             {
-                _userRatingRepository.Create(new UserRating(userRating.Rating, userRating.Comment, int.Parse(userId)));
+                _userRatingRepository.Create(new UserRating(userRating.Rating, userRating.Comment, int.Parse(userId), username));
                 return Result.Ok("Rating submitted successfully!");
             }
             catch (ArgumentException e)
