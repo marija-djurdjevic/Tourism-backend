@@ -1,6 +1,8 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.Core.UseCases.Administration;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +13,12 @@ namespace Explorer.API.Controllers.Administrator.Administration
     public class EquipmentController : BaseApiController
     {
         private readonly IEquipmentService _equipmentService;
+        private readonly ITouristEquipmentService _touristEquipmentService;
 
-        public EquipmentController(IEquipmentService equipmentService)
+        public EquipmentController(IEquipmentService equipmentService, ITouristEquipmentService touristEquipmentService)
         {
             _equipmentService = equipmentService;
+            _touristEquipmentService = touristEquipmentService;
         }
 
         [HttpGet]
@@ -44,5 +48,9 @@ namespace Explorer.API.Controllers.Administrator.Administration
             var result = _equipmentService.Delete(id);
             return CreateResponse(result);
         }
+
+        
+
+        
     }
 }

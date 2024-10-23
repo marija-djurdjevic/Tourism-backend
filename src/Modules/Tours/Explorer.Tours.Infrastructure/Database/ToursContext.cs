@@ -10,6 +10,7 @@ public class ToursContext : DbContext
     public DbSet<TourEquipment> TourEquipment{ get; set; }
     public DbSet<TourProblem> TourProblems { get; set; }
     public DbSet<TourPreferences> TourPreferences { get; set; }
+    public DbSet<TouristEquipment> TouristEquipment { get; set; }
     public DbSet<Tour> Tour { get; set; }
     public DbSet<KeyPoint> KeyPoints { get; set; }
     public DbSet<Explorer.Tours.Core.Domain.Object> Object { get; set; }
