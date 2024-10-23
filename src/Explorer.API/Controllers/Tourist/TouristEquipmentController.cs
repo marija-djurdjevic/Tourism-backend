@@ -73,7 +73,12 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(result);
         }
 
-
+        [HttpGet("all")]
+        public ActionResult<PagedResult<EquipmentDto>> GetAllEquipments([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var result = _touristEquipmentService.GetPaged(page, pageSize);
+            return CreateResponse(result);
+        }
 
     }
 }
