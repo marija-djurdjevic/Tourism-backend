@@ -7,6 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using Explorer.Tours.API.Dtos;
+using Explorer.Tours.Infrastructure.Database;
+using Explorer.Stakeholders.Infrastructure.Database;
 
 namespace Explorer.Stakeholders.Tests.Integration
 {
@@ -20,6 +24,7 @@ namespace Explorer.Stakeholders.Tests.Integration
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
             var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21", "turista1@gmail.com"); // For tourist role
             var ratingDto = new UserRatingDto
             {
@@ -27,14 +32,14 @@ namespace Explorer.Stakeholders.Tests.Integration
                 Comment = "Not too bad"
             };
 
-            // Act
-            var result = (ObjectResult)controller.Create(ratingDto).Result;
+            var result = ((ObjectResult)controller.Create(ratingDto).Result)?.Value as UserRatingDto;
+            result.ShouldNotBeNull();
+            result.Rating.ShouldBe(ratingDto.Rating);
 
-            // Assert
-            result.StatusCode.ShouldBe(200); 
-            var responseMessage = result.Value as string;
-            responseMessage.ShouldNotBeNull();
-            responseMessage.ShouldBe("Rating submitted successfully!");
+            // Assert - Database
+            var storedEntity = dbContext.UserRatings.FirstOrDefault(i => i.Comment == ratingDto.Comment);
+            storedEntity.ShouldNotBeNull();
+
         }
 
         [Fact]
