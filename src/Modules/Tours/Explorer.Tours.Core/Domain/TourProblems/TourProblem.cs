@@ -1,4 +1,5 @@
-﻿using Explorer.BuildingBlocks.Core.Domain;
+﻿
+using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.Stakeholders.Core.Domain;
 using static Explorer.Tours.Core.Domain.TourProblems.ProblemComment;
 
@@ -35,7 +36,7 @@ namespace Explorer.Tours.Core.Domain.TourProblems
 
         public void CheckStatus()
         {
-            if(Deadline.HasValue && DateTime.Now > Deadline)
+            if (Deadline.HasValue && DateTime.Now > Deadline)
             {
                 Status = ProblemStatus.Expired;
             }
@@ -47,21 +48,21 @@ namespace Explorer.Tours.Core.Domain.TourProblems
             Notification lastNotification = Notifications.Last();
 
             int authorId = Comments.FirstOrDefault(c => c.Type == ProblemCommentType.FromAuthor).SenderId;
-            int touristId = Comments.FirstOrDefault(c => c.Type == ProblemCommentType.FromTourist).SenderId; 
+            int touristId = Comments.FirstOrDefault(c => c.Type == ProblemCommentType.FromTourist).SenderId;
 
-            if(isDeleted)
+            if (isDeleted)
             {
                 createDeletedNotification(authorId);
             }
 
-            if(deadlineAdded)
+            if (deadlineAdded)
             {
                 createDeadLineNotification(authorId);
             }
 
             if (!lastNotification.IsRead)
             {
-                if(lastComment.Type == ProblemCommentType.FromAdmin)
+                if (lastComment.Type == ProblemCommentType.FromAdmin)
                     createAuthorTouristNotification(lastComment, authorId, touristId);
                 else
                     createAdminNotification(touristId, authorId);
