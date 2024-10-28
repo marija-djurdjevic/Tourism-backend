@@ -1,13 +1,15 @@
-﻿using Explorer.Stakeholders.Core.Domain;
+﻿using Explorer.BuildingBlocks.Infrastructure.Database;
+using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.Core.Domain.Users;
 
 namespace Explorer.Stakeholders.Infrastructure.Database.Repositories;
 
-public class UserDatabaseRepository : IUserRepository
+public class UserDatabaseRepository : CrudDatabaseRepository<User, StakeholdersContext>, IUserRepository
 {
     private readonly StakeholdersContext _dbContext;
 
-    public UserDatabaseRepository(StakeholdersContext dbContext)
+    public UserDatabaseRepository(StakeholdersContext dbContext) : base(dbContext)
     {
         _dbContext = dbContext;
     }
@@ -39,5 +41,10 @@ public class UserDatabaseRepository : IUserRepository
     public Person? GetPersonByUserId(long userId)
     {
         return _dbContext.People.FirstOrDefault(i => i.UserId == userId);
+    }
+    
+    public Location? GetLocationByUserId(long userId)
+    {
+        return _dbContext.Users.FirstOrDefault(i => i.Id == userId && i.IsActive && i.Role==UserRole.Tourist)?.Location;
     }
 }
