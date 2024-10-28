@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.API.Dtos
+namespace Explorer.Tours.API.Dtos.TourProblemDtos
 {
-    public class TourProblemDto
+    public class ProblemDetailsDto
     {
         public enum ProblemCategory
         {
@@ -15,13 +15,11 @@ namespace Explorer.Tours.API.Dtos
             RoadObstacles,
             UnreachablePart
         }
-        public int Id { get; set; }
-        public int TourId { get;  set; }
         public ProblemCategory Category { get;  set; }
         public int ProblemPriority { get;  set; }
-        public string Description { get;  set; }
-        public TimeOnly Time { get;  set; }
+        public string Explanation { get;  set; }
+        public DateTime Time { get;  set; }
 
+        
     }
-    
 }
