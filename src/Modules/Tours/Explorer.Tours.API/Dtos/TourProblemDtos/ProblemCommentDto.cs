@@ -10,8 +10,15 @@ namespace Explorer.Tours.API.Dtos.TourProblemDtos
     public class ProblemCommentDto
     {
         public string Content { get; set; }
-        public UserRole SenderRole { get; }
+        public ProblemCommentType Type { get; set; }
         public string SenderId { get; set; }
         public DateTime SentTime { get; set; }
+    }
+
+    public enum ProblemCommentType
+    {
+        FromTourist,
+        FromAuthor,
+        FromAdmin
     }
 }

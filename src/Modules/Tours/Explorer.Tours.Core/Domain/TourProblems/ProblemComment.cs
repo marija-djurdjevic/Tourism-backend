@@ -12,18 +12,18 @@ namespace Explorer.Tours.Core.Domain.TourProblems
     public class ProblemComment : ValueObject<ProblemComment>
     {
 
-        public string Content { get;}
-        public UserRole SenderRole { get; }
+        public string Content { get; }
+        public ProblemCommentType Type { get; }
         public int SenderId { get; }
         public DateTime SentTime { get; }
 
         [JsonConstructor]
-        public ProblemComment(string content, UserRole role, DateTime sentTime, int senderId)
+        public ProblemComment(string content, ProblemCommentType type, DateTime sentTime, int senderId)
         {
             Content = content;
-            SenderRole = role;
+            Type = type;
             SentTime = sentTime;
-            SenderId = senderId;  
+            SenderId = senderId;
         }
 
         protected override bool EqualsCore(ProblemComment other)
@@ -31,13 +31,20 @@ namespace Explorer.Tours.Core.Domain.TourProblems
             if (other == null) return false;
             return Content == other.Content &&
                 SenderId == other.SenderId &&
-                SenderRole == other.SenderRole &&
+                Type == other.Type &&
                 SentTime == other.SentTime;
         }
 
         protected override int GetHashCodeCore()
         {
-            return HashCode.Combine(Content, SenderRole, SenderId, SentTime);
-        }   
+            return HashCode.Combine(Content, Type, SenderId, SentTime);
+        }
+    }
+
+    public enum ProblemCommentType
+    {
+        FromTourist,
+        FromAuthor,
+        FromAdmin
     }
 }
