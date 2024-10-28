@@ -7,16 +7,21 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.API.Dtos.TourProblemDtos
 {
-    [JsonDerivedType(typeof(TourProblemDto), typeDiscriminator: "base")]
-    [JsonDerivedType(typeof(NotificationDto))]
-    [JsonDerivedType(typeof(ProblemDetailsDto))]
-    [JsonDerivedType(typeof(ProblemCommentDto))]
-    [JsonDerivedType(typeof(ProblemCommentDto))]
     public class TourProblemDto
-    {      
+    {
         public int Id { get; set; }
         public int TourId { get; set; }
-
+        public NotificationDto? Notification { get; set; }
+        public ProblemDetailsDto Details { get; set; }
+        public List<ProblemCommentDto>? Comments { get; set; }
+        public ProblemStatus Status { get; set; }
+        public DateTime? Deadline { get; set; }
     }
-
+    public enum ProblemStatus
+    {
+        Pending,
+        Solved,
+        Closed,
+        Expired
+    }
 }

@@ -10,8 +10,6 @@ namespace Explorer.Tours.API.Dtos.TourProblemDtos
     {
         public string Content { get; set; }
         public int RecieverId { get; set; }
-
-        public bool IsRead { get; set; }
-
+        public bool isRead { get; set; }
     }
 }

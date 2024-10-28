@@ -11,25 +11,26 @@ namespace Explorer.Tours.Core.Domain.TourProblems
     public class Notification : ValueObject<Notification>
     {
         public string Content { get; }
-        public int RecieverId   {get;  }
-
-        public bool IsRead { get; }
+        public int RecieverId {get;  }
+        public bool IsRead { get; private set; }
            
         [JsonConstructor]
-        public Notification(string content, int recieverId, bool isRead) 
+        public Notification(string content, int recieverId, bool isRead)
         {
             Content = content;
             RecieverId = recieverId;
             IsRead = isRead;
         }
+
         protected override bool EqualsCore(Notification other)
         {
-            throw new NotImplementedException();
+            if (other == null) return false;
+            return Content == other.Content && RecieverId == other.RecieverId && IsRead == other.IsRead;
         }
 
         protected override int GetHashCodeCore()
         {
-            throw new NotImplementedException();
+            return HashCode.Combine(Content, RecieverId, IsRead);
         }
     }
 }

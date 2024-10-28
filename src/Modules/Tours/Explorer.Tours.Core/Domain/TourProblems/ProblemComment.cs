@@ -14,30 +14,30 @@ namespace Explorer.Tours.Core.Domain.TourProblems
 
         public string Content { get;}
         public UserRole SenderRole { get; }
-
-        public string SenderId { get; }
-
+        public int SenderId { get; }
         public DateTime SentTime { get; }
 
         [JsonConstructor]
-        public ProblemComment(string text, UserRole role, DateTime sentTime, string senderId)
+        public ProblemComment(string content, UserRole role, DateTime sentTime, int senderId)
         {
-            Content = text;
+            Content = content;
             SenderRole = role;
             SentTime = sentTime;
-            SenderId = senderId;    
+            SenderId = senderId;  
         }
 
         protected override bool EqualsCore(ProblemComment other)
         {
-            throw new NotImplementedException();
+            if (other == null) return false;
+            return Content == other.Content &&
+                SenderId == other.SenderId &&
+                SenderRole == other.SenderRole &&
+                SentTime == other.SentTime;
         }
 
         protected override int GetHashCodeCore()
         {
-            throw new NotImplementedException();
-        }
-
-       
+            return HashCode.Combine(Content, SenderRole, SenderId, SentTime);
+        }   
     }
 }
