@@ -1,4 +1,5 @@
 ﻿using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.TourSessions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Explorer.Tours.Infrastructure.Database;
@@ -16,10 +17,15 @@ public class ToursContext : DbContext
 
     public DbSet<TourReview> TourReview { get; set; }
 
+    public DbSet<TourSession> TourSessions { get; set; }
+
     public ToursContext(DbContextOptions<ToursContext> options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("tours");
+
+        modelBuilder.Entity<TourSession>().Property(ts => ts.CurrentLocation) .HasColumnType("jsonb");
+        modelBuilder.Entity<TourSession>().Property(ts => ts.CompletedKeyPoints).HasColumnType("jsonb");
     }
 }
