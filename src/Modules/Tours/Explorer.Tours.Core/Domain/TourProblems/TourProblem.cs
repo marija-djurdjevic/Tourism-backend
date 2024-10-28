@@ -46,8 +46,8 @@ namespace Explorer.Tours.Core.Domain.TourProblems
             ProblemComment lastComment = Comments.Last();
             Notification lastNotification = Notifications.Last();
 
-            int authorId = Comments.FirstOrDefault(c => c.SenderRole == UserRole.Author).SenderId;
-            int touristId = Comments.FirstOrDefault(c => c.SenderRole == UserRole.Tourist).SenderId; 
+            int authorId = Comments.FirstOrDefault(c => c.Type == ProblemCommentType.FromAuthor).SenderId;
+            int touristId = Comments.FirstOrDefault(c => c.Type == ProblemCommentType.FromTourist).SenderId; 
 
             if(isDeleted)
             {
@@ -61,7 +61,7 @@ namespace Explorer.Tours.Core.Domain.TourProblems
 
             if (!lastNotification.IsRead)
             {
-                if(lastComment.SenderRole == UserRole.Administrator)
+                if(lastComment.Type == ProblemCommentType.FromAdmin)
                     createAuthorTouristNotification(lastComment, authorId, touristId);
                 else
                     createAdminNotification(touristId, authorId);
@@ -78,7 +78,7 @@ namespace Explorer.Tours.Core.Domain.TourProblems
         public void createAuthorTouristNotification(ProblemComment lastComment, int authorId, int touristId)
         {
             string content = $"You have a new comment on the problem";
-            if (lastComment.SenderRole == UserRole.Author)
+            if (lastComment.Type == ProblemCommentType.FromAuthor)
                 Notifications.Add(new Notification(content, touristId, false));
             else
                 Notifications.Add(new Notification(content, authorId, false));
