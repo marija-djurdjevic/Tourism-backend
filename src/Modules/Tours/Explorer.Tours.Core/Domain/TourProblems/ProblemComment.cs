@@ -11,7 +11,6 @@ namespace Explorer.Tours.Core.Domain.TourProblems
 {
     public class ProblemComment : ValueObject<ProblemComment>
     {
-
         public string Content { get; }
         public ProblemCommentType Type { get; }
         public int SenderId { get; }
@@ -48,3 +47,4 @@ namespace Explorer.Tours.Core.Domain.TourProblems
         FromAdmin
     }
 }
+
