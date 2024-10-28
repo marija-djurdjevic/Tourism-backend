@@ -14,11 +14,23 @@ namespace Explorer.Tours.Core.UseCases.Administration
 {
     public class TourService : CrudService<TourDto, Tour>, ITourService
     {
-        public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) { }
+        ICrudRepository<Tour> _repository;
+        public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) {
+            _repository = repository;
+        }
 
         public Result<List<TourDto>> GetByAuthorId(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public Result<List<TourDto>> GetAllPublished(int page, int pageSize)
+        {
+            var result = _repository.GetPaged(page, pageSize).Results.Where(tour => tour.Status == TourStatus.Published).ToList();
+            var dto = MapToDto(result);
+            return dto;
+
+
         }
     }
 }
