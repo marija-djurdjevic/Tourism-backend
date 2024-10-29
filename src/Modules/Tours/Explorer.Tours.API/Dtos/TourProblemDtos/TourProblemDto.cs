@@ -11,6 +11,7 @@ namespace Explorer.Tours.API.Dtos.TourProblemDtos
     {
         public int Id { get; set; }
         public int TourId { get; set; }
+        public int TouristId { get; set; }  
         public List<NotificationDto>? Notifications { get; set; }
         public ProblemDetailsDto Details { get; set; }
         public List<ProblemCommentDto>? Comments { get; set; }

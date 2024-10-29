@@ -106,6 +106,12 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return results;   
         }
 
+        public Result<List<TourProblemDto>> GetByTouristId(int id)
+        {
+            var results = GetAll().Value.Results.Where(x => x.TouristId == id).ToList();
+            return results;
+        }
+
         public Result<TourProblemDto> CloseProblem(TourProblemDto tourProblemDto)
         {
             tourProblemDto.Status = API.Dtos.TourProblemDtos.ProblemStatus.Closed;
@@ -116,6 +122,5 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
             return Result.Ok(tourProblemDto);
         }
-
     }
 }
