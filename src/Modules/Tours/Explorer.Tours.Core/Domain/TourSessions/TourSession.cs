@@ -15,12 +15,12 @@ namespace Explorer.Tours.Core.Domain.TourSessions
 
         public DateTime? EndTime { get; private set; }
 
-        public TourSession(int tourId, Location initialLocation)
+        public TourSession(int tourId/*, Location initialLocation*/)
         {
 
            
             TourId = tourId;
-            CurrentLocation = initialLocation;
+            //CurrentLocation = initialLocation;
             CompletedKeyPoints = new List<CompletedKeyPoints>();
             LastActivity = DateTime.UtcNow;
             Status = TourSessionStatus.Active;
