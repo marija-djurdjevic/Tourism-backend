@@ -24,9 +24,21 @@ public class UserDatabaseRepository : CrudDatabaseRepository<User, StakeholdersC
         return _dbContext.Users.FirstOrDefault(user => user.Username == username && user.IsActive);
     }
 
+    public User? Get(long id)
+    {
+        return _dbContext.Users.FirstOrDefault(user => user.Id == id && user.IsActive);
+    }
+
     public User Create(User user)
     {
         _dbContext.Users.Add(user);
+        _dbContext.SaveChanges();
+        return user;
+    }
+
+    public User Update(User user)
+    {
+        _dbContext.Users.Update(user);
         _dbContext.SaveChanges();
         return user;
     }

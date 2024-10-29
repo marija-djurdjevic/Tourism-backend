@@ -20,13 +20,17 @@ public class User : Entity
         Validate();
     }
 
-    public void SetLocation(float longitude, float latitude)
+    public bool SetLocation(float longitude, float latitude)
     {
-        if(Role==UserRole.Tourist && IsActive)
-            Location = new Location(longitude, latitude);
+        if (Role == UserRole.Tourist && IsActive)
+        {
+            Location = new Location(latitude, longitude);
+            return true;
+        }
         else
         {
             throw new ArgumentException("Unauthorized attempt to set location.");
+            return false;
         }
     }
 
