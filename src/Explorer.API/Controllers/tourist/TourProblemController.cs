@@ -1,4 +1,5 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+﻿using Explorer.Blog.API.Dtos;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
@@ -21,10 +22,31 @@ namespace Explorer.API.Controllers.Tourist
             _tourProblemService = tourProblemService;
         }
 
+        [HttpGet("getByTouristId")]
+        public ActionResult<PagedResult<TourProblemDto>> GetByTouristId([FromQuery] int touristId)
+        {
+            var result = _tourProblemService.GetByTouristId(touristId);
+            return CreateResponse(result);
+        }
+
         [HttpPost("create")] 
         public ActionResult<PagedResult<TourProblemDto>> Create(TourProblemDto tourProblemDto)
         {
             var result = _tourProblemService.Create(tourProblemDto);
+            return CreateResponse(result);
+        }
+
+        [HttpPost("addComment")]
+        public ActionResult<PagedResult<TourProblemDto>> AddComment([FromQuery] int tourProblemId, ProblemCommentDto commentDto)
+        {
+            var result = _tourProblemService.AddComment(tourProblemId, commentDto);
+            return CreateResponse(result);
+        }
+
+        [HttpPut("changeStatus")]
+        public ActionResult<PagedResult<TourProblemDto>> ChangeStatus([FromQuery] int tourProblemId, ProblemStatus problemStatus)
+        {
+            var result = _tourProblemService.ChangeStatus(tourProblemId, problemStatus);
             return CreateResponse(result);
         }
     }

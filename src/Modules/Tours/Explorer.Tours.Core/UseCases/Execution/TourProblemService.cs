@@ -98,5 +98,11 @@ namespace Explorer.Tours.Core.UseCases.Execution
             var results = GetAll().Value.Results.Where(x => ids.Contains(x.TourId)).ToList();
             return results;   
         }
+
+        public Result<List<TourProblemDto>> GetByTouristId(int id)
+        {
+            var results = GetAll().Value.Results.Where(x => x.TouristId == id).ToList();
+            return results;
+        }
     }
 }

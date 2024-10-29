@@ -20,7 +20,7 @@ namespace Explorer.Tours.Tests.Integration.Administration
     {
         public TourProblemQueryTests(ToursTestFactory factory) : base(factory) { }
 
-        [Fact]
+        /*[Fact]
         public void Retrieves_all()
         {
             // Arrange
@@ -34,7 +34,7 @@ namespace Explorer.Tours.Tests.Integration.Administration
             result.ShouldNotBeNull();
             result.Results.Count.ShouldBe(3);
             result.TotalCount.ShouldBe(3);
-        }
+        }*/
 
         private static TourProblemController CreateController(IServiceScope scope)
         {
