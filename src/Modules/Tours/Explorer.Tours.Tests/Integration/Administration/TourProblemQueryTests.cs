@@ -1,4 +1,4 @@
-﻿using Explorer.API.Controllers.Administrator.Administration;
+using Explorer.API.Controllers.Administrator.Administration;
 using Explorer.API.Controllers.Tourist;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Public.Administration;
@@ -28,12 +28,21 @@ namespace Explorer.Tours.Tests.Integration.Administration
             var controller = CreateController(scope);
 
             // Act
+
         //    var result = ((ObjectResult)controller.GetAll().Result)?.Value as PagedResult<TourProblemDto>;
 
             // Assert
          //   result.ShouldNotBeNull();
          //   result.Results.Count.ShouldBe(3);
          //   result.TotalCount.ShouldBe(3);
+
+         /*   var result = ((ObjectResult)controller.GetAll().Result)?.Value as PagedResult<TourProblemDto>;
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.Results.Count.ShouldBe(3);
+            result.TotalCount.ShouldBe(3);*/
+
         }
 
         private static TourProblemController CreateController(IServiceScope scope)

@@ -87,13 +87,14 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return Result.Ok(notifications.Select(n => _mapper.Map<Notification, NotificationDto>(n)).ToList());
         }
 
-        public Result<TourProblemDto> SetDeadline(int problemId, DateTime deadline)
+        public Result<TourProblemDto> SetDeadline(int problemId, DateTime deadline, int receiverId)
         {
             var tourProblem = _tourProblemRepository.Get(problemId);
             if (tourProblem == null)
                 return Result.Fail("Tour problem not found");
 
-            tourProblem.SetDeadline(deadline);
+            tourProblem.SetDeadline(deadline, receiverId); 
+
             _tourProblemRepository.Update(tourProblem);
 
             return Result.Ok(MapToDto(tourProblem));
