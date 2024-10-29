@@ -8,7 +8,7 @@ namespace Explorer.Tours.API.Dtos.TourSessionDtos
 {
     public class LocationDto
     {
-        public double Latitude { get; set; }
+        public double Latitude { get; set; } 
         public double Longitude { get; set; }
 
         public LocationDto(double latitude, double longitude)
