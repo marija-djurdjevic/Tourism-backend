@@ -12,6 +12,8 @@ namespace Explorer.Tours.API.Public.Execution
     public interface ITourProblemService
     {
         Result<TourProblemDto> GetById(int id);
+        Result<List<TourProblemDto>> GetByToursIds(List<int> ids);
+        Result<TourProblemDto> Create(TourProblemDto tourProblemDto);
         Result<PagedResult<TourProblemDto>> GetAll();
         Result<TourProblemDto> AddComment(int problemId, ProblemCommentDto comment);
         Result<TourProblemDto> SetDeadline(int problemId, DateTime deadline);

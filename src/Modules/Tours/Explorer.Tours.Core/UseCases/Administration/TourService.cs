@@ -18,7 +18,21 @@ namespace Explorer.Tours.Core.UseCases.Administration
 
         public Result<List<TourDto>> GetByAuthorId(int id)
         {
-            throw new NotImplementedException();
+            int i = 1;
+            var list = GetPaged(i, 20);
+
+            do
+            {
+                if (list.Value.Results.Any(x => x.AuthorId == id))
+                {
+                    return Result.Ok(list.Value.Results.Where(x => x.AuthorId == id).ToList());
+                }
+
+                i++;
+                list = GetPaged(i, 20);
+            } while (list.Value.Results.Count > 0);
+
+            return Result.Fail("This user doesn't have preference settings");
         }
     }
 }
