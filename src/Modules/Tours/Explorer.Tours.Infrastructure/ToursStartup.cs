@@ -2,12 +2,16 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Tours.API.Public;
 using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.TourProblems;
 using Explorer.Tours.Core.Mappers;
 using Explorer.Tours.Core.UseCases;
 using Explorer.Tours.Core.UseCases.Administration;
+using Explorer.Tours.Core.UseCases.Execution;
 using Explorer.Tours.Infrastructure.Database;
+using Explorer.Tours.Infrastructure.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,11 +34,13 @@ public static class ToursStartup
         services.AddScoped<IClubService, ClubService>();
         services.AddScoped<ITourEquipmentService, TourEquipmentService>();
         services.AddScoped<ITourReviewService, TourReviewService>();
-        services.AddScoped<ITourProblemService, TourProblemService>();
         services.AddScoped<ITourService, TourService>();
         services.AddScoped<IKeyPointService, KeyPointService>();
         services.AddScoped<IObjectService, ObjectService>();
         services.AddScoped<ITourPreferencesService, TourPreferencesService>();
+
+        services.AddScoped<ITourProblemRepository, TourProblemRepository>();
+        services.AddScoped<ITourProblemService, TourProblemService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -58,11 +64,4 @@ public static class ToursStartup
             opt.UseNpgsql(DbConnectionStringBuilder.Build("clubs"),
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "clubs")));
     }
-
-
-
-
-    
-
-
 }

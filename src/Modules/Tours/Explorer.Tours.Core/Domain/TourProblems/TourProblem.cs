@@ -24,6 +24,8 @@ namespace Explorer.Tours.Core.Domain.TourProblems
 
         public void AddComment(ProblemComment comment)
         {
+            if(Comments == null)
+                Comments = new List<ProblemComment>();
             Comments.Add(comment);
             CreateNotification(false, false);
         }
@@ -100,6 +102,11 @@ namespace Explorer.Tours.Core.Domain.TourProblems
         {
             Deadline = deadline;
             CreateNotification(false, true);
+        }
+
+        public List<Notification> GetUnreadNotifications()
+        {
+            return Notifications.FindAll(n => !n.IsRead);
         }
     }
 
