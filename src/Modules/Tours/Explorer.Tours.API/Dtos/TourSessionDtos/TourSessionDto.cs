@@ -14,13 +14,17 @@ namespace Explorer.Tours.API.Dtos.TourSessionDtos
         public DateTime LastActivity { get; set; }
         public TourSessionStatus Status { get; private set; }
 
-        public TourSessionDto(int tourId, LocationDto currentLocation, List<CompletedKeyPointDto> completedKeyPoints, DateTime lastActivity, TourSessionStatus tourSessionStatus )
+        public DateTime? EndTime { get; private set; }
+
+
+        public TourSessionDto(int tourId, LocationDto currentLocation, List<CompletedKeyPointDto> completedKeyPoints, DateTime lastActivity, TourSessionStatus tourSessionStatus)
         {
             TourId = tourId;
             CurrentLocation = currentLocation;
             CompletedKeyPoints = completedKeyPoints;
             LastActivity = lastActivity;
             Status = tourSessionStatus;
+            
         }
 
 

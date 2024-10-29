@@ -1,15 +1,13 @@
-﻿using Explorer.BuildingBlocks.Infrastructure.Database;
-using Explorer.Stakeholders.Core.Domain;
+﻿using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
-using Explorer.Stakeholders.Core.Domain.Users;
 
 namespace Explorer.Stakeholders.Infrastructure.Database.Repositories;
 
-public class UserDatabaseRepository : CrudDatabaseRepository<User, StakeholdersContext>, IUserRepository
+public class UserDatabaseRepository : IUserRepository
 {
     private readonly StakeholdersContext _dbContext;
 
-    public UserDatabaseRepository(StakeholdersContext dbContext) : base(dbContext)
+    public UserDatabaseRepository(StakeholdersContext dbContext)
     {
         _dbContext = dbContext;
     }
@@ -24,21 +22,9 @@ public class UserDatabaseRepository : CrudDatabaseRepository<User, StakeholdersC
         return _dbContext.Users.FirstOrDefault(user => user.Username == username && user.IsActive);
     }
 
-    public User? Get(long id)
-    {
-        return _dbContext.Users.FirstOrDefault(user => user.Id == id && user.IsActive);
-    }
-
     public User Create(User user)
     {
         _dbContext.Users.Add(user);
-        _dbContext.SaveChanges();
-        return user;
-    }
-
-    public User Update(User user)
-    {
-        _dbContext.Users.Update(user);
         _dbContext.SaveChanges();
         return user;
     }
@@ -53,10 +39,5 @@ public class UserDatabaseRepository : CrudDatabaseRepository<User, StakeholdersC
     public Person? GetPersonByUserId(long userId)
     {
         return _dbContext.People.FirstOrDefault(i => i.UserId == userId);
-    }
-    
-    public Location? GetLocationByUserId(long userId)
-    {
-        return _dbContext.Users.FirstOrDefault(i => i.Id == userId && i.IsActive && i.Role==UserRole.Tourist)?.Location;
     }
 }

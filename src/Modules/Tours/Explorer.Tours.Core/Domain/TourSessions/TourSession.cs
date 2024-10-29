@@ -7,35 +7,44 @@ namespace Explorer.Tours.Core.Domain.TourSessions
     public class TourSession:Entity
     {
         public int TourId { get; private set; }
-        public Location CurrentLocation { get; private set; }
+        //public Location CurrentLocation { get; private set; }
         public List<CompletedKeyPoints> CompletedKeyPoints { get; private set; }
 
         public DateTime LastActivity { get; private set; }
         public TourSessionStatus Status { get; private set; }
 
+        public DateTime? EndTime { get; private set; }
 
-
-        public TourSession(int tourId, Location initialLocation)
+        public TourSession(int tourId/*, Location initialLocation*/)
         {
+
+           
             TourId = tourId;
-            CurrentLocation = initialLocation;
+            //CurrentLocation = initialLocation;
             CompletedKeyPoints = new List<CompletedKeyPoints>();
             LastActivity = DateTime.UtcNow;
             Status = TourSessionStatus.Active;
+            
         }
 
-        
+
+        public void StartSession()
+        {
+            Status = TourSessionStatus.Active;
+           
+        }
+
 
         public void CompleteSession()
         {
             Status = TourSessionStatus.Completed;
-            LastActivity = DateTime.UtcNow;
+            EndTime= DateTime.UtcNow;
         }
 
         public void AbandonSession()
         {
             Status = TourSessionStatus.Abandoned;
-            LastActivity = DateTime.UtcNow;
+            EndTime = DateTime.UtcNow;
         }
 
         public enum TourSessionStatus

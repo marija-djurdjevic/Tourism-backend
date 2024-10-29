@@ -15,6 +15,9 @@ namespace Explorer.Tours.Core.Domain.TourSessions
         public double Longitude { get; private set; }
         public double Latitude { get; private set; }
 
+
+
+
         [JsonConstructor]
         public Location(double longitude, double latitude)
         {

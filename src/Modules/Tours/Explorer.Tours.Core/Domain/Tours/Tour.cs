@@ -27,18 +27,18 @@ namespace Explorer.Tours.Core.Domain.Tours
         public TourStatus Status { get; private set; }
         public TransportInfo TransportInfo { get; private set; }
 
-        public Tour(int id, string name, string description, DifficultyStatus difficulty, string tags)
+        public Tour(string name, string description, DifficultyStatus difficulty, string tags)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(tags)) throw new ArgumentException("Tour must have at least one tag.");
-            Id = id;
             Name = name;
             Description = description;
             Difficulty = difficulty;
             Tags = tags;
             Price = 0;
             Status = TourStatus.Draft;
+            TransportInfo = new TransportInfo(TimeSpan.Zero, 0, TransportType.Car);
         }
     }
 }
