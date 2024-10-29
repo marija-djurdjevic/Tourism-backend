@@ -4,6 +4,7 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.Core.Domain.Users;
 using FluentResults;
 
 namespace Explorer.Stakeholders.Core.UseCases
@@ -20,7 +21,18 @@ namespace Explorer.Stakeholders.Core.UseCases
             _mapper = mapper;
         }
 
-        
+        public Result<LocationDto> GetUserLocation(long userId)
+        {
+            var user = _userRepository.Get(userId);
+
+            if (user == null)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError($"User with id '{userId}' not found.");
+            }
+
+            return Result.Ok(_mapper.Map<LocationDto>(user.Location));
+        }
+
         public Result<bool> Exists(string username)
         {
             
@@ -95,6 +107,22 @@ namespace Explorer.Stakeholders.Core.UseCases
             {
                 return Result.Fail(FailureCode.NotFound).WithError(e.Message);
             }
+        }
+        public Result<LocationDto> SetUserLocation(long userId, float longitude, float latitude)
+        {
+            var user = _userRepository.Get(userId);
+
+            if (user == null)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError($"User with id '{userId}' not found.");
+            }
+
+            if (user.SetLocation(longitude, latitude))
+            {
+                _userRepository.Update(user);
+                return Result.Ok(_mapper.Map<LocationDto>(user.Location));
+            }
+            return Result.Fail(FailureCode.NotFound).WithError($"Unable to set location");
         }
 
     }

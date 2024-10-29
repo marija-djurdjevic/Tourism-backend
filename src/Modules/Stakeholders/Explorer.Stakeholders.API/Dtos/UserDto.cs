@@ -8,6 +8,7 @@ public class UserDto
     public string Password { get; set; }
     public UserRole Role { get; set; }
     public bool IsActive { get; set; }
+    public LocationDto? Location { get; set; }
 }
 
 public enum UserRole
