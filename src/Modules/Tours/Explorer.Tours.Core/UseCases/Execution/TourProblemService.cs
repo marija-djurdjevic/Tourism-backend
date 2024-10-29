@@ -24,6 +24,12 @@ namespace Explorer.Tours.Core.UseCases.Execution
             _tourProblemRepository = repository;
         }
 
+        public Result<TourProblemDto> Create(TourProblemDto tourProblemDto)
+        {
+            var tourProblem = _tourProblemRepository.Create(MapToDomain(tourProblemDto));
+            return Result.Ok(tourProblemDto);
+        }
+
         public Result<TourProblemDto> AddComment(int problemId, ProblemCommentDto commentDto)
         {
             var tourProblem = _tourProblemRepository.Get(problemId);
@@ -85,6 +91,12 @@ namespace Explorer.Tours.Core.UseCases.Execution
             _tourProblemRepository.Update(tourProblem);
 
             return Result.Ok(MapToDto(tourProblem));
+        }
+
+        public Result<List<TourProblemDto>> GetByToursIds(List<int> ids)
+        {
+            var results = GetAll().Value.Results.Where(x => ids.Contains(x.TourId)).ToList();
+            return results;   
         }
     }
 }
