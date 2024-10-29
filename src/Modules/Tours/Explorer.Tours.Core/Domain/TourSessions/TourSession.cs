@@ -7,7 +7,7 @@ namespace Explorer.Tours.Core.Domain.TourSessions
     public class TourSession:Entity
     {
         public int TourId { get; private set; }
-        public Location CurrentLocation { get; private set; }
+        //public Location CurrentLocation { get; private set; }
         public List<CompletedKeyPoints> CompletedKeyPoints { get; private set; }
 
         public DateTime LastActivity { get; private set; }
