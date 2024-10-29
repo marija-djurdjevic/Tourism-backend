@@ -1,6 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
 
-namespace Explorer.Tours.Core.Domain
+namespace Explorer.Tours.Core.Domain.Tours
 {
     public enum DifficultyStatus
     {
@@ -13,12 +13,10 @@ namespace Explorer.Tours.Core.Domain
     {
         Draft,
         Published,
-        Canceled,
-        Completed
+        Archived
     }
     public class Tour : Entity
     {
-        public int Id { get; private set; }
         public int AuthorId { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
@@ -27,6 +25,7 @@ namespace Explorer.Tours.Core.Domain
         public string Tags { get; private set; }
         public double Price { get; private set; }
         public TourStatus Status { get; private set; }
+        public TransportInfo TransportInfo { get; private set; }
 
         public Tour(int id, string name, string description, DifficultyStatus difficulty, string tags)
         {

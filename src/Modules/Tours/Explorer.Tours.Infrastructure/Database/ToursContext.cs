@@ -2,6 +2,7 @@
 using Explorer.Tours.Core.Domain.TourSessions;
 using Explorer.Tours.Core.Domain.TourProblems;
 using Microsoft.EntityFrameworkCore;
+using Explorer.Tours.Core.Domain.Tours;
 
 namespace Explorer.Tours.Infrastructure.Database;
 
@@ -30,5 +31,7 @@ public class ToursContext : DbContext
         modelBuilder.Entity<TourProblem>().Property(item => item.Notifications).HasColumnType("jsonb");
         modelBuilder.Entity<TourProblem>().Property(item => item.Details).HasColumnType("jsonb");
         modelBuilder.Entity<TourProblem>().Property(item => item.Comments).HasColumnType("jsonb");
+        modelBuilder.Entity<KeyPoint>().Property(item => item.Coordinates).HasColumnType("jsonb");
+        modelBuilder.Entity<Tour>().Property(item => item.TransportInfo).HasColumnType("jsonb");
     }
 }
