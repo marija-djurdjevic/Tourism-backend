@@ -26,7 +26,7 @@ public class ToursContext : DbContext
     {
         modelBuilder.HasDefaultSchema("tours");
 
-        modelBuilder.Entity<TourSession>().Property(ts => ts.CurrentLocation) .HasColumnType("jsonb");
+        //modelBuilder.Entity<TourSession>().Property(ts => ts.CurrentLocation) .HasColumnType("jsonb");
         modelBuilder.Entity<TourSession>().Property(ts => ts.CompletedKeyPoints).HasColumnType("jsonb");
         modelBuilder.Entity<TourProblem>().Property(item => item.Notifications).HasColumnType("jsonb");
         modelBuilder.Entity<TourProblem>().Property(item => item.Details).HasColumnType("jsonb");
