@@ -29,7 +29,7 @@ namespace Explorer.Tours.Core.Domain.TourProblems
             if(Comments == null)
                 Comments = new List<ProblemComment>();
             Comments.Add(comment);
-            CreateNotification(false, false);
+            CreateNotification(false, false, 1 );
         }
 
         public void ChangeStatus(ProblemStatus status)
@@ -45,13 +45,13 @@ namespace Explorer.Tours.Core.Domain.TourProblems
             }
         }
 
-        public void CreateNotification(bool isDeleted, bool deadlineAdded)
+        public void CreateNotification(bool isDeleted, bool deadlineAdded, int receiverId)
         {
             ProblemComment lastComment = Comments.Last();
             Notification lastNotification = Notifications.Last();
+            
 
-            int authorId = Comments.FirstOrDefault(c => c.Type == ProblemCommentType.FromAuthor).SenderId;
-            int touristId = Comments.FirstOrDefault(c => c.Type == ProblemCommentType.FromTourist).SenderId; 
+            int authorId = receiverId;
 
             if(isDeleted)
             {
@@ -62,14 +62,18 @@ namespace Explorer.Tours.Core.Domain.TourProblems
             {
                 createDeadLineNotification(authorId);
             }
-
+            /*
             if (!lastNotification.IsRead)
             {
-                if(lastComment.Type == ProblemCommentType.FromAdmin)
-                    createAuthorTouristNotification(lastComment, authorId, touristId);
+                int author = Comments.FirstOrDefault(c => c.Type == ProblemCommentType.FromAuthor).SenderId;
+                int touristId = Comments.FirstOrDefault(c => c.Type == ProblemCommentType.FromTourist).SenderId;
+
+                if (lastComment.Type == ProblemCommentType.FromAdmin)
+                    createAuthorTouristNotification(lastComment, author, touristId);
                 else
                     createAdminNotification(touristId, authorId);
             }
+            */
         }
 
         public void createAdminNotification(int touristId, int authorId)
@@ -100,10 +104,10 @@ namespace Explorer.Tours.Core.Domain.TourProblems
             Notifications.Add(new Notification(content, recieverId, false));
         }
 
-        public void SetDeadline(DateTime deadline)
+        public void SetDeadline(DateTime deadline, int receiverId)
         {
             Deadline = deadline;
-            CreateNotification(false, true);
+            CreateNotification(false, true, receiverId);
         }
 
         public List<Notification> GetUnreadNotifications()

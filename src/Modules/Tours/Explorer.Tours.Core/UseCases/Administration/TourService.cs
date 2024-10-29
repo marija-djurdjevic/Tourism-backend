@@ -3,6 +3,7 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,16 @@ namespace Explorer.Tours.Core.UseCases.Administration
             } while (list.Value.Results.Count > 0);
 
             return Result.Fail("This user doesn't have preference settings");
+        }
+
+        public Result<TourDto> GetById(int id)
+        {
+            var list = GetPaged(0, 0);
+            var tour = list.Value.Results.First(x => x.Id == id);
+            if (tour == null)
+                return Result.Fail("Tour  not found");
+
+            return Result.Ok(tour);
         }
     }
 }
