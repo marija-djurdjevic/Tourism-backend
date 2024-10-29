@@ -1,7 +1,6 @@
 ﻿using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.TourProblems;
 using Microsoft.EntityFrameworkCore;
-
 namespace Explorer.Tours.Infrastructure.Database;
 
 public class ToursContext : DbContext
