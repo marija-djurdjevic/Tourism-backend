@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
+using Explorer.Tours.API.Public;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.TourProblems;
@@ -29,7 +31,11 @@ namespace Explorer.Tours.Core.UseCases.Execution
             var tourProblem = _tourProblemRepository.Create(MapToDomain(tourProblemDto));
             return Result.Ok(tourProblemDto);
         }
-
+        public Result<TourProblemDto> Update(TourProblemDto tourProblemDto)
+        {
+            var tourProblem = _tourProblemRepository.Update(MapToDomain(tourProblemDto));
+            return Result.Ok(tourProblemDto);
+        }
         public Result<TourProblemDto> AddComment(int problemId, ProblemCommentDto commentDto)
         {
             var tourProblem = _tourProblemRepository.Get(problemId);
@@ -99,5 +105,17 @@ namespace Explorer.Tours.Core.UseCases.Execution
             var results = GetAll().Value.Results.Where(x => ids.Contains(x.TourId)).ToList();
             return results;   
         }
+
+        public Result<TourProblemDto> CloseProblem(TourProblemDto tourProblemDto)
+        {
+            tourProblemDto.Status = API.Dtos.TourProblemDtos.ProblemStatus.Closed;
+            var tourProblem = _tourProblemRepository.Update(MapToDomain(tourProblemDto));
+
+            if (tourProblem == null)
+                return Result.Fail("Tour problem not found");
+
+            return Result.Ok(tourProblemDto);
+        }
+
     }
 }
