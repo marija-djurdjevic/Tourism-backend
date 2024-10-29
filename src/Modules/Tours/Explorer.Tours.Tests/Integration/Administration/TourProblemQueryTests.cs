@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Shouldly;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
+using Explorer.Tours.API.Public.Execution;
 
 namespace Explorer.Tours.Tests.Integration.Administration
 {
