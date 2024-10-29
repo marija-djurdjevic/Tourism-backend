@@ -10,11 +10,17 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.Domain.Tours
 {
+    public enum TransportType
+    {
+        Walk,
+        Car,
+        Bicycle
+    }
     public class TransportInfo : ValueObject<TransportInfo>
     {
-        public string Content { get; }
-        public int RecieverId { get; }
-        public bool IsRead { get; private set; }
+        public TimeSpan Time { get; private set; }
+        public double Distance { get; private set; }
+        public TransportType Transport {  get; private set; }
 
         protected override bool EqualsCore(TransportInfo other)
         {
@@ -27,11 +33,11 @@ namespace Explorer.Tours.Core.Domain.Tours
         }
 
         [JsonConstructor]
-        public TransportInfo(string content, int recieverId, bool isRead)
+        public TransportInfo(TimeSpan time, double distance, TransportType transport)
         {
-            Content = content;
-            RecieverId = recieverId;
-            IsRead = isRead;
+            Time = time;
+            Distance = distance;
+            Transport = transport;
         }
     }
 }

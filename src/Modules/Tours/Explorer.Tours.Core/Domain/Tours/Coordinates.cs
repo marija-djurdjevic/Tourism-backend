@@ -10,16 +10,14 @@ namespace Explorer.Tours.Core.Domain.Tours
 {
     public class Coordinates : ValueObject<Coordinates>
     {
-        public string Content { get; }
-        public int RecieverId { get; }
-        public bool IsRead { get; private set; }
+        public double Longitude { get; private set; }
+        public double Latitude { get; private set; }
 
         [JsonConstructor]
-        public Coordinates(string content, int recieverId, bool isRead)
+        public Coordinates(double longitude, double latitude)
         {
-            Content = content;
-            RecieverId = recieverId;
-            IsRead = isRead;
+            Longitude = longitude;
+            Latitude = latitude;
         }
         protected override bool EqualsCore(Coordinates other)
         {

@@ -13,8 +13,7 @@ namespace Explorer.Tours.Core.Domain.Tours
     {
         Draft,
         Published,
-        Canceled,
-        Completed
+        Archived
     }
     public class Tour : Entity
     {
