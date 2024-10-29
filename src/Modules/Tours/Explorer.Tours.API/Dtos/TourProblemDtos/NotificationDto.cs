@@ -10,6 +10,13 @@ namespace Explorer.Tours.API.Dtos.TourProblemDtos
     {
         public string Content { get; set; }
         public int RecieverId { get; set; }
-        public bool isRead { get; set; }
+        public bool IsRead { get; set; }
+
+        public NotificationDto(string content, int recieverId, bool isRead)
+        {
+            Content = content;
+            RecieverId = recieverId;
+            IsRead = isRead;
+        }
     }
 }
