@@ -24,10 +24,14 @@ public class ToursProfile : Profile
         CreateMap<TourPreferencesDto, TourPreferences>().ReverseMap();
 
 
-        CreateMap<TourSessionDto, TourSession > ()
-        .ForMember(dest => dest.CurrentLocation, opt => opt.MapFrom(src => src.CurrentLocation))
-        .ForMember(dest => dest.CompletedKeyPoints, opt => opt.MapFrom(src => src.CompletedKeyPoints));
-    
+        CreateMap<TourSession, TourSessionDto>()
+            .ForMember(dest => dest.CurrentLocation, opt => opt.MapFrom(src => src.CurrentLocation))
+            .ForMember(dest => dest.CompletedKeyPoints, opt => opt.MapFrom(src => src.CompletedKeyPoints))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+            .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime))
+            .ForMember(dest => dest.LastActivity, opt => opt.MapFrom(src => src.LastActivity));
+
+
         CreateMap<CompletedKeyPointDto, CompletedKeyPoints>().IncludeAllDerived().ReverseMap();
         CreateMap<LocationDto, Location>().IncludeAllDerived().ReverseMap();
         

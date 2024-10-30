@@ -16,7 +16,7 @@ namespace Explorer.Tours.API.Dtos.TourSessionDtos
 
         public DateTime? EndTime { get; private set; }
 
-
+        public TourSessionDto() { }
         public TourSessionDto(int tourId, LocationDto currentLocation, List<CompletedKeyPointDto> completedKeyPoints, DateTime lastActivity, TourSessionStatus tourSessionStatus)
         {
             TourId = tourId;
