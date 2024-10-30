@@ -8,8 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shouldly;
+using Explorer.Tours.API.Public.Administration;
 using Explorer.API.Controllers.Author;
-using Explorer.Tours.API.Public.Authoring;
 
 namespace Explorer.Tours.Tests.Integration.Administration
 {
