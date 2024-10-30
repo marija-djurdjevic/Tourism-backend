@@ -24,6 +24,13 @@ namespace Explorer.API.Controllers.Author.Authoring
             return CreateResponse(result);
         }
 
+        [HttpGet("by-author")]
+        public ActionResult<PagedResult<TourDto>> GetByAuthorId([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] int id)
+        {
+            var result = _tourService.GetByAuthorId(page, pageSize, id);
+            return CreateResponse(result);
+        }
+
         [HttpPost]
         public ActionResult<TourDto> Create([FromBody] TourDto tourDto)
         {

@@ -16,9 +16,11 @@ namespace Explorer.Tours.Core.UseCases.Authoring
     {
         public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) { }
 
-        public Result<List<TourDto>> GetByAuthorId(int id)
+        public Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id)
         {
-            throw new NotImplementedException();
+            var tours = GetPaged(page, pageSize);
+            var authorTours = tours.Value.Results.FindAll(x => x.AuthorId == id);
+            return authorTours;
         }
     }
 }
