@@ -26,10 +26,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         public TourService(ICrudRepository<Tour> repository, IMapper mapper, ITourRepository tourRepository) : base(repository, mapper) {          
             _mapper = mapper;
             _tourRepository = tourRepository;
-<<<<<<< HEAD
-
-=======
->>>>>>> 6803f5fb17252cfb7580c59e69b3d32af2fa341a
         }
 
         public Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id)
@@ -38,8 +34,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             var authorTours = tours.Value.Results.FindAll(x => x.AuthorId == id);
             return authorTours;
         }
-<<<<<<< HEAD
-=======
 
         public Result<bool> Publish(TourDto tourDto)
         {
@@ -63,7 +57,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             throw new NotImplementedException();
         }
 
->>>>>>> 6803f5fb17252cfb7580c59e69b3d32af2fa341a
         public Result<List<TourDto>> GetAllToursWithKeyPoints()
         {
            
@@ -97,33 +90,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
 
              return tour.KeyPoints;
-         }
-<<<<<<< HEAD
-       
+         }       
 
-        public Result<bool> Publish(TourDto tourDto)
-        {
-            try
-            {
-                var tour = _mapper.Map<Tour>(tourDto);
-                tour.Publish();
-                var updatedTourDto = _mapper.Map<TourDto>(tour);
-                Update(updatedTourDto);
-
-                return Result.Ok(true);
-            }
-            catch (Exception ex)
-            {
-                return Result.Fail("An error occurred while publishing the tour: " + ex.Message);
-            }
-        }
-
-        public Result<bool> Archive(TourDto tourDto)
-        {
-            throw new NotImplementedException();
-        }
-=======
-      
->>>>>>> 6803f5fb17252cfb7580c59e69b3d32af2fa341a
     }
 }
