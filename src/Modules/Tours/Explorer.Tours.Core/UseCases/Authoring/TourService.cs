@@ -14,7 +14,11 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 {
     public class TourService : CrudService<TourDto, Tour>, ITourService
     {
-        public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) { }
+        ICrudRepository<Tour> _repository;
+        public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper)
+        {
+            _repository = repository;
+        }
 
         public Result<List<TourDto>> GetByAuthorId(int id)
         {
