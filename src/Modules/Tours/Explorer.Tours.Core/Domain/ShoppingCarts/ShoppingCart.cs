@@ -14,9 +14,10 @@ namespace Explorer.Tours.Core.Domain.ShoppingCarts
         public List<TourPurchaseToken> Tokens { get; protected set; }
         public double TotalPrice { get; private set; }
 
-        public ShoppingCart(List<OrderItem> items,double totalPrice) {
-            
-            Items = items;
+
+        public ShoppingCart() { }
+
+        public ShoppingCart(double totalPrice) {
             TotalPrice = totalPrice;
         }
 

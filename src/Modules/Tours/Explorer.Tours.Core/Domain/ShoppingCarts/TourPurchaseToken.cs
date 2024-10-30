@@ -10,27 +10,24 @@ namespace Explorer.Tours.Core.Domain.ShoppingCarts
 {
     public class TourPurchaseToken : ValueObject<TourPurchaseToken>
     {
-        public int Id { get; set; }
+        public int TouristId { get; set; }
         public int TourId {  get; set; }
-        public DateTime PurchaseDate { get; set; }
 
 
         [JsonConstructor]
-        public TourPurchaseToken(int id,int tourId,DateTime purchaseDate) {
-            Id = id;
+        public TourPurchaseToken(int touristId,int tourId) {
             TourId = tourId;
-            PurchaseDate = purchaseDate;
+            TouristId = touristId;
         }
         protected override bool EqualsCore(TourPurchaseToken other)
         {
-            return other.Id == Id && 
-                other.TourId == TourId && 
-                other.PurchaseDate == PurchaseDate;
+            return other.TouristId == TouristId &&
+                other.TourId == TourId;
         }
 
         protected override int GetHashCodeCore()
         {
-            return HashCode.Combine(Id,TourId,PurchaseDate);
+            return HashCode.Combine(TouristId, TourId);
         }
 
     }

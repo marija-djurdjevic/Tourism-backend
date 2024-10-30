@@ -13,12 +13,13 @@ namespace Explorer.Tours.Core.Domain.ShoppingCarts
         public double Price { get; private set; }
         public string TourName {  get; private set; }
 
-        public int Quantity { get; private set; }
 
-        public OrderItem(int id,double price, string name) {
-            TourId = id;
+        public OrderItem(int tourId, double price, string tourName)
+        {
+            TourId = tourId;
             Price = price;
-            TourName = name;
+            TourName = tourName;
         }
+
     }
 }
