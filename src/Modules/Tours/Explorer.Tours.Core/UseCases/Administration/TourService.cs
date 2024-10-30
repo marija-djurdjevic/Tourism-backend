@@ -23,14 +23,5 @@ namespace Explorer.Tours.Core.UseCases.Administration
         {
             throw new NotImplementedException();
         }
-
-        public Result<List<TourDto>> GetAllPublished(int page, int pageSize)
-        {
-            var result = _repository.GetPaged(page, pageSize).Results.Where(tour => tour.Status == TourStatus.Published).ToList();
-            var dto = MapToDto(result);
-            return dto;
-
-
-        }
     }
 }

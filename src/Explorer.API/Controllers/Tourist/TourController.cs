@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.Shopping;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,17 +12,17 @@ namespace Explorer.API.Controllers.Tourist
     [Route("api/tourist/tour")]
     public class TourController : BaseApiController
     {
-        private readonly ITourService _tourService;
+        private readonly IShoppingService _shoppingService;
 
-        public TourController(ITourService tourService)
+        public TourController(IShoppingService shoppingService)
         {
-            _tourService = tourService;
+            _shoppingService = shoppingService;
         }
 
         [HttpGet]
         public ActionResult<PagedResult<TourDto>> GetAllPublished([FromQuery] int page, [FromQuery] int pageSize)
         {
-            var result = _tourService.GetAllPublished(page, pageSize);
+            var result = _shoppingService.GetAllPublished(page, pageSize);
             return CreateResponse(result);
         }
 
