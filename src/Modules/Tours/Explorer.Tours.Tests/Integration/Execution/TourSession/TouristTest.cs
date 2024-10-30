@@ -3,7 +3,6 @@ using Explorer.API.Controllers.Tourist.Execution;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Administration;
-using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
@@ -65,7 +65,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
             var location = _mapper.Map<LocationDto, Location>(initialLocation);
 
            
-            var tourSession = new TourSession(tourId/*, location*/);
+            var tourSession = new TourSession(tourId, location);
 
             if (tourSession == null)
             {
