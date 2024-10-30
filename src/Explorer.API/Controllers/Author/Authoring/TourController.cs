@@ -24,6 +24,13 @@ namespace Explorer.API.Controllers.Author.Authoring
             return CreateResponse(result);
         }
 
+        [HttpGet("all")]
+        public ActionResult<List<TourDto>> GetAllTours()
+        {
+            var result = _tourService.GetAllToursWithKeyPoints();
+            return CreateResponse(result);
+        }
+
         [HttpGet("by-author")]
         public ActionResult<PagedResult<TourDto>> GetByAuthorId([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] int id)
         {
@@ -42,6 +49,11 @@ namespace Explorer.API.Controllers.Author.Authoring
         public ActionResult<TourDto> Publish([FromBody] TourDto tourDto)
         {
             var result = _tourService.Publish(tourDto);
+
+        [HttpGet("{tourId}/key-points")]
+        public ActionResult<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+        {
+            var result = _tourService.GetKeyPointsByTourId(tourId);
             return CreateResponse(result);
         }
     }

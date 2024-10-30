@@ -2,6 +2,7 @@
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
+using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.Tours;
@@ -19,9 +20,12 @@ namespace Explorer.Tours.Core.UseCases.Authoring
     public class TourService : CrudService<TourDto, Tour>, ITourService
 
     {
+
+        private readonly ITourRepository _tourRepository;
         private readonly IMapper _mapper;
-        public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) {
+        public TourService(ICrudRepository<Tour> repository, IMapper mapper, ITourRepository tourRepository) : base(repository, mapper) {          
             _mapper = mapper;
+            _tourRepository = tourRepository;
         }
 
         public Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id)
@@ -52,5 +56,41 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         {
             throw new NotImplementedException();
         }
+
+        public Result<List<TourDto>> GetAllToursWithKeyPoints()
+        {
+           
+            var tours = _tourRepository.GetAllToursWithKeyPoints(); 
+
+            if (tours == null || !tours.Any())
+            {
+                return Result.Fail<List<TourDto>>("No tours found.");
+            }
+
+            var tourDtos = tours.Select(t => _mapper.Map<TourDto>(t)).ToList();
+
+            return Result.Ok(tourDtos);
+        }
+        public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+         {
+
+             var pagedTours = GetPaged(1, int.MaxValue); 
+
+             if (pagedTours.IsFailed)
+             {
+                 return Result.Fail<List<KeyPointDto>>("Failed to retrieve tours.");
+             }
+
+             var tour = pagedTours.Value.Results.FirstOrDefault(x => x.Id == tourId);
+
+             if (tour == null)
+             {
+                 return Result.Fail<List<KeyPointDto>>($"Tour with ID {tourId} not found.");
+             }
+
+
+             return tour.KeyPoints;
+         }
+      
     }
 }
