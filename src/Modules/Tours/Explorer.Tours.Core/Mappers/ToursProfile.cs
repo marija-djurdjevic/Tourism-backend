@@ -24,6 +24,7 @@ public class ToursProfile : Profile
         //CreateMap<KeyPointDto, KeyPoint>().ReverseMap();
         CreateMap<ObjectDto, Domain.Object>().ReverseMap();
         CreateMap<TourPreferencesDto, TourPreferences>().ReverseMap();
+        CreateMap<CoordinateDto, Coordinates>().ReverseMap();
 
 
         CreateMap<TourSessionDto, TourSession > ()

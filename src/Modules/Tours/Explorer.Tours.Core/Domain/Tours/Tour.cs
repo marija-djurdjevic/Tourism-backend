@@ -81,5 +81,15 @@ namespace Explorer.Tours.Core.Domain.Tours
         {
             return ((string.IsNullOrWhiteSpace(Name)) || (string.IsNullOrWhiteSpace(Description)) || (string.IsNullOrWhiteSpace(Tags)) || Price == 0);
         }
+
+        public bool HasKeyPointsInDesiredDistance(Coordinates coordinates, double distance)
+        {
+            foreach (var kp in KeyPoints)
+            {
+                if (kp.IsInDesiredDistance(coordinates, distance))
+                    return true;
+            }
+            return false;
+        }
     }
 }

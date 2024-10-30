@@ -19,28 +19,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
     public class TourService : CrudService<TourDto, Tour>, ITourService
     {
 
-        //private readonly IKeyPointService _keyPointService;
-        //private ICrudRepository<Tour> _tourRepository;
-        //private readonly ITourRepository _tourRepository;
-
-        //public Result<TourDto> SearchTours(Coordinates coordinates, double distance)
-        //{
-        //    HashSet<int> tourIds = new HashSet<int>();
-        //    var keyPoints = _keyPointService.GetAll();
-        //    foreach (var kp in keyPoints)
-        //    {
-        //        if (true) //kp.IsInDesiredDistance(coordinates,distance)
-        //            tourIds.Add(kp.TourId);
-        //    }
-        //    Result<TourDto> result = new Result<TourDto>();
-        //    foreach (var tourId in tourIds)
-        //    {
-        //        var tour = _tourRepository.Get(tourId);
-        //        result.WithValue(tour);
-        //    }
-        //    return result;
-        //}
-
         private readonly ITourRepository _tourRepository;
         private readonly IMapper _mapper;
         public TourService(ICrudRepository<Tour> repository, IMapper mapper, ITourRepository tourRepository) : base(repository, mapper) {
@@ -89,6 +67,23 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
              return tour.KeyPoints;
          }
+
+        public Result<List<TourDto>> SearchTours(SearchByDistanceDto searchByDistance)
+        {
+            var tours = _tourRepository.GetAllToursWithKeyPoints();
+            List<TourDto> matchingTours = new List<TourDto>();
+            var coordinate = _mapper.Map<Coordinates>(searchByDistance.Coordinates);
+            foreach (var t in tours)
+            {
+                if (t.HasKeyPointsInDesiredDistance(coordinate, searchByDistance.Distance))
+                    matchingTours.Add(MapToDto(t));
+            }
+            Result<List<TourDto>> result = new Result<List<TourDto>>();
+            result.WithValue(matchingTours);
+            return result;
+        }
+
+
        
 
 

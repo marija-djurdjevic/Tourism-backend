@@ -15,19 +15,5 @@ namespace Explorer.Tours.Core.UseCases.Authoring
     {
         public KeyPointService(ICrudRepository<KeyPoint> repository, IMapper mapper) : base(repository, mapper) { }
 
-        public List<KeyPointDto> GetAll()
-        {
-            var results = new List<KeyPointDto>();
-            int page = 0;
-            int pageSize = 100;
-            while (true)
-            {
-                var result = GetPaged(page, pageSize);
-                results.AddRange(result.Value.Results);
-                if(result.Value.Results.Count < pageSize)
-                    break;
-            }
-            return results;
-        }
     }
 }
