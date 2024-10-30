@@ -2,14 +2,14 @@
 {
     public class TourDto
     {
-        public enum DifficultyStatus
+        public enum DifStatus
         {
             Easy,
             Medium,
             Hard
         }
 
-        public enum TourStatus
+        public enum TStatus
         {
             Draft,
             Published,
@@ -19,9 +19,9 @@
         public int AuthorId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public TourStatus Status { get; set; }
+        public TStatus Status { get; set; }
 
-        public DifficultyStatus Difficulty { get; set; }
+        public DifStatus Difficulty { get; set; }
 
         public string Tags { get; set; }
         public double Price { get; set; }

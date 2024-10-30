@@ -12,7 +12,7 @@ namespace Explorer.Tours.API.Dtos
     {
         public int Id { get; set; }
         public int TouristId {get; set; }
-        public DifficultyStatus? Difficulty { get; set; }
+        public DifStatus Difficulty { get; set; }
         public int WalkingRating { get; set; }
         public int CyclingRating { get; set; }
         public int DrivingRating { get; set; }

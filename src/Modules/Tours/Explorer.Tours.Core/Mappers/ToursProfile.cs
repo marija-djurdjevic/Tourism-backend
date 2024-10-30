@@ -24,7 +24,12 @@ public class ToursProfile : Profile
         CreateMap<KeyPointDto, KeyPoint>().ReverseMap();
         CreateMap<ObjectDto, Domain.Object>().ReverseMap();
         CreateMap<TourPreferencesDto, TourPreferences>().ReverseMap();
-
+        CreateMap<Tour, TourDto>()
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => (TourDto.TStatus)src.Status))
+            .ForMember(dest => dest.Difficulty, opt => opt.MapFrom(src => (TourDto.DifStatus)src.Difficulty))
+            .ReverseMap()
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => (TourStatus)src.Status))
+            .ForMember(dest => dest.Difficulty, opt => opt.MapFrom(src => (DifficultyStatus)src.Difficulty));
 
         CreateMap<TourSessionDto, TourSession > ()
         //.ForMember(dest => dest.CurrentLocation, opt => opt.MapFrom(src => src.CurrentLocation))

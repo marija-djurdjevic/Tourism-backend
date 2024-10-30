@@ -37,5 +37,12 @@ namespace Explorer.API.Controllers.Author.Authoring
             var result = _tourService.Create(tourDto);
             return CreateResponse(result);
         }
+
+        [HttpPut("publish-tour/{id}")]
+        public ActionResult<TourDto> Publish(int id)
+        {
+            var result = _tourService.Publish(id);
+            return CreateResponse(result);
+        }
     }
 }

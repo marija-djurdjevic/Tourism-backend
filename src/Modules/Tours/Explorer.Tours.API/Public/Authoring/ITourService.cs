@@ -14,5 +14,8 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<PagedResult<TourDto>> GetPaged(int page, int pageSize);
         Result<TourDto> Create(TourDto tour);
         Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id);
+
+        Result<bool> Publish(int id);
+        Result<bool> Archive(int id);
     }
 }
