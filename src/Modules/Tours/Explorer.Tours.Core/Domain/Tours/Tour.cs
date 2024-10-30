@@ -1,7 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
-using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using System.Xml.Linq;
-using static Explorer.Tours.API.Dtos.TourLifeCycleDtos.TourDto;
+using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
 
 namespace Explorer.Tours.Core.Domain.Tours
 {
@@ -29,10 +29,10 @@ namespace Explorer.Tours.Core.Domain.Tours
         public string Tags { get; private set; }
         public double Price { get; private set; }
         public TourStatus Status { get; private set; }
-        public TransportInfo TransportInfo { get; private set; }
+        public TransportInfo TransportInfo { get; private set; } 
         public List<KeyPoint> KeyPoints { get; private set; }
         public DateTime PublishedAt {  get; private set; }
-        //public DateTime? ArchivedAt {  get; private set; }
+        public DateTime ArchivedAt {  get; private set; }
         public double AverageScore {  get; private set; }
         public Tour(string name, string description, DifficultyStatus difficulty, string tags, double price)
         { 
@@ -42,10 +42,10 @@ namespace Explorer.Tours.Core.Domain.Tours
             Tags = tags;
             Price = price;
             Status = TourStatus.Draft;
-            TransportInfo = new TransportInfo(TimeSpan.Zero, 0, TransportType.Car);
+            TransportInfo = new TransportInfo(0, 0, TransportType.Car);
             KeyPoints = new List<KeyPoint>();
             PublishedAt = DateTime.MinValue;
-            //ArchivedAt = DateTime.MinValue;
+            ArchivedAt = DateTime.MinValue;
             AverageScore = 0;
         }
 
@@ -67,7 +67,7 @@ namespace Explorer.Tours.Core.Domain.Tours
             if (Status == TourStatus.Published)
             {
                 Status = TourStatus.Archived;
-                //ArchivedAt = DateTime.Now;
+                ArchivedAt = DateTime.UtcNow;
             }
             else
             {
@@ -80,16 +80,16 @@ namespace Explorer.Tours.Core.Domain.Tours
             if (Status != TourStatus.Draft && Status != TourStatus.Archived)
                 throw new InvalidOperationException("Only tours in draft or archived status can be published (again).");
 
-           // if (!Validate() || !ValidateInput())
-             //   throw new InvalidOperationException("Tour does not meet publishing requirements.");
+            //if (!Validate() || !ValidateInput())
+               // throw new InvalidOperationException("Tour does not meet publishing requirements.");
 
             Status = TourStatus.Published;
-            PublishedAt = DateTime.Now;
+            PublishedAt = DateTime.UtcNow;
         }
 
         public bool Validate()
         {
-            return KeyPoints.Count >= 2 && TransportInfo.Time != TimeSpan.Zero;
+            return KeyPoints.Count >= 2 && TransportInfo.Time < 0;
         }
 
         public bool ValidateInput()

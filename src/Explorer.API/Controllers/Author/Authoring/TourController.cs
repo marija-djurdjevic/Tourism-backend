@@ -1,5 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,10 +38,10 @@ namespace Explorer.API.Controllers.Author.Authoring
             return CreateResponse(result);
         }
 
-        [HttpPut("publish-tour/{id}")]
-        public ActionResult<TourDto> Publish(int id)
+        [HttpPut("publish-tour")]
+        public ActionResult<TourDto> Publish([FromBody] TourDto tourDto)
         {
-            var result = _tourService.Publish(id);
+            var result = _tourService.Publish(tourDto);
             return CreateResponse(result);
         }
     }

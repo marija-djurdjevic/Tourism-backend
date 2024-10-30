@@ -1,5 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<TourDto> Create(TourDto tour);
         Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id);
 
-        Result<bool> Publish(int id);
-        Result<bool> Archive(int id);
+        Result<bool> Publish(TourDto entity);
+        Result<bool> Archive(TourDto entity);
     }
 }

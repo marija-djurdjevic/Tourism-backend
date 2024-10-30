@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.Tours;
 using FluentResults;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO.MemoryMappedFiles;
@@ -17,7 +19,9 @@ namespace Explorer.Tours.Core.UseCases.Authoring
     public class TourService : CrudService<TourDto, Tour>, ITourService
 
     {
+        private readonly IMapper _mapper;
         public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) {
+            _mapper = mapper;
         }
 
         public Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id)
@@ -27,13 +31,24 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             return authorTours;
         }
 
-        public Result<bool> Publish(int id)
+        public Result<bool> Publish(TourDto tourDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tour = _mapper.Map<Tour>(tourDto);
+                tour.Publish();
+                var updatedTourDto = _mapper.Map<TourDto>(tour);
+                Update(updatedTourDto);
+
+                return Result.Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail("An error occurred while publishing the tour: " + ex.Message);
+            }
         }
 
-
-        Result<bool> ITourService.Archive(int id)
+        public Result<bool> Archive(TourDto tourDto)
         {
             throw new NotImplementedException();
         }
