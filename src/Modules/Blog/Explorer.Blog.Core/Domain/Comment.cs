@@ -17,8 +17,9 @@ namespace Explorer.Blog.Core.Domain
         public string Text { get; private set; }
         public DateTime EditDate { get; private set; }
         public int BlogId { get; private set; }
+        public string Username { get; private set; }
 
-        public Comment(int authorId, string text, DateTime creationDate, DateTime editDate, int blogId)
+        public Comment(int authorId, string text, DateTime creationDate, DateTime editDate, int blogId, string username)
         {
             AuthorId = authorId;
             CreationDate = creationDate;
@@ -26,6 +27,8 @@ namespace Explorer.Blog.Core.Domain
             Text = text;
             EditDate = editDate;
             BlogId = blogId;
+            if (string.IsNullOrWhiteSpace(username)) throw new ArgumentException("Invalid comment.");
+            Username = username;
         }
     }
 }
