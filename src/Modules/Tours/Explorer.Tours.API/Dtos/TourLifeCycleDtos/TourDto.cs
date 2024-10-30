@@ -28,6 +28,8 @@
         public DateTime PublishedAt {  get; set; }
         public DateTime ArchivedAt { get; set; }
         public double AverageScore {  get; set; }
+
+        public List<KeyPointDto> KeyPoints { get; set; }
     }
 
 }

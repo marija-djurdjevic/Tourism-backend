@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Explorer.Tours.Core.Domain.Tours;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace Explorer.Tours.Core.Domain.RepositoryInterfaces
 {
     public interface ITourRepository
     {
+        List<Tour> GetAllToursWithKeyPoints();
+        public Tour GetTourWithKeyPoints(int tourId);
     }
 }
