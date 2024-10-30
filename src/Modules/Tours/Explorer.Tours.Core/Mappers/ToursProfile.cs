@@ -37,6 +37,5 @@ public class ToursProfile : Profile
            .ReverseMap()
            .ForPath(src => src.Coordinates, opt => opt.MapFrom(dto => new Coordinates(dto.Latitude, dto.Longitude)));
 
-
     }
 }
