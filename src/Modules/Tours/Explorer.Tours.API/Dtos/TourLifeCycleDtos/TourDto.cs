@@ -13,8 +13,7 @@
         {
             Draft,
             Published,
-            Canceled,
-            Completed
+            Archived
         }
         public int Id { get; set; }
         public int AuthorId { get; set; }
@@ -26,6 +25,11 @@
 
         public string Tags { get; set; }
         public double Price { get; set; }
+        public DateTime PublishedAt {  get; set; }
+        public DateTime ArchivedAt { get; set; }
+        public double AverageScore {  get; set; }
+
+        public List<KeyPointDto> KeyPoints { get; set; }
     }
 
 }

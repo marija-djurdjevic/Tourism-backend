@@ -19,6 +19,8 @@ namespace Explorer.Tours.Core.Domain.Tours
             Longitude = longitude;
             Latitude = latitude;
         }
+
+        public Coordinates() { }
         protected override bool EqualsCore(Coordinates other)
         {
             throw new NotImplementedException();

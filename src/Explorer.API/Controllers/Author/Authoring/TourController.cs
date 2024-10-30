@@ -1,4 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Microsoft.AspNetCore.Authorization;
@@ -24,10 +25,31 @@ namespace Explorer.API.Controllers.Author.Authoring
             return CreateResponse(result);
         }
 
+        [HttpGet("all")]
+        public ActionResult<List<TourDto>> GetAllTours()
+        {
+            var result = _tourService.GetAllToursWithKeyPoints();
+            return CreateResponse(result);
+        }
+
+        [HttpGet("by-author")]
+        public ActionResult<PagedResult<TourDto>> GetByAuthorId([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] int id)
+        {
+            var result = _tourService.GetByAuthorId(page, pageSize, id);
+            return CreateResponse(result);
+        }
+
         [HttpPost]
         public ActionResult<TourDto> Create([FromBody] TourDto tourDto)
         {
             var result = _tourService.Create(tourDto);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("{tourId}/key-points")]
+        public ActionResult<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+        {
+            var result = _tourService.GetKeyPointsByTourId(tourId);
             return CreateResponse(result);
         }
     }

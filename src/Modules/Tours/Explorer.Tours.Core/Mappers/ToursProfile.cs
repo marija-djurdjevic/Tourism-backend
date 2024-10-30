@@ -21,7 +21,7 @@ public class ToursProfile : Profile
         CreateMap<ClubDto, Club>().ReverseMap();
         CreateMap<TourReviewDto, TourReview>().ReverseMap();
         CreateMap<TourProblemDto, TourProblem>().ReverseMap();
-        CreateMap<KeyPointDto, KeyPoint>().ReverseMap();
+        //CreateMap<KeyPointDto, KeyPoint>().ReverseMap();
         CreateMap<ObjectDto, Domain.Object>().ReverseMap();
         CreateMap<TourPreferencesDto, TourPreferences>().ReverseMap();
 
@@ -32,7 +32,13 @@ public class ToursProfile : Profile
     
         CreateMap<CompletedKeyPointDto, CompletedKeyPoints>().IncludeAllDerived().ReverseMap();
         CreateMap<LocationDto, Location>().IncludeAllDerived().ReverseMap();
-        
+
+        CreateMap<KeyPoint, KeyPointDto>()
+           .ForMember(dto => dto.Longitude, opt => opt.MapFrom(src => src.Coordinates.Longitude))
+           .ForMember(dto => dto.Latitude, opt => opt.MapFrom(src => src.Coordinates.Latitude))
+           .ReverseMap()
+           .ForPath(src => src.Coordinates, opt => opt.MapFrom(dto => new Coordinates(dto.Latitude, dto.Longitude)));
+
 
     }
 }
