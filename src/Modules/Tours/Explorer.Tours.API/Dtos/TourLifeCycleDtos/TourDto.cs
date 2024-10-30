@@ -29,6 +29,8 @@
         public DateTime ArchivedAt { get; set; }
         public double AverageScore {  get; set; }
         public TransportInfoDto TransportInfo { get; set; }
+
+        public List<KeyPointDto> KeyPoints { get; set; }
     }
 
 }
