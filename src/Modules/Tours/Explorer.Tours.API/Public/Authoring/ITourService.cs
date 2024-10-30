@@ -13,6 +13,6 @@ namespace Explorer.Tours.API.Public.Authoring
     {
         Result<PagedResult<TourDto>> GetPaged(int page, int pageSize);
         Result<TourDto> Create(TourDto tour);
-        Result<List<TourDto>> GetByAuthorId(int id);
+        Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id);
     }
 }
