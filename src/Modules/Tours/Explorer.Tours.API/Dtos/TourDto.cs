@@ -1,4 +1,4 @@
-﻿namespace Explorer.Tours.API.Dtos.TourLifeCycleDtos
+﻿namespace Explorer.Tours.API.Dtos
 {
     public class TourDto
     {

@@ -35,8 +35,8 @@ namespace Explorer.Blog.Tests.Integration
 
             // Assert
             result.ShouldNotBeNull();
-            result.Results.Count.ShouldBe(3);
-            result.TotalCount.ShouldBe(3);
+            result.Results.Count.ShouldBe(6);
+            result.TotalCount.ShouldBe(6);
         }
 
         private static BlogController CreateController(IServiceScope scope)

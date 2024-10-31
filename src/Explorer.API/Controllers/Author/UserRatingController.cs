@@ -22,8 +22,7 @@ namespace Explorer.API.Controllers.Author
         public ActionResult<UserRatingDto> Create([FromBody] UserRatingDto rating)
         {
             var userId = User.FindFirst("id").Value;
-            var username = User.FindFirst("username").Value;
-            var result = _userRatingService.Create(rating, userId, username);
+            var result = _userRatingService.Create(rating, userId);
             return CreateResponse(result);
         }
 

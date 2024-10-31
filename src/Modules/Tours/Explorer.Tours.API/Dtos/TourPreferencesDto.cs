@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Explorer.Tours.API.Dtos.TourLifeCycleDtos.TourDto;
+using static Explorer.Tours.API.Dtos.TourDto;
 
 namespace Explorer.Tours.API.Dtos
 {
