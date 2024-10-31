@@ -1,13 +1,7 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
-using Explorer.Tours.API.Dtos.TourProblemDtos;
-using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.Core.Domain;
-using Explorer.Tours.Core.Domain.TourProblems;
-using Explorer.Tours.Core.Domain.Tours;
-using Explorer.Tours.Core.Domain.TourSessions;
 
 namespace Explorer.Tours.Core.Mappers;
 
@@ -24,15 +18,5 @@ public class ToursProfile : Profile
         CreateMap<KeyPointDto, KeyPoint>().ReverseMap();
         CreateMap<ObjectDto, Domain.Object>().ReverseMap();
         CreateMap<TourPreferencesDto, TourPreferences>().ReverseMap();
-
-
-        CreateMap<TourSessionDto, TourSession > ()
-        //.ForMember(dest => dest.CurrentLocation, opt => opt.MapFrom(src => src.CurrentLocation))
-        .ForMember(dest => dest.CompletedKeyPoints, opt => opt.MapFrom(src => src.CompletedKeyPoints));
-    
-        CreateMap<CompletedKeyPointDto, CompletedKeyPoints>().IncludeAllDerived().ReverseMap();
-        CreateMap<LocationDto, Location>().IncludeAllDerived().ReverseMap();
-        
-
     }
 }

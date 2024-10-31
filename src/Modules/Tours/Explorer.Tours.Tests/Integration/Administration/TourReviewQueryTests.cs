@@ -3,7 +3,6 @@ using Explorer.API.Controllers.Tourist;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
-using Explorer.Tours.API.Public.Authoring;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
