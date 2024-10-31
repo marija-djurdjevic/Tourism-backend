@@ -10,16 +10,14 @@ namespace Explorer.Tours.Core.Domain.ShoppingCarts
 {
     public class ShoppingCart : Entity
     {
-        [NotMapped]
+       
         public List<OrderItem> Items { get; private set; }
-        public List<TourPurchaseToken> Tokens { get; protected set; }
         public double TotalPrice { get; private set; }
 
         public ShoppingCart() { }
         public ShoppingCart(List<OrderItem> items,List<TourPurchaseToken> tokens)
         {
             Items = items;
-            Tokens = tokens;
         }
 
         public void AddItem(OrderItem item)

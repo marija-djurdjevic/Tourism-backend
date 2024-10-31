@@ -20,11 +20,13 @@ namespace Explorer.Tours.Core.UseCases.Shopping
     public class ShoppingService : CrudService<ShoppingCartDto, ShoppingCart>, IShoppingService
     {
         ICrudRepository<ShoppingCart> _repository;
+        ICrudRepository<TourPurchaseToken> _repositoryTourPurchaseTokenRepository;
         private readonly IMapper _mapper;
 
-        public ShoppingService(ICrudRepository<ShoppingCart> repository, IMapper mapper) : base(repository, mapper)
+        public ShoppingService(ICrudRepository<ShoppingCart> repository,ICrudRepository<TourPurchaseToken> rep, IMapper mapper) : base(repository, mapper)
         {
             _repository = repository;
+            _repositoryTourPurchaseTokenRepository = rep;
             _mapper = mapper;
             
         }
@@ -37,7 +39,7 @@ namespace Explorer.Tours.Core.UseCases.Shopping
             foreach (var item in orderItems)
             {
                 var token = new TourPurchaseToken(touristId, item.TourId);
-                tokens.Add(token);
+                _repositoryTourPurchaseTokenRepository.Create(token);
 
             }
             ShoppingCart cart = new ShoppingCart(orderItems,tokens);

@@ -19,6 +19,7 @@ public class ToursContext : DbContext
     public DbSet<Explorer.Tours.Core.Domain.Object> Object { get; set; }
 
     public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+    public DbSet<TourPurchaseToken> TourPurchaseTokens { get; set; }
 
     public DbSet<TourReview> TourReview { get; set; }
 
@@ -29,9 +30,7 @@ public class ToursContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("tours");
-        modelBuilder.Entity<ShoppingCart>().Property(item => item.Tokens).HasColumnType("jsonb");
-        modelBuilder.Entity<OrderItem>().HasNoKey();
-
+        modelBuilder.Entity<ShoppingCart>().Property(item => item.Items).HasColumnType("jsonb");
         //modelBuilder.Entity<TourSession>().Property(ts => ts.CurrentLocation) .HasColumnType("jsonb");
         modelBuilder.Entity<TourSession>().Property(ts => ts.CompletedKeyPoints).HasColumnType("jsonb");
         modelBuilder.Entity<TourProblem>().Property(item => item.Notifications).HasColumnType("jsonb");
