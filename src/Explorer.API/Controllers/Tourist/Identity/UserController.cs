@@ -1,5 +1,7 @@
 ﻿using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
+using Explorer.Stakeholders.Core.Domain;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,26 +22,14 @@ namespace Explorer.API.Controllers.Tourist.Identity
         [HttpGet("getLocation")]
         public ActionResult<LocationDto> Get()
         {
-            var userId = User.FindFirst("id")?.Value;
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized();
-            }
-
-            var result = _userService.GetUserLocation(Int32.Parse(userId));
+            var result = _userService.GetUserLocation(User.PersonId());
             return CreateResponse(result);
         }
 
         [HttpPost("setLocation")]
         public ActionResult<LocationDto> SetTouristLocation([FromBody] LocationDto location)
         {
-            var userId = User.FindFirst("id")?.Value;
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized();
-            }
-
-            var result = _userService.SetUserLocation(int.Parse(userId), location.Longitude, location.Latitude);
+            var result = _userService.SetUserLocation(User.PersonId(), location.Longitude, location.Latitude);
             return CreateResponse(result);
         }
 

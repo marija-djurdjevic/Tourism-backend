@@ -17,6 +17,7 @@ public class User : Entity
         Password = password;
         Role = role;
         IsActive = isActive;
+        Location = new Location(0, 0);
         Validate();
     }
 
@@ -27,11 +28,7 @@ public class User : Entity
             Location = new Location(latitude, longitude);
             return true;
         }
-        else
-        {
-            throw new ArgumentException("Unauthorized attempt to set location.");
-            return false;
-        }
+        throw new ArgumentException("Unauthorized attempt to set location.");
     }
 
     private void Validate()
