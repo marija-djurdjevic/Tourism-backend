@@ -17,6 +17,8 @@ namespace Explorer.Blog.API.Dtos
         }
         public int Id { get; set; }
         public int AuthorId { get; set; }
+        public List<VoteDto> Votes { get; set; }
+        //public List<CommentDto> Comments { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime CreationDate { get; set; }
