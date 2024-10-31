@@ -30,6 +30,7 @@ public class ToursContext : DbContext
     {
         modelBuilder.HasDefaultSchema("tours");
         modelBuilder.Entity<ShoppingCart>().Property(item => item.Tokens).HasColumnType("jsonb");
+        modelBuilder.Entity<OrderItem>().HasNoKey();
 
         //modelBuilder.Entity<TourSession>().Property(ts => ts.CurrentLocation) .HasColumnType("jsonb");
         modelBuilder.Entity<TourSession>().Property(ts => ts.CompletedKeyPoints).HasColumnType("jsonb");

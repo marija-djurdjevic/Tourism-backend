@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.ShoppingDtos;
 using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.ShoppingCarts;
 using Explorer.Tours.Core.Domain.TourProblems;
 using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Core.Domain.TourSessions;
@@ -39,6 +41,11 @@ public class ToursProfile : Profile
            .ReverseMap()
            .ForPath(src => src.Coordinates, opt => opt.MapFrom(dto => new Coordinates(dto.Latitude, dto.Longitude)));
 
-
+        CreateMap<ShoppingCartDto, ShoppingCart>()
+            .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.TotalPrice))
+            .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items))
+            .ForMember(dest => dest.Tokens, opt => opt.MapFrom(src => src.Tokens)).ReverseMap();
+        CreateMap<OrderItemDto, OrderItem>().ReverseMap();
+        CreateMap<TourPurchaseTokenDto, TourPurchaseToken>().ReverseMap();
     }
 }

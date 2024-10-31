@@ -7,19 +7,22 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.Domain.ShoppingCarts
 {
-    public class OrderItem : Entity
+    public class OrderItem : ValueObject<OrderItem>
     {
         public int TourId { get; private set; }
         public double Price { get; private set; }
         public string TourName {  get; private set; }
 
-
-        public OrderItem(int tourId, double price, string tourName)
+        protected override bool EqualsCore(OrderItem other)
         {
-            TourId = tourId;
-            Price = price;
-            TourName = tourName;
+            return other.TourId == TourId &&
+                other.Price == Price &&
+                other.TourName == TourName;
         }
 
+        protected override int GetHashCodeCore()
+        {
+            return HashCode.Combine(TourId,Price, TourName);
+        }
     }
 }

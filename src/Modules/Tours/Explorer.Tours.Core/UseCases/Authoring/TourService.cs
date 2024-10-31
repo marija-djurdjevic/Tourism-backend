@@ -26,6 +26,15 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
         }
 
+        public Result<List<TourDto>> GetAllPublished(int page, int pageSize)
+        {
+            var tours = GetPaged(page, pageSize);
+            var publishedTours = tours.Value.Results.FindAll(x => x.Status == TourDto.TourStatus.Published);
+            return publishedTours;
+
+
+        }
+
         public Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id)
         {
             var tours = GetPaged(page, pageSize);

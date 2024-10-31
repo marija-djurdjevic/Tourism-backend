@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Tours.API.Dtos.ShoppingDtos;
 using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
+using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Shopping;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.ShoppingCarts;
 using Explorer.Tours.Core.Domain.Tours;
+using Explorer.Tours.Core.Domain.TourSessions;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -13,22 +17,33 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.UseCases.Shopping
 {
-    public class ShoppingService : CrudService<TourDto, Tour>, IShoppingService
+    public class ShoppingService : CrudService<ShoppingCartDto, ShoppingCart>, IShoppingService
     {
-        ICrudRepository<Tour> _repository;
+        ICrudRepository<ShoppingCart> _repository;
+        private readonly IMapper _mapper;
 
-        public ShoppingService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper)
+        public ShoppingService(ICrudRepository<ShoppingCart> repository, IMapper mapper) : base(repository, mapper)
         {
             _repository = repository;
+            _mapper = mapper;
+            
         }
 
-        public Result<List<TourDto>> GetAllPublished(int page, int pageSize)
+        public Result<ShoppingCartDto> Checkout(List<OrderItemDto> items,int touristId)
         {
-            var result = _repository.GetPaged(page, pageSize).Results.Where(tour => tour.Status == TourStatus.Published).ToList();
-            var dto = MapToDto(result);
-            return dto;
+            var orderItems = items.Select(dto => _mapper.Map<OrderItemDto, OrderItem>(dto)).ToList();
+            var tokens = new List<TourPurchaseToken>();
 
+            foreach (var item in orderItems)
+            {
+                var token = new TourPurchaseToken(touristId, item.TourId);
+                tokens.Add(token);
 
+            }
+            ShoppingCart cart = new ShoppingCart(orderItems,tokens);
+            cart.CalculatePrice();
+            var res = _repository.Create(cart);
+            return Result.Ok(_mapper.Map<ShoppingCart, ShoppingCartDto>(cart));
         }
     }
 }

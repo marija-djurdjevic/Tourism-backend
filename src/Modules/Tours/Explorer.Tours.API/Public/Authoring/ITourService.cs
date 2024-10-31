@@ -17,5 +17,6 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id);
         public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId);
         public Result<List<TourDto>> GetAllToursWithKeyPoints();
+        public Result<List<TourDto>> GetAllPublished(int page, int pageSize);
     }
 }

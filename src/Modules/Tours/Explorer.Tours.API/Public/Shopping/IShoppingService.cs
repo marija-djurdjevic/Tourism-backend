@@ -1,4 +1,5 @@
 ﻿using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.ShoppingDtos;
 using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using FluentResults;
 using System;
@@ -11,6 +12,6 @@ namespace Explorer.Tours.API.Public.Shopping
 {
     public interface IShoppingService
     {
-        public Result<List<TourDto>> GetAllPublished(int page, int pageSize);
+        public Result<ShoppingCartDto> Checkout(List<OrderItemDto> items, int touristId);
     }
 }
