@@ -42,9 +42,7 @@ public class ToursProfile : Profile
            .ForPath(src => src.Coordinates, opt => opt.MapFrom(dto => new Coordinates(dto.Latitude, dto.Longitude)));
 
         CreateMap<ShoppingCartDto, ShoppingCart>()
-            .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.TotalPrice))
-            .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items))
-            .ForMember(dest => dest.Tokens, opt => opt.MapFrom(src => src.Tokens)).ReverseMap();
+            .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items)).ReverseMap();
         CreateMap<OrderItemDto, OrderItem>().ReverseMap();
         CreateMap<TourPurchaseTokenDto, TourPurchaseToken>().ReverseMap();
     }
