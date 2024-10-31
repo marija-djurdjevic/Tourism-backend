@@ -1,5 +1,8 @@
 ﻿using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.TourSessions;
+using Explorer.Tours.Core.Domain.TourProblems;
 using Microsoft.EntityFrameworkCore;
+using Explorer.Tours.Core.Domain.Tours;
 
 namespace Explorer.Tours.Infrastructure.Database;
 
@@ -13,13 +16,22 @@ public class ToursContext : DbContext
     public DbSet<Tour> Tour { get; set; }
     public DbSet<KeyPoint> KeyPoints { get; set; }
     public DbSet<Explorer.Tours.Core.Domain.Object> Object { get; set; }
-
     public DbSet<TourReview> TourReview { get; set; }
+
+    public DbSet<TourSession> TourSessions { get; set; }
 
     public ToursContext(DbContextOptions<ToursContext> options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("tours");
+
+        //modelBuilder.Entity<TourSession>().Property(ts => ts.CurrentLocation) .HasColumnType("jsonb");
+        modelBuilder.Entity<TourSession>().Property(ts => ts.CompletedKeyPoints).HasColumnType("jsonb");
+        modelBuilder.Entity<TourProblem>().Property(item => item.Notifications).HasColumnType("jsonb");
+        modelBuilder.Entity<TourProblem>().Property(item => item.Details).HasColumnType("jsonb");
+        modelBuilder.Entity<TourProblem>().Property(item => item.Comments).HasColumnType("jsonb");
+        modelBuilder.Entity<KeyPoint>().Property(item => item.Coordinates).HasColumnType("jsonb");
+        modelBuilder.Entity<Tour>().Property(item => item.TransportInfo).HasColumnType("jsonb");
     }
 }
