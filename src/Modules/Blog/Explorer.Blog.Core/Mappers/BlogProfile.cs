@@ -9,9 +9,11 @@ public class BlogProfile : Profile
     public BlogProfile()
     {
         CreateMap<CommentDto, Comment>().ReverseMap();
-        CreateMap<BlogDto, Blogs>().ReverseMap();
+        CreateMap<VoteDto, Vote>().ReverseMap();
 
         CreateMap<BlogDto, Blogs>()
-           .ForMember(dest => dest.Votes, opt => opt.MapFrom(src => src.Votes)).ReverseMap();
+           .ForMember(dest => dest.Votes, opt => opt.MapFrom(src => src.Votes))
+           .ReverseMap();
+
     }
 }
