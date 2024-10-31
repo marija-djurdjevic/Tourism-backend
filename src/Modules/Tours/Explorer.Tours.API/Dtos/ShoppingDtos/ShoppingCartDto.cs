@@ -8,21 +8,10 @@ namespace Explorer.Tours.API.Dtos.ShoppingDtos
 {
     public class ShoppingCartDto
     {
+        public int Id { get; set; }
         public int touristId { get; set; }
-
         public List<OrderItemDto> Items { get; set; }
-        public List<TourPurchaseTokenDto> Tokens { get; set; }
         public double TotalPrice { get; set; }
 
-        public ShoppingCartDto()
-        {
-            Tokens = new List<TourPurchaseTokenDto>();
-        }
-
-        public ShoppingCartDto(List<OrderItemDto> items, List<TourPurchaseTokenDto> tokens, double totalPrice)
-        {
-            Tokens = tokens;
-            TotalPrice = totalPrice;
-        }
     }
 }

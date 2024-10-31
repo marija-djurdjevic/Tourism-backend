@@ -11,12 +11,14 @@ namespace Explorer.Tours.Core.Domain.ShoppingCarts
     public class ShoppingCart : Entity
     {
        
+        public int TouristId { get; set; }
         public List<OrderItem> Items { get; private set; }
         public double TotalPrice { get; private set; }
 
         public ShoppingCart() { }
-        public ShoppingCart(List<OrderItem> items,List<TourPurchaseToken> tokens)
+        public ShoppingCart(int touristId, List<OrderItem> items,List<TourPurchaseToken> tokens)
         {
+            TouristId = touristId;
             Items = items;
         }
 
@@ -38,11 +40,6 @@ namespace Explorer.Tours.Core.Domain.ShoppingCarts
                 totalPrice += item.Price;
             }
             TotalPrice = totalPrice;
-        }
-
-        public void Checkout()
-        {
-
         }
     }
 }

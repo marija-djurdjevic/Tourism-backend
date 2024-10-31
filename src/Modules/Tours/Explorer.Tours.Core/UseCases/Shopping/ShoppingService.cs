@@ -42,7 +42,7 @@ namespace Explorer.Tours.Core.UseCases.Shopping
                 _repositoryTourPurchaseTokenRepository.Create(token);
 
             }
-            ShoppingCart cart = new ShoppingCart(orderItems,tokens);
+            ShoppingCart cart = new ShoppingCart(touristId, orderItems, tokens);
             cart.CalculatePrice();
             var res = _repository.Create(cart);
             return Result.Ok(_mapper.Map<ShoppingCart, ShoppingCartDto>(cart));
