@@ -7,10 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
-using Explorer.Tours.API.Dtos;
-using Explorer.Tours.Infrastructure.Database;
-using Explorer.Stakeholders.Infrastructure.Database;
 
 namespace Explorer.Stakeholders.Tests.Integration
 {
@@ -24,22 +20,21 @@ namespace Explorer.Stakeholders.Tests.Integration
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
-            var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21", "turista1@gmail.com"); // For tourist role
+            var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21"); // For tourist role
             var ratingDto = new UserRatingDto
             {
                 Rating = 3,
                 Comment = "Not too bad"
             };
 
-            var result = ((ObjectResult)controller.Create(ratingDto).Result)?.Value as UserRatingDto;
-            result.ShouldNotBeNull();
-            result.Rating.ShouldBe(ratingDto.Rating);
+            // Act
+            var result = (ObjectResult)controller.Create(ratingDto).Result;
 
-            // Assert - Database
-            var storedEntity = dbContext.UserRatings.FirstOrDefault(i => i.Comment == ratingDto.Comment);
-            storedEntity.ShouldNotBeNull();
-
+            // Assert
+            result.StatusCode.ShouldBe(200); 
+            var responseMessage = result.Value as string;
+            responseMessage.ShouldNotBeNull();
+            responseMessage.ShouldBe("Rating submitted successfully!");
         }
 
         [Fact]
@@ -47,7 +42,7 @@ namespace Explorer.Stakeholders.Tests.Integration
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController<adminController.UserRatingController>(scope, "Administrator", "-1", "admin@gmail.com"); // For admin role
+            var controller = CreateController<adminController.UserRatingController>(scope, "Administrator", "-1"); // For admin role
 
             // Act
             var result = (ObjectResult)controller.GetAll().Result;
@@ -65,7 +60,7 @@ namespace Explorer.Stakeholders.Tests.Integration
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21", "turista1@gmail.com"); // For tourist role
+            var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21"); // For tourist role
             var invalidRatingDto = new UserRatingDto
             {
                 Rating = 0, // Invalid rating
@@ -85,13 +80,12 @@ namespace Explorer.Stakeholders.Tests.Integration
 
 
 
-        private static TController CreateController<TController>(IServiceScope scope, string role, string userId = "-1", string username = "user1") where TController : ControllerBase
+        private static TController CreateController<TController>(IServiceScope scope, string role, string userId = "-1") where TController : ControllerBase
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userId),
-                new Claim("id", userId),
-                new Claim("username", username),
+                new Claim("id", userId), 
                 new Claim(ClaimTypes.Role, role) 
             }, "TestAuth"));
 

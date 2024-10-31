@@ -26,8 +26,6 @@ namespace Explorer.Blog.Core.Domain
     {
         //[ForeignKey("User")]
         public long AuthorId { get; private set; }
-        public List<Comment>? Comments { get; private set; }
-        public List<Vote>? Votes { get; private set; }
         //public User User { get; set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
@@ -45,30 +43,6 @@ namespace Explorer.Blog.Core.Domain
             CreationDate = creationDate;
             Image = image;
             Status = status;
-        }
-        public Blogs(long authorId, List<Vote>? votes, string title, string description, DateTime creationDate, BlogStatus status, string? image = null)
-        {
-            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Invalid title.");
-            if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid description.");
-            AuthorId = authorId;
-            Votes = votes;
-            Title = title;
-            Description = description;
-            CreationDate = creationDate;
-            Image = image;
-            Status = status;
-        }
-
-        public void AddVote(Vote vote)
-        {
-            if (Votes == null)
-                Votes = new List<Vote>();
-            Votes.Add(vote);
-        }
-
-        public void RemoveVote(Vote vote)
-        {
-            Votes.Remove(vote);
         }
     }
 }

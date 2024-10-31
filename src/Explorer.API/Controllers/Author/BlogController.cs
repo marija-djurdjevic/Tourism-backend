@@ -34,13 +34,6 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
-        [HttpPost("{blogId}/vote")]
-        public ActionResult<BlogDto> AddVote(int blogId, [FromBody] VoteDto vote)
-        {
-            var result = _blogService.AddVote(blogId, vote);
-            return CreateResponse(result);
-        }
-
         [HttpPut("{id:int}")]
         public ActionResult<BlogDto> Update([FromBody] BlogDto blog)
         {
