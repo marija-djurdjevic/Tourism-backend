@@ -75,7 +75,20 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
              return tour.KeyPoints;
          }
-       
+
+        public Result<TourDto> GetById(int tourId)
+        {
+            var tour = _tourRepository.GetById(tourId);
+            if (tour == null)
+            {
+                return Result.Fail("Tour not found");
+            }
+
+            var tourDto = _mapper.Map<TourDto>(tour);
+            return Result.Ok(tourDto);
+        }
+
+
 
 
     }

@@ -50,6 +50,7 @@ public static class ToursStartup
         services.AddScoped<ITourSessionRepository, TourSessionRepository>();
         services.AddScoped<ITourSessionService, TourSessionService>();
         services.AddScoped<ITourRepository, TourRepository>();
+        services.AddScoped<ITourPurchaseTokenRepository, TourPurchaseTokenRepository>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
