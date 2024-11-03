@@ -1,6 +1,7 @@
 ﻿using Explorer.API.Controllers.Author;
 using Explorer.Blog.API.Dtos;
 using Explorer.Blog.API.Public;
+using Explorer.Blog.Core.Domain;
 using Explorer.Blog.Infrastructure.Database;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.Infrastructure.Database;
@@ -31,6 +32,14 @@ namespace Explorer.Blog.Tests.Integration
             {
                 Title = "NASLOVCINA",
                 AuthorId = 1 ,
+                Votes = new List<VoteDto> 
+                {
+                    new() {
+                        AuthorId = 123,
+                        CreationDate = DateTime.Parse("2024-11-01T00:00:00"),
+                        Value = true
+                    }
+                },
                 Description = "Description",
                 CreationDate = DateTime.UtcNow,
                 Image = "image.png",
@@ -50,6 +59,13 @@ namespace Explorer.Blog.Tests.Integration
             result.Image.ShouldBe(newEntity.Image);
             result.Status.ShouldBe(newEntity.Status);
             result.AuthorId.ShouldBe(newEntity.AuthorId);
+            result.Votes.Count.ShouldBe(newEntity.Votes.Count);
+            for (int i = 0; i < result.Votes.Count; i++)
+            {
+                result.Votes[i].AuthorId.ShouldBe(newEntity.Votes[i].AuthorId);
+                result.Votes[i].CreationDate.ShouldBe(newEntity.Votes[i].CreationDate);
+                result.Votes[i].Value.ShouldBe(newEntity.Votes[i].Value);
+            }
 
             // Assert - Database
             var storedEntity = dbContext.Blogs.FirstOrDefault(i => i.Title == newEntity.Title);

@@ -59,16 +59,38 @@ namespace Explorer.Blog.Core.Domain
             Status = status;
         }
 
-        public void AddVote(Vote vote)
+        public void AddVote(Vote newVote)
         {
             if (Votes == null)
                 Votes = new List<Vote>();
-            Votes.Add(vote);
+
+            var vote = Votes.FirstOrDefault(v => v?.AuthorId == newVote.AuthorId);
+
+            if (vote == null)
+                Votes.Add(vote);
+            else
+            {
+                vote.CreationDate = newVote.CreationDate;
+                vote.Value = newVote.Value;
+            }
         }
 
-        public void RemoveVote(Vote vote)
+        public void RemoveVote(long authorId)
         {
+            if (Votes == null || !Votes.Any())
+                throw new InvalidOperationException("No votes available to remove.");
+
+            var vote = Votes.FirstOrDefault(v => v.AuthorId == authorId);
+
+            if (vote == null)
+                throw new ArgumentException($"Vote by author with ID {authorId} does not exist.");
+
             Votes.Remove(vote);
+        }
+
+        public List<Vote> GetAllVotes()
+        {
+            return Votes ?? new List<Vote>();
         }
     }
 }

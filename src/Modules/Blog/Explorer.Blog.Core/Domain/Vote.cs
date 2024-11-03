@@ -11,9 +11,9 @@ namespace Explorer.Blog.Core.Domain
 {
     public class Vote : ValueObject<Vote>
     {
-        public int AuthorId { get; private set; }
-        public DateTime CreationDate { get; private set; }
-        public bool Value {  get; private set; }
+        public int AuthorId { get;  set; }
+        public DateTime CreationDate { get; set; }
+        public bool Value {  get; set; }
 
         [JsonConstructor]
         public Vote(int authorId, DateTime creationDate, bool value)

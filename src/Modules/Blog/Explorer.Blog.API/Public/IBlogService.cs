@@ -15,6 +15,8 @@ namespace Explorer.Blog.API.Public
         Result<BlogDto> Create(BlogDto blog);
         Result<BlogDto> Update(BlogDto blog);
         Result<BlogDto> AddVote(int blogId, VoteDto vote);
+        Result<BlogDto> RemoveVote(int blogId, int authroId);
+        Result<List<VoteDto>> GetAllVotesByBlogId(int blogId);
         Result Delete(int id);
     }
 }

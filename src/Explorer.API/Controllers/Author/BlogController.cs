@@ -41,6 +41,20 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
+        [HttpGet("{blogId}/votes")]
+        public ActionResult<BlogDto> GetAllVotesByBlogId(int blogId)
+        {
+            var result = _blogService.GetAllVotesByBlogId(blogId);
+            return CreateResponse(result);  
+        }
+
+        [HttpDelete("{blogId}/{authorId}/votes")]
+        public ActionResult<BlogDto> RemoveVote(int blogId, int authorId)
+        {
+            var result = _blogService.RemoveVote(blogId, authorId);
+            return CreateResponse(result);
+        }
+
         [HttpPut("{id:int}")]
         public ActionResult<BlogDto> Update([FromBody] BlogDto blog)
         {
