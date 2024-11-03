@@ -1,10 +1,29 @@
 INSERT INTO tours."TourProblems"(
-	"Id", "TourId", "Category", "ProblemPriority", "Description", "Time")
-	VALUES
-    (-1, -1, 0, 3, 'Na stazi su se pojavili klizavi kamencici.', '14:30:00');
-	INSERT INTO tours."TourProblems"(
-	"Id", "TourId", "Category", "ProblemPriority", "Description", "Time")
-	 VALUES(-2, -2, 2, 2, 'Vreme je bilo nepovoljno za planinarenje.', '17:45:00');
-	INSERT INTO tours."TourProblems"(
-	"Id", "TourId", "Category", "ProblemPriority", "Description", "Time")
- VALUES (-3, -3, 1, 1, 'Put je blokiran drvetom.', '12:00:00');
+	"Id", "TourId", "TouristId", "Notifications", "Comments", "Details", "Deadline", "Status")
+	VALUES (-1, -1, -1, null, null, 
+	'{
+  "Time": "2024-10-29T10:53:25",
+  "Category": 1,
+  "Explanation": "Nejasno",
+  "ProblemPriority": 0 }', 
+  null, 0);
+
+  INSERT INTO tours."TourProblems"(
+	"Id", "TourId", "TouristId", "Notifications", "Comments", "Details", "Deadline", "Status")
+	VALUES (-2, -1, -2, null, null, 
+	'{
+  "Time": "2024-10-29T10:53:25",
+  "Category": 2,
+  "Explanation": "Ne valja",
+  "ProblemPriority": 0 }', 
+  null, 0);
+
+    INSERT INTO tours."TourProblems"(
+	"Id", "TourId", "TouristId", "Notifications", "Comments", "Details", "Deadline", "Status")
+	VALUES (-3, -1, -3, null, null, 
+	'{
+  "Time": "2024-10-29T10:53:25",
+  "Category": 2,
+  "Explanation": "Ne mere",
+  "ProblemPriority": 0 }', 
+  null, 0);

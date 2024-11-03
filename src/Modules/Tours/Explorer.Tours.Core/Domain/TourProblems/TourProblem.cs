@@ -7,17 +7,17 @@ namespace Explorer.Tours.Core.Domain.TourProblems
     public class TourProblem : Entity
     {
         public int TourId { get; private set; }
+        public int TouristId { get; private set; }
         public List<Notification>? Notifications { get; private set; }
         public List<ProblemComment>? Comments { get; private set; }
         public ProblemDetails Details { get; private set; }
         public DateTime? Deadline { get; private set; }
         public ProblemStatus Status { get; private set; }
 
-
-
-        public TourProblem(int tourId, List<Notification>? notifications, List<ProblemComment>? comments, ProblemDetails details, DateTime? deadline)
+        public TourProblem(int tourId, int touristId, List<Notification>? notifications, List<ProblemComment>? comments, ProblemDetails details, DateTime? deadline)
         {
             TourId = tourId;
+            TouristId = touristId;
             Notifications = notifications;
             Comments = comments;
             Details = details;

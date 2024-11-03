@@ -1,15 +1,17 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.API.Dtos;
+using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
+using FluentResults;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Administrator
 {
-
-    [Route("api/author/problem")]
     [Authorize(Policy = "administratorPolicy")]
+    [Route("api/administrator/problem")]
     public class TourProblemController : BaseApiController
     {
         private readonly ITourProblemService _tourProblemService;
@@ -19,6 +21,18 @@ namespace Explorer.API.Controllers.Administrator
         {
             _tourProblemService = tourProblemService;
             _tourService = tourService;
+        }
+
+
+        [HttpPut("{id:int}")]
+        public ActionResult<TourPreferencesDto> Update([FromBody] TourProblemDto tourProblem)
+        {
+            if(tourProblem.Deadline < DateTime.UtcNow)
+            {
+                var result = _tourProblemService.CloseProblem(tourProblem);
+                return CreateResponse(result);
+            }
+            return CreateResponse(Result.Fail("deadline hasn't passed."));  
         }
 
         [HttpGet("getAll")]

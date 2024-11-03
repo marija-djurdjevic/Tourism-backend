@@ -29,5 +29,12 @@ namespace Explorer.API.Controllers.Author
 
             return CreateResponse(results);
         }
+
+        [HttpPost("addComment")]
+        public ActionResult<PagedResult<TourProblemDto>> AddComment([FromQuery] int tourProblemId, ProblemCommentDto commentDto)
+        {
+            var result = _tourProblemService.AddComment(tourProblemId, commentDto);
+            return CreateResponse(result);
+        }
     }
 }
