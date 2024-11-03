@@ -1,4 +1,4 @@
-﻿using Explorer.BuildingBlocks.Core.Domain;
+using Explorer.BuildingBlocks.Core.Domain;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Explorer.Stakeholders.Core.Domain;
@@ -17,7 +17,18 @@ public class User : Entity
         Password = password;
         Role = role;
         IsActive = isActive;
+        Location = new Location(0, 0);
         Validate();
+    }
+
+    public bool SetLocation(float longitude, float latitude)
+    {
+        if (Role == UserRole.Tourist && IsActive)
+        {
+            Location = new Location(latitude, longitude);
+            return true;
+        }
+        throw new ArgumentException("Unauthorized attempt to set location.");
     }
 
     private void Validate()
