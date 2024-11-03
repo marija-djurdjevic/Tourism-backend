@@ -21,53 +21,53 @@ namespace Explorer.API.Controllers.Tourist.Execution
 
 
 
-        [HttpPost("start")]
-        public ActionResult<TourSessionDto> StartTour(int tourId, double latitude, double longitude)
-        {
+        //[HttpPost("start")]
+        //public ActionResult<TourSessionDto> StartTour(int tourId, double latitude, double longitude)
+        //{
             
-            var initialLocation = new LocationDto(latitude, longitude);
+        //    var initialLocation = new LocationDto(latitude, longitude);
 
            
-            var result = _tourSessionService.StartTour(tourId, initialLocation);
+        //    var result = _tourSessionService.StartTour(tourId, initialLocation);
 
             
-            if (result.IsSuccess)
-            {
-                return Ok(result.Value);
-            }
+        //    if (result.IsSuccess)
+        //    {
+        //        return Ok(result.Value);
+        //    }
 
            
-            return BadRequest(result.Errors.Select(e => e.Message));
-        }
+        //    return BadRequest(result.Errors.Select(e => e.Message));
+        //}
 
 
 
-        [HttpPost("complete/{id}")]
-        public ActionResult<TourSessionDto> CompleteTour(int id)
-        {
-            var result = _tourSessionService.CompleteTour(id);
+        //[HttpPost("complete/{id}")]
+        //public ActionResult<TourSessionDto> CompleteTour(int id)
+        //{
+        //    var result = _tourSessionService.CompleteTour(id);
 
-            if (result.IsSuccess)
-            {
-                return Ok(result.Value);
-            }
+        //    if (result.IsSuccess)
+        //    {
+        //        return Ok(result.Value);
+        //    }
 
-            return NotFound(result.Errors.Select(e => e.Message));
-        }
+        //    return NotFound(result.Errors.Select(e => e.Message));
+        //}
 
         
-        [HttpPost("abandon/{id}")]
-        public ActionResult<TourSessionDto> AbandonTour(int id)
-        {
-            var result = _tourSessionService.AbandonTour(id);
+        //[HttpPost("abandon/{id}")]
+        //public ActionResult<TourSessionDto> AbandonTour(int id)
+        //{
+        //    var result = _tourSessionService.AbandonTour(id);
 
-            if (result.IsSuccess)
-            {
-                return Ok(result.Value);
-            }
+        //    if (result.IsSuccess)
+        //    {
+        //        return Ok(result.Value);
+        //    }
 
-            return NotFound(result.Errors.Select(e => e.Message));
-        }
+        //    return NotFound(result.Errors.Select(e => e.Message));
+        //}
 
        
        

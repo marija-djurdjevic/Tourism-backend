@@ -15,5 +15,7 @@ namespace Explorer.Stakeholders.API.Public
         Result<UserDto> Create(UserDto userDto);
         Result<long> GetPersonId(long userId);
         Result<PersonDto> GetPersonByUserId(long userId);
+        Result<LocationDto> SetUserLocation(long userId, float longitude, float latitude);
+        Result<LocationDto> GetUserLocation(long userId);
     }
 }

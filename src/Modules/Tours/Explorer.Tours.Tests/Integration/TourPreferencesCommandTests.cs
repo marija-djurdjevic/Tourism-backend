@@ -1,9 +1,10 @@
 ﻿using Explorer.API.Controllers.Administrator.Administration;
 using Explorer.API.Controllers.Tourist;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public;
 using Explorer.Tours.API.Public.Administration;
-using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,7 @@ namespace Explorer.Tours.Tests.Integration
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var newEntity = new TourPreferencesDto
             {
-                Difficulty = (TourDto.DifficultyStatus?)DifficultyStatus.Medium,
+                Difficulty = (TourDto.DifficultyStatus)DifficultyStatus.Medium,
                 TouristId = 1,
                 WalkingRating = 3,
                 CyclingRating = 2,
@@ -71,7 +72,7 @@ namespace Explorer.Tours.Tests.Integration
             var updatedEntity = new TourPreferencesDto
             {
                 Id = -1,
-                Difficulty = (TourDto.DifficultyStatus?)DifficultyStatus.Easy,
+                Difficulty = (TourDto.DifficultyStatus)DifficultyStatus.Easy,
                 WalkingRating = 3,
                 CyclingRating = 2,
                 DrivingRating = 1,

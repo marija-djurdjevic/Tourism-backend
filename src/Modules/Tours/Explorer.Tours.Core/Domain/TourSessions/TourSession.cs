@@ -9,6 +9,8 @@ namespace Explorer.Tours.Core.Domain.TourSessions
         public int TourId { get; private set; }
         public Location? CurrentLocation { get; private set; }
         public List<CompletedKeyPoints>?  CompletedKeyPoints { get; private set; }
+        //public Location CurrentLocation { get; private set; }
+        public List<CompletedKeyPoints> CompletedKeyPoints { get; private set; }
 
         public DateTime LastActivity { get; private set; }
         public TourSessionStatus Status { get; private set; }

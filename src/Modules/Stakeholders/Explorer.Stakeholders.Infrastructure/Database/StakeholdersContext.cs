@@ -2,6 +2,7 @@
 using Explorer.Stakeholders.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 using Explorer.BuildingBlocks.Core.Domain;
+using Explorer.Stakeholders.Core.Domain.Users;
 
 namespace Explorer.Stakeholders.Infrastructure.Database;
 
@@ -20,6 +21,8 @@ public class StakeholdersContext : DbContext
         modelBuilder.HasDefaultSchema("stakeholders");
 
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
+
+        modelBuilder.Entity<User>().Property(item => item.Location).HasColumnType("jsonb");
 
         ConfigureStakeholder(modelBuilder);
     }
