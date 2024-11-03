@@ -26,15 +26,13 @@ public class ToursProfile : Profile
         //CreateMap<KeyPointDto, KeyPoint>().ReverseMap();
         CreateMap<ObjectDto, Domain.Object>().ReverseMap();
         CreateMap<TourPreferencesDto, TourPreferences>().ReverseMap();
-
-
+        CreateMap<TourDto, Tour>().ForMember(dest => dest.PublishedAt, opt => opt.MapFrom(src => src.PublishedAt.ToUniversalTime()));
         CreateMap<TourSessionDto, TourSession > ()
         //.ForMember(dest => dest.CurrentLocation, opt => opt.MapFrom(src => src.CurrentLocation))
         .ForMember(dest => dest.CompletedKeyPoints, opt => opt.MapFrom(src => src.CompletedKeyPoints));
-    
         CreateMap<CompletedKeyPointDto, CompletedKeyPoints>().IncludeAllDerived().ReverseMap();
         CreateMap<LocationDto, Location>().IncludeAllDerived().ReverseMap();
-
+        CreateMap<TransportInfo, TransportInfoDto>().ReverseMap();
         CreateMap<KeyPoint, KeyPointDto>()
            .ForMember(dto => dto.Longitude, opt => opt.MapFrom(src => src.Coordinates.Longitude))
            .ForMember(dto => dto.Latitude, opt => opt.MapFrom(src => src.Coordinates.Latitude))

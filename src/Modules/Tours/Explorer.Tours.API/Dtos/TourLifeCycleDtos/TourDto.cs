@@ -1,4 +1,4 @@
-﻿namespace Explorer.Tours.API.Dtos.TourLifeCycleDtos
+﻿namespace Explorer.Tours.API.Dtos.TourLifecycleDtos
 {
     public class TourDto
     {
@@ -28,7 +28,7 @@
         public DateTime PublishedAt {  get; set; }
         public DateTime ArchivedAt { get; set; }
         public double AverageScore {  get; set; }
-
+        public TransportInfoDto TransportInfo { get; set; }
         public List<KeyPointDto> KeyPoints { get; set; }
     }
 

@@ -18,7 +18,7 @@ namespace Explorer.Tours.Core.Domain.Tours
     }
     public class TransportInfo : ValueObject<TransportInfo>
     {
-        public TimeSpan Time { get; private set; }
+        public int Time { get; private set; }
         public double Distance { get; private set; }
         public TransportType Transport {  get; private set; }
 
@@ -33,7 +33,7 @@ namespace Explorer.Tours.Core.Domain.Tours
         }
 
         [JsonConstructor]
-        public TransportInfo(TimeSpan time, double distance, TransportType transport)
+        public TransportInfo(int time, double distance, TransportType transport)
         {
             Time = time;
             Distance = distance;

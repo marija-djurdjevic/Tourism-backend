@@ -1,7 +1,6 @@
-﻿using Explorer.BuildingBlocks.Core.Domain;
-using System.ComponentModel.DataAnnotations.Schema;
+using Explorer.BuildingBlocks.Core.Domain;
 
-namespace Explorer.Stakeholders.Core.Domain;
+namespace Explorer.Stakeholders.Core.Domain.Users;
 
 //[Table("Users", Schema = "stakeholders")]  
 public class User : Entity
@@ -10,6 +9,7 @@ public class User : Entity
     public string Password { get; private set; }
     public UserRole Role { get; private set; }
     public bool IsActive { get; set; }
+    public Location Location { get; set; }
 
     public User(string username, string password, UserRole role, bool isActive)
     {
@@ -17,7 +17,19 @@ public class User : Entity
         Password = password;
         Role = role;
         IsActive = isActive;
+        Location = new Location(0, 0);
         Validate();
+    }
+
+
+    public bool SetLocation(float longitude, float latitude)
+    {
+        if (Role == UserRole.Tourist && IsActive)
+        {
+            Location = new Location(latitude, longitude);
+            return true;
+        }
+        throw new ArgumentException("Unauthorized attempt to set location.");
     }
 
     private void Validate()

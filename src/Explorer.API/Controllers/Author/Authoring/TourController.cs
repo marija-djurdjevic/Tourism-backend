@@ -1,6 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +43,13 @@ namespace Explorer.API.Controllers.Author.Authoring
         public ActionResult<TourDto> Create([FromBody] TourDto tourDto)
         {
             var result = _tourService.Create(tourDto);
+            return CreateResponse(result);
+        }
+
+        [HttpPut("publish-tour")]
+        public ActionResult<TourDto> Publish([FromBody] TourDto tourDto)
+        {
+            var result = _tourService.Publish(tourDto);
             return CreateResponse(result);
         }
 
