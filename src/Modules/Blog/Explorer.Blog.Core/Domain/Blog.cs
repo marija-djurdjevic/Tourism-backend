@@ -18,6 +18,8 @@ namespace Explorer.Blog.Core.Domain
         Draft,
         Published,
         Closed,
+        Active,
+        Famous
     }
 
     //[Table("Blogs", Schema = "blog")] 
@@ -26,7 +28,7 @@ namespace Explorer.Blog.Core.Domain
     {
         //[ForeignKey("User")]
         public long AuthorId { get; private set; }
-        public List<Comment>? Comments { get; private set; }
+        //public List<Comment>? Comments { get; private set; }
         public List<Vote>? Votes { get; private set; }
         //public User User { get; set; }
         public string Title { get; private set; }
@@ -73,6 +75,25 @@ namespace Explorer.Blog.Core.Domain
                 vote.CreationDate = newVote.CreationDate;
                 vote.Value = newVote.Value;
             }
+
+            CheckStatus();
+        }
+
+        private void CheckStatus()
+        {
+            int badVotes = 0;
+            int goodVotes = 0;
+            foreach (Vote vote in Votes)
+            {
+                if (vote.Value == false) { badVotes++; }
+                else { goodVotes++; }
+            }
+            int votes = goodVotes - badVotes;
+
+            if (votes < -10) { Status = BlogStatus.Closed; }
+            else if (votes > 100) { Status = BlogStatus.Active; }
+            else if (votes > 500) { Status = BlogStatus.Famous; }
+
         }
 
         public void RemoveVote(long authorId)
