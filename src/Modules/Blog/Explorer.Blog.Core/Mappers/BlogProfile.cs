@@ -14,6 +14,5 @@ public class BlogProfile : Profile
         CreateMap<BlogDto, Blogs>()
            .ForMember(dest => dest.Votes, opt => opt.MapFrom(src => src.Votes))
            .ReverseMap();
-
     }
 }
