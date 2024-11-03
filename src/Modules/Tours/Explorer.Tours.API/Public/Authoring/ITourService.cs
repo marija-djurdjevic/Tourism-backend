@@ -1,6 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -17,5 +17,8 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id);
         public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId);
         public Result<List<TourDto>> GetAllToursWithKeyPoints();
+
+        Result<bool> Publish(TourDto entity);
+        Result<bool> Archive(TourDto entity);
     }
 }
