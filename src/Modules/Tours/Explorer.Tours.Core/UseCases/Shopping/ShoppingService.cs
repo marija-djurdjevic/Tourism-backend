@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos.ShoppingDtos;
-using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Shopping;
 using Explorer.Tours.Core.Domain;

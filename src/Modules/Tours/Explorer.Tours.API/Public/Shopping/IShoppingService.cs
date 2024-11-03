@@ -1,6 +1,5 @@
 ﻿using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.ShoppingDtos;
-using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using FluentResults;
 using System;
 using System.Collections.Generic;
