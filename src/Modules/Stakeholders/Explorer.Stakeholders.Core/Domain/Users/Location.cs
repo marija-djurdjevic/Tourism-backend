@@ -22,6 +22,7 @@ namespace Explorer.Stakeholders.Core.Domain.Users
             Longitude = longitude;
         }
 
+
         public bool IsNearby(Location other, double radiusInMeters)
         {
             double earthRadius = 6371000; // Earth's radius in meters

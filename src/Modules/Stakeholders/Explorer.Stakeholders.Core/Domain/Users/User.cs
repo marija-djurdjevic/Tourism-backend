@@ -21,6 +21,7 @@ public class User : Entity
         Validate();
     }
 
+
     public bool SetLocation(float longitude, float latitude)
     {
         if (Role == UserRole.Tourist && IsActive)
