@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist.Execution
 {
-    [Authorize(Policy = "touristPolicy")]
+    //[Authorize(Policy = "touristPolicy")]
     [Route("api/administration/tourSession")]
     public class TourSessionController:BaseApiController
     {
@@ -25,7 +25,7 @@ namespace Explorer.API.Controllers.Tourist.Execution
 
 
         [HttpPost("start")]
-        public ActionResult<bool> StartTour(int tourId, double latitude, double longitude)
+        public ActionResult<bool> StartTour([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude)
         {
 
             var initialLocation = new LocationDto(latitude, longitude);
