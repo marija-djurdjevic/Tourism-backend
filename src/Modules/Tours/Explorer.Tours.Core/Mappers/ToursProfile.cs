@@ -19,14 +19,15 @@ public class ToursProfile : Profile
     {
         CreateMap<EquipmentDto, Equipment>().ReverseMap();
         CreateMap<TourEquipmentDto, TourEquipment>().ReverseMap();
-        CreateMap<TourDto, Tour>().ReverseMap();
         CreateMap<ClubDto, Club>().ReverseMap();
         CreateMap<TourReviewDto, TourReview>().ReverseMap();
         CreateMap<TourProblemDto, TourProblem>().ReverseMap();
         //CreateMap<KeyPointDto, KeyPoint>().ReverseMap();
         CreateMap<ObjectDto, Domain.Object>().ReverseMap();
         CreateMap<TourPreferencesDto, TourPreferences>().ReverseMap();
-        CreateMap<TourDto, Tour>().ForMember(dest => dest.PublishedAt, opt => opt.MapFrom(src => src.PublishedAt.ToUniversalTime()));
+        CreateMap<TourDto, Tour>()
+            .ForMember(dest => dest.PublishedAt, opt => opt.MapFrom(src => src.PublishedAt.ToUniversalTime()))
+            .ForMember(dest => dest.TransportInfo, opt => opt.MapFrom(src => src.TransportInfo)).ReverseMap();
         CreateMap<TourSessionDto, TourSession > ()
         //.ForMember(dest => dest.CurrentLocation, opt => opt.MapFrom(src => src.CurrentLocation))
         .ForMember(dest => dest.CompletedKeyPoints, opt => opt.MapFrom(src => src.CompletedKeyPoints));
