@@ -1,4 +1,4 @@
-INSERT INTO tours."TourProblems"(
+/*INSERT INTO tours."TourProblems"(
 	"Id", "TourId", "Category", "ProblemPriority", "Description", "Time")
 	VALUES
     (-1, -1, 0, 3, 'Na stazi su se pojavili klizavi kamencici.', '14:30:00');
@@ -8,3 +8,4 @@ INSERT INTO tours."TourProblems"(
 	INSERT INTO tours."TourProblems"(
 	"Id", "TourId", "Category", "ProblemPriority", "Description", "Time")
  VALUES (-3, -3, 1, 1, 'Put je blokiran drvetom.', '12:00:00');
+ */

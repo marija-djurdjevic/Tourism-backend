@@ -10,6 +10,7 @@ using Explorer.Tours.Core.UseCases.Shopping;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Explorer.API.Controllers.Tourist
 {
@@ -34,6 +35,7 @@ namespace Explorer.API.Controllers.Tourist
             {
                 return Unauthorized();
             }
+
             var result = _shoppingService.Checkout(orderItemsDto, Int32.Parse(touristId));
             return CreateResponse(result);
         }
@@ -41,7 +43,7 @@ namespace Explorer.API.Controllers.Tourist
         [HttpGet("purchased")]
         public ActionResult<List<TourDto>> GetPurchasedTours()
         {
-            var tours = new List<TourDto>();
+            List<TourDto> tours = new List<TourDto>();
             var touristId = User.FindFirst("id")?.Value;
             if (string.IsNullOrEmpty(touristId))
             {
@@ -56,7 +58,7 @@ namespace Explorer.API.Controllers.Tourist
                 tours.Add(tour);
             }
 
-            return tours;
+            return CreateResponse(Result.Ok(tours));
         }
 
 
