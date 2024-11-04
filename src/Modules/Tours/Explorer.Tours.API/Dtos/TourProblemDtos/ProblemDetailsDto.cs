@@ -12,6 +12,14 @@ namespace Explorer.Tours.API.Dtos.TourProblemDtos
         public int ProblemPriority { get;  set; }
         public string Explanation { get;  set; }
         public DateTime Time { get;  set; }  
+
+        public ProblemDetailsDto(ProblemCategory category, int problemPriority, string explanation, DateTime time)
+        {
+            Category = category;
+            ProblemPriority = problemPriority;
+            Explanation = explanation;
+            Time = time;
+        }
     }
 
     public enum ProblemCategory

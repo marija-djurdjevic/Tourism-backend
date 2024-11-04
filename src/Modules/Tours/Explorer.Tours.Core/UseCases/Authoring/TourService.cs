@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
@@ -140,6 +140,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             var tourDto = _mapper.Map<TourDto>(tour);
             return Result.Ok(tourDto);
-        }
+         }
     }
 }

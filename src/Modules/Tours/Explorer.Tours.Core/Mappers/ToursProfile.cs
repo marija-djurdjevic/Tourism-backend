@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.ShoppingDtos;
@@ -21,7 +21,6 @@ public class ToursProfile : Profile
         CreateMap<TourEquipmentDto, TourEquipment>().ReverseMap();
         CreateMap<ClubDto, Club>().ReverseMap();
         CreateMap<TourReviewDto, TourReview>().ReverseMap();
-        CreateMap<TourProblemDto, TourProblem>().ReverseMap();
         //CreateMap<KeyPointDto, KeyPoint>().ReverseMap();
         CreateMap<ObjectDto, Domain.Object>().ReverseMap();
         CreateMap<TourPreferencesDto, TourPreferences>().ReverseMap();
@@ -44,5 +43,11 @@ public class ToursProfile : Profile
             .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items)).ReverseMap();
         CreateMap<OrderItemDto, OrderItem>().ReverseMap();
         CreateMap<TourPurchaseTokenDto, TourPurchaseToken>().ReverseMap();
+        CreateMap<TourProblemDto, TourProblem>()
+            .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments))
+            .ForMember(dest => dest.Details, opt => opt.MapFrom(src => src.Details)).ReverseMap();
+        CreateMap<NotificationDto, Notification>().IncludeAllDerived().ReverseMap();
+        CreateMap<ProblemDetailsDto, ProblemDetails>().IncludeAllDerived().ReverseMap();
+        CreateMap<ProblemCommentDto, ProblemComment>().IncludeAllDerived().ReverseMap();
     }
 }

@@ -18,11 +18,8 @@ namespace Explorer.Tours.API.Public.Authoring
         public Result<TourDto> GetKeyPointsByTourId(int tourId);
         public Result<List<TourDto>> GetAllToursWithKeyPoints();
         public Result<List<TourDto>> GetAllPublished(int page, int pageSize);
-
         public Result<TourDto> GetById(int tourId);
-
         public Result<KeyPointDto> AddKeyPointToTourAsync(int tourId, KeyPointDto keyPointDto);
-
         Result<bool> Publish(TourDto entity);
         Result<bool> Archive(TourDto entity);
     }
