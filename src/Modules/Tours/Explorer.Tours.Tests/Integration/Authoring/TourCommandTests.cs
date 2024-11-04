@@ -1,5 +1,6 @@
-﻿using Explorer.API.Controllers.Author.Authoring;
-using Explorer.Tours.API.Dtos;
+﻿using Explorer.API.Controllers.Administrator.Administration;
+using Explorer.API.Controllers.Author.Authoring;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +12,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Tests.Integration.Administration
+namespace Explorer.Tours.Tests.Integration.Authoring
 {
     [Collection("Sequential")]
-    public class KeyPointCommandTests : BaseToursIntegrationTest
+    public class TourCommandTests : BaseToursIntegrationTest
     {
-        public KeyPointCommandTests(ToursTestFactory factory) : base(factory) { }
+        public TourCommandTests(ToursTestFactory factory) : base(factory) { }
 
         [Fact]
         public void Creates()
@@ -25,23 +26,28 @@ namespace Explorer.Tours.Tests.Integration.Administration
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-            var newEntity = new KeyPointDto
+            var newEntity = new TourDto
             {
-                Id = 10,
-                TourId = 1,
+                Id = 1,
+                AuthorId = 0,
                 Name = "Test",
                 Description = "desc test",
-                Longitude = 20,
-                Latitude = 25,
-                ImagePath = "path test"
+                Difficulty = 0,
+                Tags = "#hiking,#adventure,#test",
+                Price = 1000,
+                Status = 0
             };
-            var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as KeyPointDto;
+
+            //Act
+            var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as TourDto;
+
             //Assert response 
             result.ShouldNotBeNull();
             result.Id.ShouldNotBe(0);
             result.Name.ShouldBe(newEntity.Name);
+
             //Assert database
-            var storedEntity = dbContext.KeyPoints.FirstOrDefault(i => i.Name == newEntity.Name);
+            var storedEntity = dbContext.Tour.FirstOrDefault(i => i.Name == newEntity.Name);
             storedEntity.ShouldNotBeNull();
             storedEntity.Id.ShouldBe(result.Id);
         }
@@ -52,7 +58,7 @@ namespace Explorer.Tours.Tests.Integration.Administration
             // Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            var updatedEntity = new KeyPointDto
+            var updatedEntity = new TourDto
             {
                 Description = "Test"
             };
@@ -65,13 +71,12 @@ namespace Explorer.Tours.Tests.Integration.Administration
             result.StatusCode.ShouldBe(400);
         }
 
-        private static KeyPointController CreateController(IServiceScope scope)
+        private static TourController CreateController(IServiceScope scope)
         {
-            return new KeyPointController(scope.ServiceProvider.GetRequiredService<IKeyPointService>())
+            return new TourController(scope.ServiceProvider.GetRequiredService<ITourService>())
             {
                 ControllerContext = BuildContext("-1")
             };
         }
     }
-
 }

@@ -54,7 +54,19 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
         public Result<bool> Archive(TourDto tourDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tour = _mapper.Map<Tour>(tourDto);
+                tour.Archive();
+                var updatedTourDto = _mapper.Map<TourDto>(tour);
+                Update(updatedTourDto);
+
+                return Result.Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail("An error occurred while publishing the tour: " + ex.Message);
+            }
         }
 
         public Result<List<TourDto>> GetAllToursWithKeyPoints()

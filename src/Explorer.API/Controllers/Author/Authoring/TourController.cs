@@ -46,10 +46,17 @@ namespace Explorer.API.Controllers.Author.Authoring
             return CreateResponse(result);
         }
 
-        [HttpPut("publish-tour")]
+        [HttpPost("publish-tour")]
         public ActionResult<TourDto> Publish([FromBody] TourDto tourDto)
         {
             var result = _tourService.Publish(tourDto);
+            return CreateResponse(result);
+        }
+
+        [HttpPut("archive-tour")]
+        public ActionResult<TourDto> Archive([FromBody] TourDto tourDto)
+        {
+            var result = _tourService.Archive(tourDto);
             return CreateResponse(result);
         }
 
