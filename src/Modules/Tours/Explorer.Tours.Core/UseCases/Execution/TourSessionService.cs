@@ -26,13 +26,16 @@ namespace Explorer.Tours.Core.UseCases.Execution
         private readonly IMapper _mapper;
         private readonly ITourService _tourService;
         private readonly IKeyPointService _keyPointService;
+        private readonly ITourPurchaseTokenRepository _purchaseTokenRepository;
         
-        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService) : base(mapper)
+
+        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService,ITourPurchaseTokenRepository tourPurchaseTokenRepository) : base(mapper)
         {
             _repository = repository;
             _mapper = mapper;
             _tourService = tourService;
             _keyPointService = keyPointService;
+            _purchaseTokenRepository = tourPurchaseTokenRepository;
             
         }
         public Result<TourSessionDto> AbandonTour(int tourId)
@@ -80,9 +83,18 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
         }
 
-        public Result<TourSessionDto> StartTour(int tourId, LocationDto initialLocation)
+        public Result<TourSessionDto> StartTour(int tourId, LocationDto initialLocation,int touristId)
         {
             
+            var purchasedTours=_purchaseTokenRepository.GetPurchasedTours(touristId);
+
+            bool exist = purchasedTours.Any(item => item == tourId);
+            if (!exist)
+            {
+                return Result.Fail<TourSessionDto>("Tour not found.");
+
+            }
+
 
 
             var tourResult = _tourService.Get(tourId);

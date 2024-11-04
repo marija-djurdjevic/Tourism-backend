@@ -179,5 +179,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             var tourDto = _mapper.Map<TourDto>(tour);
             return Result.Ok(tourDto);
          }
+
+        
     }
 }

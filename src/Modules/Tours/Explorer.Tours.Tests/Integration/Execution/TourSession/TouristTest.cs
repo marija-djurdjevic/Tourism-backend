@@ -25,14 +25,14 @@ namespace Explorer.Tours.Tests.Integration.Execution.TourSession
         public TouristTest(ToursTestFactory factory) : base(factory) { }
 
         [Theory]
-        [InlineData(1, 45.2671, 19.8335)]
-        public void StartTourSucceeds(int tourId, double latitude, double longitude)
+        [InlineData(1, 45.2671, 19.8335,-2)]
+        public void StartTourSucceeds(int tourId, double latitude, double longitude,int touristId)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
 
 
-            var result = (ObjectResult)controller.StartTour(tourId, latitude, longitude).Result;
+            var result = (ObjectResult)controller.StartTour(tourId, latitude, longitude, touristId).Result;
 
            
             result.ShouldNotBeNull();

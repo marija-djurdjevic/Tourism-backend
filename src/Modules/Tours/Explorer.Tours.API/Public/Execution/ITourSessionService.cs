@@ -13,7 +13,7 @@ namespace Explorer.Tours.API.Public.Execution
 {
     public interface ITourSessionService 
     {
-        public Result<TourSessionDto> StartTour(int tourId, LocationDto initialLocation);
+        public Result<TourSessionDto> StartTour(int tourId, LocationDto initialLocation,int touristId);
 
         public Result<TourSessionDto> CompleteTour(int tourSessionId);
 

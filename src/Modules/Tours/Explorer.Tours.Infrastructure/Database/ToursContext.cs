@@ -5,6 +5,7 @@ using Explorer.Tours.Core.Domain.TourProblems;
 using Microsoft.EntityFrameworkCore;
 using Explorer.Tours.Core.Domain.Tours;
 
+
 namespace Explorer.Tours.Infrastructure.Database;
 
 public class ToursContext : DbContext
@@ -31,7 +32,7 @@ public class ToursContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("tours");
-        modelBuilder.Entity<ShoppingCart>().Property(item => item.Tokens).HasColumnType("jsonb");
+        //modelBuilder.Entity<ShoppingCart>().Property(item => item.Tokens).HasColumnType("jsonb");
 
         modelBuilder.Entity<TourSession>().Property(ts => ts.CurrentLocation) .HasColumnType("jsonb");
         modelBuilder.Entity<ShoppingCart>().Property(item => item.Items).HasColumnType("jsonb");

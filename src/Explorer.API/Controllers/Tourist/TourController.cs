@@ -19,7 +19,7 @@ namespace Explorer.API.Controllers.Tourist
         private readonly ITourService _tourService;
         private readonly IKeyPointService _keyPointService;
 
-        public TourController(IShoppingService shoppingService,ITourService tourService,IKeyPointService _keyPointService )
+        public TourController(IShoppingService shoppingService,ITourService tourService,IKeyPointService keyPointService )
         {
             _shoppingService = shoppingService;
             _tourService = tourService;

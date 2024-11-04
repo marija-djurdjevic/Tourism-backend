@@ -26,13 +26,13 @@ namespace Explorer.API.Controllers.Tourist.Execution
 
 
         [HttpPost("start")]
-        public ActionResult<bool> StartTour([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude)
+        public ActionResult<bool> StartTour([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] int touristId)
         {
 
             var initialLocation = new LocationDto(latitude, longitude);
 
 
-            var result = _tourSessionService.StartTour(tourId, initialLocation);
+            var result = _tourSessionService.StartTour(tourId, initialLocation,touristId);
 
 
             if (result.IsSuccess)
