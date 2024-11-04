@@ -26,5 +26,22 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
                 .Include(t => t.KeyPoints) 
                 .ToList();
         }
+
+        public Tour? GetById(int tourId)
+        {
+            return _dbContext.Tour
+               .FirstOrDefault(t => t.Id == tourId);
+        }
+        public Tour GetByIdAsync(int tourId)
+        {
+            return _dbContext.Tour.AsNoTracking().Include(t => t.KeyPoints)
+                                        .FirstOrDefault(t => t.Id == tourId);
+        }
+        public Tour GetKeyPointsForTour(int tourId)
+        {
+            return _dbContext.Tour
+                .Include(t => t.KeyPoints)
+                .FirstOrDefault(t => t.Id == tourId);
+        }
     }
 }

@@ -8,29 +8,28 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.Domain.TourProblems
 {
-    public class Notification : ValueObject<Notification>
+    public class Notification : Entity
     {
-        public string Content { get; }
-        public int RecieverId {get;  }
+        public string Content { get; private set; }
+        public NotificationType Type {get; private set; }   
+        public int ReferenceId { get; private set;  } //U zavisnosti koji je tip notifikacije ovde ce biti id komentara, problema itd
+        public int RecieverId {get; private set; }
         public bool IsRead { get; private set; }
-           
+          
         [JsonConstructor]
-        public Notification(string content, int recieverId, bool isRead)
+        public Notification(string content, int referenceId, NotificationType type, int recieverId, bool isRead)
         {
             Content = content;
+            Type = type;
             RecieverId = recieverId;
+            ReferenceId = referenceId;
             IsRead = isRead;
         }
+    }
 
-        protected override bool EqualsCore(Notification other)
-        {
-            if (other == null) return false;
-            return Content == other.Content && RecieverId == other.RecieverId && IsRead == other.IsRead;
-        }
-
-        protected override int GetHashCodeCore()
-        {
-            return HashCode.Combine(Content, RecieverId, IsRead);
-        }
+    public enum NotificationType
+    {
+        TourProblemComment
+        //Ko bude koristio notifikacije neka sebi doda tip koji mu treba
     }
 }
