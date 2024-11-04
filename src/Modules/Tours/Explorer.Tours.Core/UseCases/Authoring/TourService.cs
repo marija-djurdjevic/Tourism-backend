@@ -22,12 +22,53 @@ namespace Explorer.Tours.Core.UseCases.Authoring
     {
 
         private readonly ITourRepository _tourRepository;
+        private readonly ICrudRepository<KeyPoint> _keyPointRepository;
         private readonly IMapper _mapper;
-        public TourService(ICrudRepository<Tour> repository, IMapper mapper, ITourRepository tourRepository) : base(repository, mapper) {          
+        public TourService(ICrudRepository<Tour> repository, IMapper mapper, ITourRepository tourRepository, ICrudRepository<KeyPoint> keyPointRepository) : base(repository, mapper) {          
             _mapper = mapper;
             _tourRepository = tourRepository;
+            _keyPointRepository = keyPointRepository;
         }
 
+        public Result<KeyPointDto> AddKeyPointToTourAsync(int tourId, KeyPointDto keyPointDto)
+        {
+            try
+            {
+                
+                var tour = GetTourByIdAsync(tourId);
+
+                if (tour == null)
+                {
+                    return Result.Fail<KeyPointDto>("Tour not found.");
+                }
+                Console.WriteLine($"Tour found: {tour.Id}, KeyPoints Count: {tour.KeyPoints.Count}");
+
+                var keyPoint = _mapper.Map<KeyPoint>(keyPointDto);
+
+
+                tour.KeyPoints.Add(keyPoint);
+
+                _keyPointRepository.Create(keyPoint);
+               
+
+
+                var tourDto = _mapper.Map<TourDto>(tour);
+                Update(tourDto);
+                
+                
+                return Result.Ok(_mapper.Map<KeyPointDto>(keyPoint));
+            }
+            catch (Exception ex)
+            {
+                var innerExceptionMessage = ex.InnerException?.Message ?? "No inner exception.";
+                return Result.Fail<KeyPointDto>("An error occurred while adding the key point: " + ex.Message);
+            }
+        }
+
+        private Tour GetTourByIdAsync(int tourId)
+        {
+            return _tourRepository.GetByIdAsync(tourId);
+        }
         public Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id)
         {
             var tours = GetPaged(page, pageSize);
@@ -71,25 +112,12 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             return Result.Ok(tourDtos);
         }
-        public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+        public Result<TourDto> GetKeyPointsByTourId(int tourId)
          {
 
-             var pagedTours = GetPaged(1, int.MaxValue); 
-
-             if (pagedTours.IsFailed)
-             {
-                 return Result.Fail<List<KeyPointDto>>("Failed to retrieve tours.");
-             }
-
-             var tour = pagedTours.Value.Results.FirstOrDefault(x => x.Id == tourId);
-
-             if (tour == null)
-             {
-                 return Result.Fail<List<KeyPointDto>>($"Tour with ID {tourId} not found.");
-             }
-
-
-             return tour.KeyPoints;
+            var tour = _tourRepository.GetKeyPointsForTour(tourId);
+            var tourDto = _mapper.Map<TourDto>(tour);
+            return Result.Ok(tourDto);
          }       
 
     }
