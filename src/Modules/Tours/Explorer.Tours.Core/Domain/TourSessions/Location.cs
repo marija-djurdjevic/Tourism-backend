@@ -36,10 +36,10 @@ namespace Explorer.Tours.Core.Domain.TourSessions
         }
 
 
-        public static bool IsWithinSimpleDistance(Location location1, Location location2, double threshold = 2)
+        public static bool IsWithinSimpleDistance(Location location1, Location location2, double threshold = 0.003)
         {
             
-            return Math.Abs(location1.Latitude - location2.Latitude) <= threshold &&
+            return Math.Abs(location1.Latitude - location2.Latitude) <= threshold ||
                    Math.Abs(location1.Longitude - location2.Longitude) <= threshold;
         }
     }

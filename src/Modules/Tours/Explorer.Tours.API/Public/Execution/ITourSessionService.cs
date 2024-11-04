@@ -19,7 +19,7 @@ namespace Explorer.Tours.API.Public.Execution
 
         public Result<TourSessionDto> AbandonTour(int tourSessionId);
 
-        public void UpdateLocation(int tourId, LocationDto locationDto);
+        public bool UpdateLocation(int tourId, LocationDto locationDto);
 
         public void UpdateSession(int tourId, LocationDto locationDto);
 

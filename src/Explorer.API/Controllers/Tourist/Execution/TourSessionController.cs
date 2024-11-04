@@ -76,12 +76,12 @@ namespace Explorer.API.Controllers.Tourist.Execution
 
 
         [HttpPost("update-location")]
-        public ActionResult UpdateLocation([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude)
+        public ActionResult<bool> UpdateLocation([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude)
         {
             var location = new LocationDto(latitude,longitude);
-            _tourSessionService.UpdateLocation(tourId, location);
+            bool isNear=_tourSessionService.UpdateLocation(tourId, location);
 
-            return Ok();
+            return Ok(isNear);
         }
 
         [HttpPost("update-session")]

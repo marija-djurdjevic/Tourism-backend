@@ -36,7 +36,7 @@ public class ToursProfile : Profile
 
         CreateMap<TourDto, Tour>().ForMember(dest => dest.PublishedAt, opt => opt.MapFrom(src => src.PublishedAt.ToUniversalTime()));
         CreateMap<TourSessionDto, TourSession > ()
-        //.ForMember(dest => dest.CurrentLocation, opt => opt.MapFrom(src => src.CurrentLocation))
+        .ForMember(dest => dest.CurrentLocation, opt => opt.MapFrom(src => src.CurrentLocation))
         .ForMember(dest => dest.CompletedKeyPoints, opt => opt.MapFrom(src => src.CompletedKeyPoints));
         CreateMap<CompletedKeyPointDto, CompletedKeyPoints>().IncludeAllDerived().ReverseMap();
         CreateMap<LocationDto, Location>().IncludeAllDerived().ReverseMap();

@@ -35,9 +35,17 @@ namespace Explorer.Tours.Core.UseCases.Execution
             _keyPointService = keyPointService;
             
         }
-        public Result<TourSessionDto> AbandonTour(int tourSessionId)
+        public Result<TourSessionDto> AbandonTour(int tourId)
         {
-            var tourSession = _repository.Get(tourSessionId);
+
+            var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
+
+
+            var tourSession = allSessions.FirstOrDefault(session =>
+                session.TourId == tourId);
+
+
+           
 
             if (tourSession == null)
             {
@@ -52,9 +60,14 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
 
 
-        public Result<TourSessionDto> CompleteTour(int tourSessionId)
+        public Result<TourSessionDto> CompleteTour(int tourId)
         {
-            var tourSession = _repository.Get(tourSessionId);
+            var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
+
+
+            var tourSession = allSessions.FirstOrDefault(session =>
+                session.TourId == tourId);
+
 
             if (tourSession == null)
             {
@@ -96,7 +109,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
             var existingSession = allSessions.FirstOrDefault(session =>
                 session.TourId == tourId);
 
-            if (existingSession != null && existingSession.Status == TourSession.TourSessionStatus.Active)
+            if (existingSession != null)
             {
                 return Result.Fail<TourSessionDto>("An active tour session already exists for this tour.");
             }
@@ -121,7 +134,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
 
 
-        public void UpdateLocation(int tourId, LocationDto locationDto)
+        public bool UpdateLocation(int tourId, LocationDto locationDto)
         {
 
             var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(locationDto);
@@ -151,9 +164,11 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
                 existingSession.CompleteSession();
                 _repository.Update(existingSession);
+                
 
 
             }
+            return isNear;
         }
 
 
