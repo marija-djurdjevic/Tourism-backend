@@ -20,7 +20,6 @@ namespace Explorer.Tours.API.Public.Execution
         Result<TourProblemDto> AddComment(int problemId, ProblemCommentDto comment);
         Result<TourProblemDto> SetDeadline(int problemId, DateTime deadline, int receiverId);
         Result<TourProblemDto> ChangeStatus(int problemId, ProblemStatus status);
-        Result<List<NotificationDto>> GetUnreadNotifications(int problemId);
-        Result<TourProblemDto> CloseProblem(TourProblemDto tourProblemDto);
+        Result<TourProblemDto> SetProblemExpired(TourProblemDto tourProblemDto);
     }
 }

@@ -49,7 +49,7 @@ namespace Explorer.Tours.Tests.Integration.Execution.TourProblems
 
         private static TourProblemController CreateController(IServiceScope scope)
         {
-            return new TourProblemController(scope.ServiceProvider.GetRequiredService<ITourProblemService>(), scope.ServiceProvider.GetRequiredService<ITourService>())
+            return new TourProblemController(scope.ServiceProvider.GetRequiredService<ITourProblemService>(), scope.ServiceProvider.GetRequiredService<ITourService>(), scope.ServiceProvider.GetRequiredService<INotificationService>())
             {
                 ControllerContext = BuildContext("-1")
             };

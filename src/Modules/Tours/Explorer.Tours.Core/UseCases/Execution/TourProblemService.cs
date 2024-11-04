@@ -76,17 +76,6 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return Result.Ok(MapToDto(tourProblem));
         }
 
-        public Result<List<NotificationDto>> GetUnreadNotifications(int id)
-        {
-            var tourProblem = _tourProblemRepository.Get(id);
-            if (tourProblem == null)
-                return Result.Fail("Tour problem not found");
-
-            var notifications = tourProblem.GetUnreadNotifications();
-
-            return Result.Ok(notifications.Select(n => _mapper.Map<Notification, NotificationDto>(n)).ToList());
-        }
-
         public Result<TourProblemDto> SetDeadline(int problemId, DateTime deadline, int receiverId)
         {
             var tourProblem = _tourProblemRepository.Get(problemId);
@@ -112,9 +101,9 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return results;
         }
 
-        public Result<TourProblemDto> CloseProblem(TourProblemDto tourProblemDto)
+        public Result<TourProblemDto> SetProblemExpired(TourProblemDto tourProblemDto)
         {
-            tourProblemDto.Status = API.Dtos.TourProblemDtos.ProblemStatus.Closed;
+            tourProblemDto.Status = API.Dtos.TourProblemDtos.ProblemStatus.Expired;
             var tourProblem = _tourProblemRepository.Update(MapToDomain(tourProblemDto));
 
             if (tourProblem == null)

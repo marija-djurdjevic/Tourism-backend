@@ -22,7 +22,6 @@ public class ToursProfile : Profile
 
         CreateMap<TourProblemDto, TourProblem>()
             .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments))
-            .ForMember(dest => dest.Notifications, opt => opt.MapFrom(src => src.Notifications))
             .ForMember(dest => dest.Details, opt => opt.MapFrom(src => src.Details)).ReverseMap();
         CreateMap<NotificationDto, Notification>().IncludeAllDerived().ReverseMap();
         CreateMap<ProblemDetailsDto, ProblemDetails>().IncludeAllDerived().ReverseMap();
