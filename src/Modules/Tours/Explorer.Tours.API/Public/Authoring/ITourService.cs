@@ -20,5 +20,9 @@ namespace Explorer.Tours.API.Public.Authoring
 
         Result<bool> Publish(TourDto entity);
         Result<bool> Archive(TourDto entity);
+
+        Result<TourDto> Get(int tourId);
+
+
     }
 }

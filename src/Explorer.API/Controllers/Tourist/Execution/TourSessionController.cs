@@ -1,4 +1,5 @@
-﻿using Explorer.Tours.API.Dtos.TourSessionDtos;
+﻿using Explorer.Stakeholders.Core.Domain.Users;
+using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain.TourSessions;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist.Execution
 {
-    //[Authorize(Policy = "touristPolicy")]
+    [Authorize(Policy = "touristPolicy")]
     [Route("api/administration/tourSession")]
     public class TourSessionController:BaseApiController
     {
@@ -73,6 +74,24 @@ namespace Explorer.API.Controllers.Tourist.Execution
         }
 
 
+
+        [HttpPost("update-location")]
+        public ActionResult UpdateLocation([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude)
+        {
+            var location = new LocationDto(latitude,longitude);
+            _tourSessionService.UpdateLocation(tourId, location);
+
+            return Ok();
+        }
+
+        [HttpPost("update-session")]
+        public ActionResult UpdateSession([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude)
+        {
+            var locationDto = new LocationDto(latitude, longitude);
+            _tourSessionService.UpdateSession(tourId, locationDto);
+
+            return Ok("Sesija uspešno ažurirana.");
+        }
 
     }
 

@@ -47,6 +47,13 @@ namespace Explorer.Tours.Core.Domain.TourSessions
             EndTime = DateTime.UtcNow;
         }
 
+
+        public void UpdateCurrentLocation(Location newLocation)
+        {
+            CurrentLocation = newLocation;
+            
+        }
+
         public enum TourSessionStatus
         {
             Active,
