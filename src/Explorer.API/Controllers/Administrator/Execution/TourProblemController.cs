@@ -63,13 +63,14 @@ namespace Explorer.API.Controllers.Administrator.Execution
             _notificationService.Create(new NotificationDto(content, NotificationType.TourProblemComment, tourProblemDto.Id, tourAuthorId, false));
         }
 
-        [HttpPost("getById")]
-        public ActionResult<PagedResult<TourProblemDto>> GetById(int problemId)
+        [HttpGet("byId")]
+        public ActionResult<PagedResult<TourProblemDto>> GetById([FromQuery] int id)
         {
-            var result = _tourProblemService.GetById(problemId);
+            var result = _tourProblemService.GetById(id);
             return CreateResponse(result);
         }
-        
+
+
         [HttpPost("addComment")]
         public ActionResult<PagedResult<TourProblemDto>> AddComment([FromQuery] int tourProblemId, [FromBody] ProblemCommentDto commentDto)
         {
