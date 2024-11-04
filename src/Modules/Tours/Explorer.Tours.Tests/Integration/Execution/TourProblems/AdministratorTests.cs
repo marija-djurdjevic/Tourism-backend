@@ -1,5 +1,4 @@
-﻿using Explorer.API.Controllers.Administrator;
-using Explorer.Tours.API.Dtos.TourProblemDtos;
+﻿using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain.TourProblems;
@@ -15,6 +14,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProblemCategory = Explorer.Tours.Core.Domain.TourProblems.ProblemCategory;
+using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Tours.API.Dtos;
+using Explorer.API.Controllers.Administrator.Execution;
 
 namespace Explorer.Tours.Tests.Integration.Execution.TourProblems
 {
@@ -23,126 +25,72 @@ namespace Explorer.Tours.Tests.Integration.Execution.TourProblems
     {
         public AdministratorTests(ToursTestFactory factory) : base(factory) { }
 
-        [Theory]
-        [InlineData(1, ProblemStatus.Pending)]
-        [InlineData(2, ProblemStatus.Pending)]
-        public void Update_succeeds(int tourProblemId, ProblemStatus newStatus)
+        [Fact]
+        public void GetAll_Success()
         {
-            // Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
 
-            // First, create a TourProblem to update
-      
-            var initialDto = new TourProblemDto
-            {
-                TourId = 1,
-               // TouristId = 1,
-                Details = new ProblemDetailsDto
-                {
-                    Category = (API.Dtos.TourProblemDtos.ProblemCategory)ProblemCategory.UnclearInstructions,
-                    Time = DateTime.UtcNow,
-                    ProblemPriority = 0,
-                    Explanation = "Nejasno"
-                },
-                Status = ProblemStatus.Closed
-            };
+            var details = new ProblemDetails(Core.Domain.TourProblems.ProblemCategory.RoadObstacles, 1, "drvo na putu", new DateTime(2024, 10, 29, 10, 53, 25));
 
-                var createResult = (ObjectResult)controller.Update(initialDto).Result;
-                createResult.StatusCode.ShouldBe(200);
+            var result = ((ObjectResult)controller.GetAll().Result)?.Value as PagedResult<TourProblemDto>;
 
-
-                var updateResult = (ObjectResult)controller.Update(initialDto).Result; // Assuming you have an Update method in your controller
-
-                // Assert
-                updateResult.ShouldNotBeNull();
-                updateResult.StatusCode.ShouldBe(200);
-
-                // Verify the update in the database
-                var updatedEntity = dbContext.TourProblems.FirstOrDefault(tp => tp.Id == initialDto.Id);
-                updatedEntity.ShouldNotBeNull();
+            result.ShouldNotBeNull();
+            result.Results.Count.ShouldBe(3);
+            result.TotalCount.ShouldBe(3);
         }
 
         [Theory]
-        [InlineData(1, 1)]
-        [InlineData(1, 2)]
-        public void GetAll_ReturnsPagedResultOfTourProblemDtos(int tourId, int touristId)
+        [InlineData(-1)]
+        [InlineData(-2)]
+        public void SetDeadline_Success(int tourProblemId)
         {
-            // Arrange
-            var details = new ProblemDetails(Core.Domain.TourProblems.ProblemCategory.RoadObstacles, 1, "drvo na putu", new DateTime(2024, 10, 29, 10, 53, 25));
-            var detailsDto = new ProblemDetailsDto
-            {
-                Category = (API.Dtos.TourProblemDtos.ProblemCategory)API.Dtos.TourProblemDtos.ProblemCategory.RoadObstacles,
-                Time = new DateTime(2024, 10, 29, 10, 53, 25),
-                ProblemPriority = 1,
-                Explanation = "drvo na putu"
-            };
-
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+            var deadline = DateTime.SpecifyKind(new DateTime(2024, 11, 3, 10, 53, 25), DateTimeKind.Utc);
 
-
-            var tourProblemDto = new TourProblemDto
-            {
-                TourId = tourId,
-                //TouristId = 1,
-                Details = detailsDto,
-                Status = ProblemStatus.Pending
-            };
-
-
-            // Act
-            var result = controller.GetAll().Result as ObjectResult;
-
-            // Assert
-            result.ShouldNotBeNull();
-            result.StatusCode.ShouldBe(200);
-
-        }
-        [Theory]
-        [InlineData(1, 1)]
-        [InlineData(1, 2)]
-        public void SetDeadline_SetsDeadlineAndReturnsUpdatedTourProblem(int tourId, int touristId)
-        {
-            // Arrange
-            var details = new ProblemDetails(Core.Domain.TourProblems.ProblemCategory.RoadObstacles, 1, "drvo na putu", new DateTime(2024, 10, 29, 10, 53, 25));
-            var detailsDto = new ProblemDetailsDto
-            {
-                Category = (API.Dtos.TourProblemDtos.ProblemCategory)API.Dtos.TourProblemDtos.ProblemCategory.RoadObstacles,
-                Time = new DateTime(2024, 10, 29, 10, 53, 25),
-                ProblemPriority = 1,
-                Explanation = "drvo na putu"
-            };
-
-            using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-
-            var tourProblemDto = new TourProblemDto
-            {
-                TourId = tourId,
-                Details = detailsDto,
-                Status = ProblemStatus.Pending
-            };
-
-            var deadline = DateTime.Now.AddDays(1);
-            var result = (ObjectResult)controller.SetDeadline((int)tourProblemDto.Id, deadline).Result;
-
+            var result = (ObjectResult)controller.SetDeadline(tourProblemId, deadline).Result;
 
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(200);
-            var storedEntity = dbContext.TourProblems.FirstOrDefault(t => t.Id == tourId);
+            var storedEntity = dbContext.TourProblems.FirstOrDefault(t => t.Id == tourProblemId);
             storedEntity.Deadline.ShouldBe(deadline);
-
         }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-2)]
+        public void Update_Success(int tourProblemId)
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+
+            controller.SetDeadline(tourProblemId, DateTime.SpecifyKind(new DateTime(2024, 11, 3, 10, 53, 25), DateTimeKind.Utc));
+            var problem = dbContext.TourProblems.FirstOrDefault(t => t.Id == tourProblemId);
+            TourProblemDto problemDto = convertToDto(problem);
+
+            var updatedResult = (ObjectResult)controller.Update(problemDto).Result;
+
+            updatedResult.ShouldNotBeNull();
+            updatedResult.StatusCode.ShouldBe(200);
+            var finalUpdatedProblem = updatedResult?.Value as TourProblemDto;
+            finalUpdatedProblem.Status.ShouldBe(ProblemStatus.Expired);
+        }
+
         private static TourProblemController CreateController(IServiceScope scope)
         {
-            return new TourProblemController(scope.ServiceProvider.GetRequiredService<ITourProblemService>(), scope.ServiceProvider.GetRequiredService<ITourService>())
+            return new TourProblemController(scope.ServiceProvider.GetRequiredService<ITourProblemService>(), scope.ServiceProvider.GetRequiredService<ITourService>(), scope.ServiceProvider.GetRequiredService<INotificationService>())
             {
                     ControllerContext = BuildContext("-1")
             };
+        }
+
+        private TourProblemDto convertToDto(TourProblem problem)
+        {
+            return new TourProblemDto((int)problem.Id, problem.TourId, new ProblemDetailsDto((API.Dtos.TourProblemDtos.ProblemCategory)problem.Details.Category, problem.Details.ProblemPriority, problem.Details.Explanation, problem.Details.Time), null, ProblemStatus.Expired, problem.Deadline);
         }
     }
 }

@@ -1,5 +1,4 @@
 using Explorer.API.Controllers.Administrator.Administration;
-using Explorer.API.Controllers.Tourist;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Public.Administration;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +11,7 @@ using System.Threading.Tasks;
 using Shouldly;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Execution;
+using Explorer.API.Controllers.Tourist.Execution;
 
 namespace Explorer.Tours.Tests.Integration.Administration
 {
@@ -46,7 +46,7 @@ namespace Explorer.Tours.Tests.Integration.Administration
         
         private static TourProblemController CreateController(IServiceScope scope)
         {
-            return new TourProblemController(scope.ServiceProvider.GetRequiredService<ITourProblemService>(), scope.ServiceProvider.GetRequiredService<ITourService>())
+            return new TourProblemController(scope.ServiceProvider.GetRequiredService<ITourProblemService>(), scope.ServiceProvider.GetRequiredService<ITourService>(), scope.ServiceProvider.GetRequiredService<INotificationService>())
             {
                 ControllerContext = BuildContext("-1")
             };

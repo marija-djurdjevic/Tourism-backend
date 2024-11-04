@@ -7,8 +7,9 @@ using FluentResults;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Explorer.Tours.Core.UseCases.Execution;
 
-namespace Explorer.API.Controllers.Administrator
+namespace Explorer.API.Controllers.Administrator.Execution
 {
     [Authorize(Policy = "administratorPolicy")]
     [Route("api/administrator/problem")]
@@ -16,23 +17,25 @@ namespace Explorer.API.Controllers.Administrator
     {
         private readonly ITourProblemService _tourProblemService;
         private readonly ITourService _tourService;
+        private readonly INotificationService _notificationService;
 
-        public TourProblemController(ITourProblemService tourProblemService, ITourService tourService)
+        public TourProblemController(ITourProblemService tourProblemService, ITourService tourService, INotificationService notificationService)
         {
             _tourProblemService = tourProblemService;
             _tourService = tourService;
+            _notificationService = notificationService;
         }
 
 
         [HttpPut("{id:int}")]
         public ActionResult<TourPreferencesDto> Update([FromBody] TourProblemDto tourProblem)
         {
-            if(tourProblem.Deadline < DateTime.UtcNow)
+            if (tourProblem.Deadline < DateTime.UtcNow)
             {
-                var result = _tourProblemService.CloseProblem(tourProblem);
+                var result = _tourProblemService.SetProblemExpired(tourProblem);
                 return CreateResponse(result);
             }
-            return CreateResponse(Result.Fail("deadline hasn't passed."));  
+            return CreateResponse(Result.Ok("deadline hasn't passed."));
         }
 
         [HttpGet("getAll")]
@@ -48,6 +51,22 @@ namespace Explorer.API.Controllers.Administrator
             var problem = _tourProblemService.GetById(problemId);
             var authorId = _tourService.GetById(problem.Value.TourId).Value.AuthorId;
             var result = _tourProblemService.SetDeadline(problemId, time, authorId);
+            notifySetDeadline(problem.Value);
+            return CreateResponse(result);
+        }
+
+        private void notifySetDeadline(TourProblemDto tourProblemDto)
+        {
+            string tourName = _tourService.GetById(tourProblemDto.TourId).Value.Name;
+            int tourAuthorId = _tourService.GetById(tourProblemDto.TourId).Value.AuthorId;
+            string content = $"Deadline has been set on your report of a tour {tourName}!";
+            _notificationService.Create(new NotificationDto(content, NotificationType.TourProblemComment, tourProblemDto.Id, tourAuthorId, false));
+        }
+
+        [HttpPost("getById")]
+        public ActionResult<PagedResult<TourProblemDto>> GetById(int problemId)
+        {
+            var result = _tourProblemService.GetById(problemId);
             return CreateResponse(result);
         }
     }

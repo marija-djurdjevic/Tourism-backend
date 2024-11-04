@@ -14,7 +14,6 @@ namespace Explorer.Tours.Core.Domain
 
         public KeyPoint(int id, string name, string description, string imagePath, double longitude, double latitude, int tourId)
         {
-            if (id < 0) throw new ArgumentException("Invalid Id.");
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
             if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path.");

@@ -14,6 +14,7 @@ public class ToursContext : DbContext
     public DbSet<KeyPoint> KeyPoints { get; set; }
     public DbSet<Explorer.Tours.Core.Domain.Object> Object { get; set; }
     public DbSet<TourReview> TourReview { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 
     public ToursContext(DbContextOptions<ToursContext> options) : base(options) {}
 
@@ -21,7 +22,6 @@ public class ToursContext : DbContext
     {
         modelBuilder.HasDefaultSchema("tours");
 
-        modelBuilder.Entity<TourProblem>().Property(item => item.Notifications).HasColumnType("jsonb");
         modelBuilder.Entity<TourProblem>().Property(item => item.Details).HasColumnType("jsonb");
         modelBuilder.Entity<TourProblem>().Property(item => item.Comments).HasColumnType("jsonb");
     }
