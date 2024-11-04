@@ -41,7 +41,6 @@ public static class ToursStartup
         services.AddScoped<IClubService, ClubService>();
         services.AddScoped<ITourEquipmentService, TourEquipmentService>();
         services.AddScoped<ITourReviewService, TourReviewService>();
-        services.AddScoped<ITourProblemService, TourProblemService>();
         services.AddScoped<ITourService, TourService>();
         services.AddScoped<IKeyPointService, KeyPointService>();
         services.AddScoped<IObjectService, ObjectService>();
@@ -50,6 +49,8 @@ public static class ToursStartup
         services.AddScoped<ITourSessionRepository, TourSessionRepository>();
         services.AddScoped<ITourSessionService, TourSessionService>();
         services.AddScoped<ITourRepository, TourRepository>();
+        services.AddScoped<ITourProblemRepository, TourProblemRepository>();
+        services.AddScoped<ITourProblemService, TourProblemService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -58,8 +59,7 @@ public static class ToursStartup
         services.AddScoped(typeof(ICrudRepository<Equipment>), typeof(CrudDatabaseRepository<Equipment, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Club>), typeof(CrudDatabaseRepository<Club, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<TourEquipment>), typeof(CrudDatabaseRepository<TourEquipment, ToursContext>));
-        services.AddScoped(typeof(ICrudRepository<TourReview>), typeof(CrudDatabaseRepository<TourReview, ToursContext>));
-      
+        services.AddScoped(typeof(ICrudRepository<TourReview>), typeof(CrudDatabaseRepository<TourReview, ToursContext>));     
         services.AddScoped(typeof(ICrudRepository<Explorer.Tours.Core.Domain.Object>), typeof(CrudDatabaseRepository<Explorer.Tours.Core.Domain.Object, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Tour>), typeof(CrudDatabaseRepository<Tour, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<KeyPoint>), typeof(CrudDatabaseRepository<KeyPoint, ToursContext>));
