@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,13 @@ namespace Explorer.Tours.API.Dtos.ShoppingDtos
         public string TourName { get; set; }
 
         public OrderItemDto() { }
+        public OrderItemDto(int tourId, string name,double price)
+        {
+            TourId = tourId;
+            Price = price;
+            TourName = name;
+        }
+
 
     }
 }

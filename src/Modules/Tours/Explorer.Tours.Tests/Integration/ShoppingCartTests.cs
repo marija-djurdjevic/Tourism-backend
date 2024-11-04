@@ -70,6 +70,10 @@ namespace Explorer.Tours.Tests.Integration
 
             // Assert - Database Check
             var storedEntity = dbContext.ShoppingCarts.FirstOrDefault(i => i.TouristId == int.Parse(userId));
+            var tokensEntities = dbContext.TourPurchaseTokens
+             .Where(i => i.TouristId == -1 && (i.TourId == 2 || i.TourId == 3))
+             .ToList();
+            tokensEntities.Count.ShouldBe(2);
             storedEntity.ShouldNotBeNull();
         }
 
