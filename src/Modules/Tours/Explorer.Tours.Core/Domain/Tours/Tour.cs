@@ -61,7 +61,21 @@ namespace Explorer.Tours.Core.Domain.Tours
             AverageScore = averageScore;
             PublishedAt = publishedAt;
         }
-
+        public Tour(string name, string description, DifficultyStatus difficulty, string tags, double price, int authorId, TransportInfo transportInfo)
+        {
+            Name = name;
+            Description = description;
+            Difficulty = difficulty;
+            Tags = tags;
+            Price = price;
+            AuthorId = authorId;
+            Status = TourStatus.Draft;
+            TransportInfo = transportInfo; 
+            KeyPoints = new List<KeyPoint>();
+            PublishedAt = DateTime.MinValue;
+            ArchivedAt = DateTime.MinValue;
+            AverageScore = 0;
+        }
         public void Archive()
         {
             if (Status == TourStatus.Published)
