@@ -59,5 +59,20 @@ namespace Explorer.API.Controllers.Author.Authoring
             var result = _tourService.GetKeyPointsByTourId(tourId);
             return CreateResponse(result);
         }
+
+        [HttpPost("{tourId}/key-points")]
+        public async Task<ActionResult<KeyPointDto>> AddKeyPointToTour(int tourId, [FromBody] KeyPointDto keyPointDto)
+        {
+            var result =  _tourService.AddKeyPointToTourAsync(tourId, keyPointDto);
+
+            if (result.IsSuccess)
+            {
+                return CreateResponse(result); 
+            }
+            else
+            {
+                return BadRequest(result); 
+            }
+        }
     }
 }
