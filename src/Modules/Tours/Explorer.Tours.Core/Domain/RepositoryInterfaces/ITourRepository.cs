@@ -9,7 +9,7 @@ namespace Explorer.Tours.Core.Domain.RepositoryInterfaces
 {
     public interface ITourRepository
     {
-        List<Tour> GetAllToursWithKeyPoints();
-        public Tour GetTourWithKeyPoints(int tourId);
+        List<Tour> GetAllToursWithKeyPointsAndReviews();
+        public Tour GetTourWithKeyPointsAndReviews(int tourId);
     }
 }

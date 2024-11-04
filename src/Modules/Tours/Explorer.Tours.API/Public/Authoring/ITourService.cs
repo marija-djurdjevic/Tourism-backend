@@ -16,7 +16,7 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<TourDto> Create(TourDto tour);
         Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id);
         public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId);
-        public Result<List<TourDto>> GetAllToursWithKeyPoints();
+        public Result<List<TourDto>> GetAllToursWithKeyPointsAndReviews();
 
         Result<bool> Publish(TourDto entity);
         Result<bool> Archive(TourDto entity);

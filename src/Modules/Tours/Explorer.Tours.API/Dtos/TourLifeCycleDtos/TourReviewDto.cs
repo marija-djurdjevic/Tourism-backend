@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Explorer.Tours.API.Dtos
+﻿namespace Explorer.Tours.API.Dtos.TourLifeCycleDtos
 {
     public class TourReviewDto
     {
@@ -17,10 +11,11 @@ namespace Explorer.Tours.API.Dtos
 
         public int UserId { get; set; }
         public string Username { get; set; }
-        public string Images { get; set; }
+        public List<string> Images { get; set; }
 
         public DateTime TourVisitDate { get; set; }
 
         public DateTime TourReviewDate { get; set; }
+        public int TourProgressPercentage { get; set; }
     }
 }

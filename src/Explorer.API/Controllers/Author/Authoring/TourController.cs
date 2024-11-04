@@ -28,7 +28,7 @@ namespace Explorer.API.Controllers.Author.Authoring
         [HttpGet("all")]
         public ActionResult<List<TourDto>> GetAllTours()
         {
-            var result = _tourService.GetAllToursWithKeyPoints();
+            var result = _tourService.GetAllToursWithKeyPointsAndReviews();
             return CreateResponse(result);
         }
 

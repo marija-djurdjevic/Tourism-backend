@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 
 namespace Explorer.Tours.Tests.Integration.Administration
 {
@@ -34,10 +35,12 @@ namespace Explorer.Tours.Tests.Integration.Administration
                 TourId = -1,
                 UserId = -1,
                 Username = "Test",
-                Images = "slika1test",
+                Images = new List<string>(),
                 TourVisitDate = DateTime.UtcNow,
-                TourReviewDate = DateTime.UtcNow
+                TourReviewDate = DateTime.UtcNow,
+                TourProgressPercentage = 50
             };
+            newEntity.Images.Add("image1");
 
             // Act
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as TourReviewDto;

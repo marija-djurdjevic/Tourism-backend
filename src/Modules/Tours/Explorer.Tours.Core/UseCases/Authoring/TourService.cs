@@ -57,10 +57,10 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             throw new NotImplementedException();
         }
 
-        public Result<List<TourDto>> GetAllToursWithKeyPoints()
+        public Result<List<TourDto>> GetAllToursWithKeyPointsAndReviews()
         {
            
-            var tours = _tourRepository.GetAllToursWithKeyPoints(); 
+            var tours = _tourRepository.GetAllToursWithKeyPointsAndReviews(); 
 
             if (tours == null || !tours.Any())
             {
