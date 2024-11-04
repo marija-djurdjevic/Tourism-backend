@@ -112,13 +112,36 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             return Result.Ok(tourDtos);
         }
-        public Result<TourDto> GetKeyPointsByTourId(int tourId)
+        public TourDto GetKeyPointsByTourId(int tourId)
          {
 
             var tour = _tourRepository.GetKeyPointsForTour(tourId);
             var tourDto = _mapper.Map<TourDto>(tour);
-            return Result.Ok(tourDto);
-         }       
+            //return Result.Ok(tourDto);
+            return tourDto;
+         }
+
+        public Result<bool> UpdateTransportInfo(int tourId, TransportInfoDto transportInfoDto)
+        {
+            
+            var tour = GetKeyPointsByTourId(tourId);
+
+            if (tour == null)
+            {
+                return Result.Fail<bool>("Tour not found");
+            }
+
+
+            tour.TransportInfo.Distance = transportInfoDto.Distance;
+            tour.TransportInfo.Time = transportInfoDto.Time;
+
+            
+            var updatedTourDto = _mapper.Map<TourDto>(tour);
+            Update(updatedTourDto);
+
+            return Result.Ok(true);
+        }
+
 
     }
 }
