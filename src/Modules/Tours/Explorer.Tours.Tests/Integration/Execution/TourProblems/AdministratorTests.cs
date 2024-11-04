@@ -1,5 +1,4 @@
-﻿using Explorer.API.Controllers.Administrator;
-using Explorer.Tours.API.Dtos.TourProblemDtos;
+﻿using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain.TourProblems;
@@ -15,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProblemCategory = Explorer.Tours.Core.Domain.TourProblems.ProblemCategory;
+using Explorer.API.Controllers.Administrator.Execution;
 
 namespace Explorer.Tours.Tests.Integration.Execution.TourProblems
 {

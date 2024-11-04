@@ -4,10 +4,10 @@ using Explorer.Tours.API.Public.Administration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Explorer.API.Controllers.Author
+namespace Explorer.API.Controllers.Administrator.Execution
 {
 
-    [Authorize(Policy = "authorPolicy")]
+    [Authorize(Policy = "administratorPolicy")]
     [Route("api/administration/tour")]
     public class TourController : BaseApiController
     {
@@ -17,19 +17,13 @@ namespace Explorer.API.Controllers.Author
         {
             _tourService = tourService;
         }
-       
-        [HttpGet]
-        public ActionResult<PagedResult<TourDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize) {
+
+        [HttpGet("all")]
+        public ActionResult<PagedResult<TourDto>> GetAllAdmin([FromQuery] int page, [FromQuery] int pageSize)
+        {
             var result = _tourService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
-       
-        [HttpPost]
-        public ActionResult <TourDto> Create([FromBody] TourDto tourDto)
-        {
-            var result = _tourService.Create(tourDto);
-            return CreateResponse(result);
-        }
-        
+
     }
 }

@@ -5,7 +5,7 @@ using Explorer.Tours.API.Public.Execution;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Explorer.API.Controllers.Author
+namespace Explorer.API.Controllers.Author.Execution
 {
     [Route("api/author/problem")]
     [Authorize(Policy = "authorPolicy")]

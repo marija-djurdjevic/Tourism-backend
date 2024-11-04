@@ -1,5 +1,4 @@
 using Explorer.API.Controllers.Administrator.Administration;
-using Explorer.API.Controllers.Tourist;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Public.Administration;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +11,7 @@ using System.Threading.Tasks;
 using Shouldly;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Execution;
+using Explorer.API.Controllers.Tourist.Execution;
 
 namespace Explorer.Tours.Tests.Integration.Administration
 {

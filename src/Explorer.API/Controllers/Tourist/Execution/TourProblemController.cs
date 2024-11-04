@@ -9,7 +9,7 @@ using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Explorer.API.Controllers.Tourist
+namespace Explorer.API.Controllers.Tourist.Execution
 {
     [Route("api/tourist/problem")]
     [Authorize(Policy = "touristPolicy")]
@@ -29,7 +29,7 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(result);
         }
 
-        [HttpPost("create")] 
+        [HttpPost("create")]
         public ActionResult<PagedResult<TourProblemDto>> Create(TourProblemDto tourProblemDto)
         {
             var result = _tourProblemService.Create(tourProblemDto);
