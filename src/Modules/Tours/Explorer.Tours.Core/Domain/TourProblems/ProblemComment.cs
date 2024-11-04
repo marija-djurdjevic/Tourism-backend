@@ -11,7 +11,8 @@ namespace Explorer.Tours.Core.Domain.TourProblems
 {
     public class ProblemComment : ValueObject<ProblemComment>
     {
-        public string Content { get; }
+
+        public string Content { get;}
         public ProblemCommentType Type { get; }
         public int SenderId { get; }
         public DateTime SentTime { get; }
@@ -22,7 +23,7 @@ namespace Explorer.Tours.Core.Domain.TourProblems
             Content = content;
             Type = type;
             SentTime = sentTime;
-            SenderId = senderId;
+            SenderId = senderId;  
         }
 
         protected override bool EqualsCore(ProblemComment other)
@@ -37,7 +38,7 @@ namespace Explorer.Tours.Core.Domain.TourProblems
         protected override int GetHashCodeCore()
         {
             return HashCode.Combine(Content, Type, SenderId, SentTime);
-        }
+        }   
     }
 
     public enum ProblemCommentType
@@ -47,4 +48,3 @@ namespace Explorer.Tours.Core.Domain.TourProblems
         FromAdmin
     }
 }
-

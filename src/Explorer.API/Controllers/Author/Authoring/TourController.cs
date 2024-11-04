@@ -28,7 +28,7 @@ namespace Explorer.API.Controllers.Author.Authoring
         [HttpGet("all")]
         public ActionResult<List<TourDto>> GetAllTours()
         {
-            var result = _tourService.GetAllToursWithKeyPointsAndReviews();
+            var result = _tourService.GetAllToursWithKeyPoints();
             return CreateResponse(result);
         }
 
@@ -58,6 +58,21 @@ namespace Explorer.API.Controllers.Author.Authoring
         {
             var result = _tourService.GetKeyPointsByTourId(tourId);
             return CreateResponse(result);
+        }
+
+        [HttpPost("{tourId}/key-points")]
+        public async Task<ActionResult<KeyPointDto>> AddKeyPointToTour(int tourId, [FromBody] KeyPointDto keyPointDto)
+        {
+            var result =  _tourService.AddKeyPointToTourAsync(tourId, keyPointDto);
+
+            if (result.IsSuccess)
+            {
+                return CreateResponse(result); 
+            }
+            else
+            {
+                return BadRequest(result); 
+            }
         }
     }
 }
