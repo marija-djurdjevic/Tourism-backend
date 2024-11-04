@@ -8,7 +8,7 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Explorer.API.Controllers.Administrator
+namespace Explorer.API.Controllers.Administrator.Execution
 {
     [Authorize(Policy = "administratorPolicy")]
     [Route("api/administrator/problem")]
@@ -27,12 +27,12 @@ namespace Explorer.API.Controllers.Administrator
         [HttpPut("{id:int}")]
         public ActionResult<TourPreferencesDto> Update([FromBody] TourProblemDto tourProblem)
         {
-            if(tourProblem.Deadline < DateTime.UtcNow)
+            if (tourProblem.Deadline < DateTime.UtcNow)
             {
                 var result = _tourProblemService.CloseProblem(tourProblem);
                 return CreateResponse(result);
             }
-            return CreateResponse(Result.Fail("deadline hasn't passed."));  
+            return CreateResponse(Result.Fail("deadline hasn't passed."));
         }
 
         [HttpGet("getAll")]
@@ -50,5 +50,20 @@ namespace Explorer.API.Controllers.Administrator
             var result = _tourProblemService.SetDeadline(problemId, time, authorId);
             return CreateResponse(result);
         }
+
+        [HttpGet("byId")]
+        public ActionResult<PagedResult<TourProblemDto>> GetById([FromQuery] int id)
+        {
+            var result = _tourProblemService.GetById(id);
+            return CreateResponse(result);
+        }
+
+        [HttpPost("addComment")]
+        public ActionResult<PagedResult<TourProblemDto>> AddComment([FromQuery] int tourProblemId, [FromBody] ProblemCommentDto commentDto)
+        {
+            var result = _tourProblemService.AddComment(tourProblemId, commentDto);
+            return CreateResponse(result);
+        }
+
     }
 }
