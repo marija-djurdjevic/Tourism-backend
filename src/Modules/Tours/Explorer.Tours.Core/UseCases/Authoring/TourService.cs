@@ -142,6 +142,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         }
         
 
+        /*
         public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
         {
 
@@ -162,6 +163,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
              return tour.KeyPoints;
         }
+        */
 
 
         public Result<TourDto> Get(int tourId)
