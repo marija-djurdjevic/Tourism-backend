@@ -1,4 +1,5 @@
 ﻿using Explorer.Stakeholders.Core.Domain.Users;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
@@ -30,9 +31,9 @@ namespace Explorer.API.Controllers.Tourist.Execution
         {
 
             var initialLocation = new LocationDto(latitude, longitude);
+            var userId = User.PersonId();
 
-
-            var result = _tourSessionService.StartTour(tourId, initialLocation,touristId);
+            var result = _tourSessionService.StartTour(tourId,userId, initialLocation);
 
 
             if (result.IsSuccess)

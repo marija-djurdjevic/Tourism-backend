@@ -11,6 +11,8 @@ using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.Execution;
 
 namespace Explorer.API.Controllers.Tourist
 {
@@ -20,11 +22,15 @@ namespace Explorer.API.Controllers.Tourist
     {
         private readonly IShoppingService _shoppingService;
         private readonly ITourService _tourService;
+        private readonly ITourSessionService _sessionService;
+        private readonly ITourReviewService _reviewService;
 
-        public ShoppingController(IShoppingService shoppingService, ITourService tourService)
+        public ShoppingController(IShoppingService shoppingService, ITourService tourService, ITourSessionService tourSessionService, ITourReviewService tourReviewService)
         {
             _shoppingService = shoppingService;
             _tourService = tourService;
+            _sessionService = tourSessionService;
+            _reviewService = tourReviewService;
         }
 
         [HttpPost("checkout")]
@@ -55,6 +61,18 @@ namespace Explorer.API.Controllers.Tourist
             foreach (int id in tourIdsResult.Value)
             {
                 var tour = _tourService.GetById(id).Value;
+                if (!_sessionService.CanUserReviewTour(id, int.Parse(touristId)))
+                {
+                    tour.ReviewStatus = TourDto.TourReviewStatus.UnableToReview;
+                }
+                else if (_reviewService.IsTourReviewedByTourist(int.Parse(touristId), id))
+                {
+                    tour.ReviewStatus = TourDto.TourReviewStatus.Reviewed;
+                }
+                else
+                {
+                    tour.ReviewStatus = TourDto.TourReviewStatus.WaitForReview;
+                }
                 tours.Add(tour);
             }
 

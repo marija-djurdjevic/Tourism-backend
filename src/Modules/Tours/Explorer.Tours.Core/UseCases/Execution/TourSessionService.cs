@@ -27,16 +27,16 @@ namespace Explorer.Tours.Core.UseCases.Execution
         private readonly ITourService _tourService;
         private readonly IKeyPointService _keyPointService;
         private readonly ITourPurchaseTokenRepository _purchaseTokenRepository;
-        
 
-        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService,ITourPurchaseTokenRepository tourPurchaseTokenRepository) : base(mapper)
+
+        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService, ITourPurchaseTokenRepository tourPurchaseTokenRepository) : base(mapper)
         {
             _repository = repository;
             _mapper = mapper;
             _tourService = tourService;
             _keyPointService = keyPointService;
             _purchaseTokenRepository = tourPurchaseTokenRepository;
-            
+
         }
         public Result<TourSessionDto> AbandonTour(int tourId)
         {
@@ -48,7 +48,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
                 session.TourId == tourId);
 
 
-           
+
 
             if (tourSession == null)
             {
@@ -83,10 +83,10 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
         }
 
-        public Result<TourSessionDto> StartTour(int tourId, LocationDto initialLocation,int touristId)
+        public Result<TourSessionDto> StartTour(int tourId, int userId, LocationDto initialLocation)
         {
-            
-            var purchasedTours=_purchaseTokenRepository.GetPurchasedTours(touristId);
+
+            var purchasedTours = _purchaseTokenRepository.GetPurchasedTours(userId);
 
             bool exist = purchasedTours.Any(item => item == tourId);
             if (!exist)
@@ -119,7 +119,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
 
             var existingSession = allSessions.FirstOrDefault(session =>
-                session.TourId == tourId);
+                session.TourId == tourId && session.UserId==userId);
 
             if (existingSession != null)
             {
@@ -131,7 +131,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
             var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(initialLocation);
 
 
-            var tourSession = new TourSession(tourId, location);
+            var tourSession = new TourSession(tourId, location, userId);
 
             if (tourSession == null)
             {
@@ -176,7 +176,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
                 existingSession.CompleteSession();
                 _repository.Update(existingSession);
-                
+
 
 
             }
@@ -203,12 +203,49 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
             existingSession.UpdateCurrentLocation(location);
             _repository.Update(existingSession);
-
-
         }
 
+        public bool CanUserReviewTour(int tourId, int userId)
+        {
+            var allSessions = _repository.GetPaged(0, 0).Results;
 
+            var existingSession = allSessions.FirstOrDefault(session =>
+                session.TourId == tourId && session.UserId == userId);
 
+            if (existingSession == null)
+            {
+                return false;
+            }
+
+            int keyPointsCount = _keyPointService.GetKeyPointsByTourId(tourId).Value.Count;
+            var tourProgressPercentage = (int)((double)1/*existingSession.CompletedKeyPoints.Count*/ / (keyPointsCount <= 0 ? 1 : keyPointsCount)* 100);
+
+            if (DateTime.UtcNow < existingSession.LastActivity.AddDays(7) &&
+                DateTime.UtcNow > existingSession.LastActivity && tourProgressPercentage > 35)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public (int, DateTime) GetProgressAndLastActivity(int tourId, int userId)
+        {
+            var allSessions = _repository.GetPaged(0, 0).Results;
+
+            var existingSession = allSessions.FirstOrDefault(session =>
+                session.TourId == tourId && session.UserId == userId);
+
+            if (existingSession == null)
+            {
+                return (0, DateTime.UtcNow);
+            }
+
+            int keyPointsCount = _keyPointService.GetKeyPointsByTourId(tourId).Value.Count;
+            var tourProgressPercentage = (int)((double)1 /*existingSession.CompletedKeyPoints.Count*/ / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
+
+            return (tourProgressPercentage, existingSession.LastActivity);
+        }
     }
 }
 

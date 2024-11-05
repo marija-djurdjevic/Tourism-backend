@@ -16,6 +16,6 @@ namespace Explorer.Tours.API.Public.Administration
         Result<TourReviewDto> Create(TourReviewDto tourReview);
         Result<TourReviewDto> Update(TourReviewDto equipment);
         Result Delete(int id);
-
+        public bool IsTourReviewedByTourist(int userId, int tourId);
     }
 }

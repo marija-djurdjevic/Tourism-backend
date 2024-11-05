@@ -4,6 +4,12 @@ namespace Explorer.Tours.API.Dtos.TourLifecycleDtos
 {
     public class TourDto
     {
+        public enum TourReviewStatus
+        {
+            WaitForReview,
+            Reviewed,
+            UnableToReview
+        }
         public enum DifficultyStatus
         {
             Easy,
@@ -22,7 +28,7 @@ namespace Explorer.Tours.API.Dtos.TourLifecycleDtos
         public string Name { get; set; }
         public string Description { get; set; }
         public TourStatus Status { get; set; }
-
+        public TourReviewStatus? ReviewStatus { get; set; }
         public DifficultyStatus Difficulty { get; set; }
 
         public string Tags { get; set; }
