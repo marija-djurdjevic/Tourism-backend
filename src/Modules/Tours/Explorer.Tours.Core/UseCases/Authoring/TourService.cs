@@ -72,7 +72,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         {
             var tours = _tourRepository.GetAllToursWithKeyPoints();
             List<TourDto> matchingTours = new List<TourDto>();
-            var coordinate = _mapper.Map<Coordinates>(searchByDistance.Coordinates);
+            var coordinate = new Coordinates(searchByDistance.Longitude, searchByDistance.Latitude);
             foreach (var t in tours)
             {
                 if (t.HasKeyPointsInDesiredDistance(coordinate, searchByDistance.Distance))

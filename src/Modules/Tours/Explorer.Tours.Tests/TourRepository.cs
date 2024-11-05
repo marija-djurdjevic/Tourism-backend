@@ -23,7 +23,8 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
         public List<Tour> GetAllToursWithKeyPoints()
         {
             return _dbContext.Tour
-                .Include(t => t.KeyPoints) 
+                .Include(t => t.KeyPoints)
+                .ThenInclude(c => c.Coordinates)
                 .ToList();
         }
     }
