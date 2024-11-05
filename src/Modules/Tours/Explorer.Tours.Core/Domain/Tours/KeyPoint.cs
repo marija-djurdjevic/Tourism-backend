@@ -7,10 +7,10 @@ namespace Explorer.Tours.Core.Domain.Tours
         public string Name { get; private set; }
         public string Description { get; private set; }
         public string ImagePath { get; private set; }
-        public int TourId { get; private set; }
+        public long TourId { get; private set; }
         public Coordinates Coordinates { get; private set; }
         private KeyPoint() { }
-        public KeyPoint(string name, string description, string imagePath, int tourId, Coordinates coordinates)
+        public KeyPoint(string name, string description, string imagePath, long tourId, Coordinates coordinates)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
