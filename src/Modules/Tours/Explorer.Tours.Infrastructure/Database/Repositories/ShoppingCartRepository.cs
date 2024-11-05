@@ -13,6 +13,9 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
     {
 
         public ShoppingCartRepository(ToursContext dbContext) : base(dbContext) { }
+
+
+        
     
     }
 }

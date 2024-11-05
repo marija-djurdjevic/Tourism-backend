@@ -109,7 +109,7 @@ namespace Explorer.Tours.Core.Domain.Tours
 
         public bool Validate()
         {
-            return KeyPoints.Count >= 2 && TransportInfo.Time < 0;
+            return KeyPoints.Count >= 2 && TransportInfo.Time > 0;
         }
 
         public bool ValidateInput()
