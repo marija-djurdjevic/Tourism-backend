@@ -17,6 +17,8 @@ namespace Explorer.Tours.Core.Domain.RepositoryInterfaces
         public TourSession Update(TourSession entity);
         public void Delete(long id);
 
+       
+
 
     }
 }

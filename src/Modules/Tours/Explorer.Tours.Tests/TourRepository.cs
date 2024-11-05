@@ -27,5 +27,20 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
                 .ThenInclude(c => c.Coordinates)
                 .ToList();
         }
+
+        public Tour GetById(int tourId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Tour GetByIdAsync(int tourId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Tour GetKeyPointsForTour(int tourId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

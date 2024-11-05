@@ -1,6 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,11 +46,33 @@ namespace Explorer.API.Controllers.Author.Authoring
             return CreateResponse(result);
         }
 
+        [HttpPut("publish-tour")]
+        public ActionResult<TourDto> Publish([FromBody] TourDto tourDto)
+        {
+            var result = _tourService.Publish(tourDto);
+            return CreateResponse(result);
+        }
+
         [HttpGet("{tourId}/key-points")]
         public ActionResult<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
         {
             var result = _tourService.GetKeyPointsByTourId(tourId);
             return CreateResponse(result);
+        }
+
+        [HttpPost("{tourId}/key-points")]
+        public async Task<ActionResult<KeyPointDto>> AddKeyPointToTour(int tourId, [FromBody] KeyPointDto keyPointDto)
+        {
+            var result =  _tourService.AddKeyPointToTourAsync(tourId, keyPointDto);
+
+            if (result.IsSuccess)
+            {
+                return CreateResponse(result); 
+            }
+            else
+            {
+                return BadRequest(result); 
+            }
         }
     }
 }
