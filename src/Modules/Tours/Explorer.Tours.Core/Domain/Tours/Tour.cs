@@ -89,6 +89,12 @@ namespace Explorer.Tours.Core.Domain.Tours
             }
         }
 
+        public void UpdateTrasnportStatus(double distance, int time) 
+        {
+            TransportInfo.Distance = distance;
+            TransportInfo.Time = time;
+        }
+
         public void Publish()
         {
             if (Status != TourStatus.Draft && Status != TourStatus.Archived)

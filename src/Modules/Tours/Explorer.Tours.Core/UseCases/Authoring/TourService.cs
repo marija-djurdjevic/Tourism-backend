@@ -124,17 +124,17 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         public Result<bool> UpdateTransportInfo(int tourId, TransportInfoDto transportInfoDto)
         {
             
-            var tour = GetKeyPointsByTourId(tourId);
+            var tourDto = GetKeyPointsByTourId(tourId);
+            var tour = _mapper.Map<Tour>(tourDto);
 
             if (tour == null)
             {
                 return Result.Fail<bool>("Tour not found");
             }
 
+            tour.UpdateTrasnportStatus(transportInfoDto.Distance, transportInfoDto.Time);
 
-            tour.TransportInfo.Distance = transportInfoDto.Distance;
-            tour.TransportInfo.Time = transportInfoDto.Time;
-
+            
             
             var updatedTourDto = _mapper.Map<TourDto>(tour);
             Update(updatedTourDto);

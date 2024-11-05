@@ -34,7 +34,7 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
         }
         public Tour GetKeyPointsForTour(int tourId)
         {
-            return _dbContext.Tour
+            return _dbContext.Tour.AsNoTracking()
                 .Include(t => t.KeyPoints)
                 .FirstOrDefault(t => t.Id == tourId);
         }
