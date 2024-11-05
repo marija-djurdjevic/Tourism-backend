@@ -26,7 +26,12 @@ namespace Explorer.API.Controllers.Tourist.Execution
             _notificationService = notificationService;
             _tourService = tourService;
         }
-
+        [HttpGet("getAll")]
+        public ActionResult<PagedResult<TourProblemDto>> GetAll()
+        {
+            var results = _tourProblemService.GetAll();
+            return CreateResponse(results);
+        }
         [HttpGet("getByTouristId")]
         public ActionResult<PagedResult<TourProblemDto>> GetByTouristId([FromQuery] int touristId)
         {
@@ -82,5 +87,12 @@ namespace Explorer.API.Controllers.Tourist.Execution
             string content = $"Changed status for a report of a tour {tourName} to {status}!";
             _notificationService.Create(new NotificationDto(content, NotificationType.TourProblemComment, tourProblemDto.Id, tourAuthorId, false));
         }
+        [HttpGet("byId")]
+        public ActionResult<PagedResult<TourProblemDto>> GetById([FromQuery] int id)
+        {
+            var result = _tourProblemService.GetById(id);
+            return CreateResponse(result);
+        }
+
     }
 }
