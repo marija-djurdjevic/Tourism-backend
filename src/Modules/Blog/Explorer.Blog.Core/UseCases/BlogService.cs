@@ -32,7 +32,10 @@ namespace Explorer.Blog.Core.UseCases
                 if (blog == null)
                     return Result.Fail("Blog not found.");
 
-                CheckIfEditable(blog);
+                if (CheckIfEditable(blog) != Result.Ok())
+                {
+                    return Result.Fail(FailureCode.NotFound).WithError("Blog closed.");
+                }
 
                 blog.AddVote(_mapper.Map<VoteDto, Vote>(voteDto));
 
@@ -66,7 +69,10 @@ namespace Explorer.Blog.Core.UseCases
                 if (blog == null)
                     return Result.Fail("Blog not found.");
 
-                CheckIfEditable(blog);
+                if (CheckIfEditable(blog) != Result.Ok())
+                {
+                    return Result.Fail(FailureCode.NotFound).WithError("Blog closed.");
+                }
 
                 blog.RemoveVote(authorId);
 
@@ -189,7 +195,10 @@ namespace Explorer.Blog.Core.UseCases
                 if (blog == null)
                     return Result.Fail("Blog not found.");
 
-                CheckIfEditable(blog);
+                if (CheckIfEditable(blog) != Result.Ok())
+                {
+                    return Result.Fail(FailureCode.NotFound).WithError("Blog closed.");
+                }
 
                 var resultDto = _commentService.Update(commentDto).Value;
 
@@ -210,7 +219,10 @@ namespace Explorer.Blog.Core.UseCases
                 if (blog == null)
                     return Result.Fail("Blog not found.");
 
-                CheckIfEditable(blog);
+                if (CheckIfEditable(blog) != Result.Ok())
+                {
+                    return Result.Fail(FailureCode.NotFound).WithError("Blog closed.");
+                }
 
                 _commentService.Delete(commentId);
 
