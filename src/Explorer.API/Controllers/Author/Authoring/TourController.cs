@@ -53,11 +53,33 @@ namespace Explorer.API.Controllers.Author.Authoring
             return CreateResponse(result);
         }
 
-        [HttpGet("{tourId}/key-points")]
+        /*[HttpGet("{tourId}/key-points")]
         public ActionResult<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
         {
             var result = _tourService.GetKeyPointsByTourId(tourId);
             return CreateResponse(result);
+        }*/
+
+        [HttpGet("{tourId}/key-points")]
+        public TourDto GetKeyPointsByTourId(int tourId)
+        {
+            var result = _tourService.GetKeyPointsByTourId(tourId);
+            return result;
+        }
+
+        [HttpPut("{tourId}/transport-info")]
+        public ActionResult<bool> UpdateTransportInfo(int tourId, [FromBody] TransportInfoDto transportInfoDto)
+        {
+            var result = _tourService.UpdateTransportInfo(tourId, transportInfoDto);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value); 
+            }
+            else
+            {
+                return BadRequest(result.Errors); 
+            }
         }
 
         [HttpPost("{tourId}/key-points")]
