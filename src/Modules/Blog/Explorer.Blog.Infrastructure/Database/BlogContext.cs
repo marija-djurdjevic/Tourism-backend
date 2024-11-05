@@ -14,10 +14,5 @@ public class BlogContext : DbContext
     {
         modelBuilder.HasDefaultSchema("blog");
         modelBuilder.Entity<Blogs>().Property(item => item.Votes).HasColumnType("jsonb");
-        modelBuilder.Entity<Comment>()
-            .HasOne<Blogs>()
-            .WithMany()
-            .HasForeignKey(c => c.BlogId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

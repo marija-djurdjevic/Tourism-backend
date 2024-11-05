@@ -68,5 +68,33 @@ namespace Explorer.API.Controllers.Author
             var result = _blogService.Delete(id);
             return CreateResponse(result);
         }
+
+        [HttpGet("{blogId}/comments")]
+        public ActionResult<PagedResult<BlogDto>> GetComments(int blogId)
+        {
+            var result = _blogService.GetAllCommentsByBlogId(blogId);
+            return CreateResponse(result);
+        }
+
+        [HttpPost("{blogId}/comments")]
+        public ActionResult<BlogDto> AddComment(int blogId, [FromBody] CommentDto comment)
+        {
+            var result = _blogService.AddComment(blogId, comment);
+            return CreateResponse(result);
+        }
+
+        [HttpPut("{blogId}/comments/{commentId}")]
+        public ActionResult<BlogDto> UpdateComment([FromBody] CommentDto comment)
+        {
+            var result = _blogService.UpdateComment(comment);
+            return CreateResponse(result);
+        }
+
+        [HttpDelete("{blogId}/comments/{commentId}")]
+        public ActionResult<BlogDto> RemoveComment(int blogId, int commentId)
+        {
+            var result = _blogService.RemoveComment(blogId, commentId);
+            return CreateResponse(result);
+        }
     }
 }

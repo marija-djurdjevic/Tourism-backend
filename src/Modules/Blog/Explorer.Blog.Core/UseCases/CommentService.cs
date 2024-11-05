@@ -25,5 +25,22 @@ namespace Explorer.Blog.Core.UseCases
             return MapToDto(commentRepository.GetByBlogId(blogId));
         }
 
+        public Result DeleteByBlogId(int blogId) {
+            try
+            {
+                List<CommentDto> comments = GetByBlogId(blogId).Value;
+                foreach (CommentDto comment in comments)
+                {
+                    commentRepository.Delete(comment.Id);
+                }
+
+                return Result.Ok();
+            }
+            catch (KeyNotFoundException e)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
+        }
+
     }
 }

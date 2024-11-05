@@ -35,7 +35,7 @@ namespace Explorer.Blog.Core.Domain
         public string Description { get; private set; }
         public DateTime CreationDate { get; private set; }
         public string? Image { get; private set; }
-        public BlogStatus Status { get; private set; }
+        public BlogStatus Status { get; set; }
 
         public Blogs(long authorId, string title, string description, DateTime creationDate, BlogStatus status, string? image = null)
         {
@@ -75,25 +75,6 @@ namespace Explorer.Blog.Core.Domain
                 vote.CreationDate = newVote.CreationDate;
                 vote.Value = newVote.Value;
             }
-
-            CheckStatus();
-        }
-
-        private void CheckStatus()
-        {
-            int badVotes = 0;
-            int goodVotes = 0;
-            foreach (Vote vote in Votes)
-            {
-                if (vote.Value == false) { badVotes++; }
-                else { goodVotes++; }
-            }
-            int votes = goodVotes - badVotes;
-
-            if (votes < -10) { Status = BlogStatus.Closed; }
-            else if (votes > 100) { Status = BlogStatus.Active; }
-            else if (votes > 500) { Status = BlogStatus.Famous; }
-
         }
 
         public void RemoveVote(long authorId)
