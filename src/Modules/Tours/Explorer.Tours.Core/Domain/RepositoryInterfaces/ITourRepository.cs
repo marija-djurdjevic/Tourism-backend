@@ -11,5 +11,9 @@ namespace Explorer.Tours.Core.Domain.RepositoryInterfaces
     {
         List<Tour> GetAllToursWithKeyPoints();
         public Tour GetTourWithKeyPoints(int tourId);
+
+        public Tour GetById(int tourId);
+        public Tour GetByIdAsync(int tourId);
+        public Tour GetKeyPointsForTour(int tourId);
     }
 }

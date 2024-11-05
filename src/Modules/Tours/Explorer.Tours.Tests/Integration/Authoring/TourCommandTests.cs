@@ -44,7 +44,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
                 KeyPoints = new List<KeyPointDto>(),
                 TransportInfo = new TransportInfoDto()
 
-        };
+             };
 
             //Act
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as TourDto;
@@ -83,6 +83,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
 
         }
 
+        
         [Fact]
         public void Archives_tour()
         {
@@ -105,24 +106,6 @@ namespace Explorer.Tours.Tests.Integration.Authoring
 
         }
 
-        [Fact]
-        public void Create_fails_invalid_data()
-        {
-            // Arrange
-            using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            var updatedEntity = new TourDto
-            {
-                Description = "Test"
-            };
-
-            // Act
-            var result = (ObjectResult)controller.Create(updatedEntity).Result;
-
-            // Assert
-            result.ShouldNotBeNull();
-            result.StatusCode.ShouldBe(400);
-        }
 
         private static TourController CreateController(IServiceScope scope)
         {

@@ -1,4 +1,5 @@
-﻿using Explorer.Tours.API.Dtos.TourSessionDtos;
+﻿using Explorer.Stakeholders.Core.Domain.Users;
+using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain.TourSessions;
@@ -21,56 +22,77 @@ namespace Explorer.API.Controllers.Tourist.Execution
 
 
 
+       
+
+
         [HttpPost("start")]
-        public ActionResult<TourSessionDto> StartTour(int tourId, double latitude, double longitude)
+        public ActionResult<bool> StartTour([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] int touristId)
         {
-            
+
             var initialLocation = new LocationDto(latitude, longitude);
 
-           
-            var result = _tourSessionService.StartTour(tourId, initialLocation);
 
-            
+            var result = _tourSessionService.StartTour(tourId, initialLocation,touristId);
+
+
             if (result.IsSuccess)
             {
-                return Ok(result.Value);
+                return Ok(true);
             }
 
-           
-            return BadRequest(result.Errors.Select(e => e.Message));
+
+            return BadRequest(false);
         }
 
 
 
         [HttpPost("complete/{id}")]
-        public ActionResult<TourSessionDto> CompleteTour(int id)
+        public ActionResult<bool> CompleteTour(int id)
         {
             var result = _tourSessionService.CompleteTour(id);
 
             if (result.IsSuccess)
             {
-                return Ok(result.Value);
+                return Ok(true);
             }
 
-            return NotFound(result.Errors.Select(e => e.Message));
+            return NotFound(false);
         }
 
-        
+
         [HttpPost("abandon/{id}")]
-        public ActionResult<TourSessionDto> AbandonTour(int id)
+        public ActionResult<bool> AbandonTour(int id)
         {
             var result = _tourSessionService.AbandonTour(id);
 
             if (result.IsSuccess)
             {
-                return Ok(result.Value);
+                return Ok(true);
             }
 
-            return NotFound(result.Errors.Select(e => e.Message));
+            return NotFound(false);
         }
 
-       
-       
+
+
+        [HttpPost("update-location")]
+        public ActionResult<bool> UpdateLocation([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude)
+        {
+            var location = new LocationDto(latitude,longitude);
+            bool isNear=_tourSessionService.UpdateLocation(tourId, location);
+
+            return Ok(isNear);
+        }
+
+        [HttpPost("update-session")]
+        public ActionResult UpdateSession([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude)
+        {
+            var locationDto = new LocationDto(latitude, longitude);
+            _tourSessionService.UpdateSession(tourId, locationDto);
+
+            return Ok("Sesija uspešno ažurirana.");
+        }
+
     }
 
 

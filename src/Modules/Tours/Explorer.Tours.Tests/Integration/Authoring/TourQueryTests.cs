@@ -44,13 +44,14 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             int authorId = 1;
 
             //Act
-            var result = ((ObjectResult)controller.GetByAuthorId(0, 0, 0).Result)?.Value as PagedResult<TourDto>;
+            var result = ((ObjectResult)controller.GetByAuthorId(0, 0, 1).Result)?.Value as PagedResult<TourDto>;
 
             // Assert
             result.ShouldNotBeNull();
             result.Results.Count.ShouldBeGreaterThan(0);
             result.Results.All(t => t.AuthorId == authorId).ShouldBeTrue();
         }
+        
 
 
         public static TourController CreateController(IServiceScope scope)

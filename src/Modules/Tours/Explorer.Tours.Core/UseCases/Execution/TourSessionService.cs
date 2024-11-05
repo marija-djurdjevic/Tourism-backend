@@ -1,11 +1,15 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Core.Domain.Users;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
+using Explorer.Tours.API.Public.Shopping;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
+using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Core.Domain.TourSessions;
 using FluentResults;
 using System;
@@ -20,16 +24,31 @@ namespace Explorer.Tours.Core.UseCases.Execution
     {
         private readonly ITourSessionRepository _repository;
         private readonly IMapper _mapper;
+        private readonly ITourService _tourService;
+        private readonly IKeyPointService _keyPointService;
+        private readonly ITourPurchaseTokenRepository _purchaseTokenRepository;
+        
 
-        public TourSessionService(IMapper mapper, ITourSessionRepository repository) : base(mapper)
+        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService,ITourPurchaseTokenRepository tourPurchaseTokenRepository) : base(mapper)
         {
             _repository = repository;
             _mapper = mapper;
+            _tourService = tourService;
+            _keyPointService = keyPointService;
+            _purchaseTokenRepository = tourPurchaseTokenRepository;
+            
         }
-
-        public Result<TourSessionDto> AbandonTour(int tourSessionId)
+        public Result<TourSessionDto> AbandonTour(int tourId)
         {
-            var tourSession = _repository.Get(tourSessionId);
+
+            var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
+
+
+            var tourSession = allSessions.FirstOrDefault(session =>
+                session.TourId == tourId);
+
+
+           
 
             if (tourSession == null)
             {
@@ -42,11 +61,16 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
         }
 
-        
 
-        public Result<TourSessionDto> CompleteTour(int tourSessionId)
+
+        public Result<TourSessionDto> CompleteTour(int tourId)
         {
-            var tourSession = _repository.Get(tourSessionId);
+            var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
+
+
+            var tourSession = allSessions.FirstOrDefault(session =>
+                session.TourId == tourId);
+
 
             if (tourSession == null)
             {
@@ -59,13 +83,55 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
         }
 
-        public Result<TourSessionDto> StartTour(int tourId, LocationDto initialLocation)
+        public Result<TourSessionDto> StartTour(int tourId, LocationDto initialLocation,int touristId)
         {
+            
+            var purchasedTours=_purchaseTokenRepository.GetPurchasedTours(touristId);
 
-            var location = _mapper.Map<LocationDto, Location>(initialLocation);
+            bool exist = purchasedTours.Any(item => item == tourId);
+            if (!exist)
+            {
+                return Result.Fail<TourSessionDto>("Tour not found.");
 
-           
-            var tourSession = new TourSession(tourId/*, location*/);
+            }
+
+
+
+            var tourResult = _tourService.Get(tourId);
+
+            var tour = tourResult.Value;
+
+            TourStatus tourStatus = (TourStatus)Enum.Parse(typeof(TourStatus), tour.Status.ToString());
+
+            if (tour == null)
+            {
+                return Result.Fail<TourSessionDto>("Tour not found.");
+            }
+
+
+            if (tourStatus != TourStatus.Published && tourStatus != TourStatus.Archived)
+            {
+                return Result.Fail<TourSessionDto>("Tour is not in a state that allows starting a session.");
+            }
+
+
+            var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
+
+
+            var existingSession = allSessions.FirstOrDefault(session =>
+                session.TourId == tourId);
+
+            if (existingSession != null)
+            {
+                return Result.Fail<TourSessionDto>("An active tour session already exists for this tour.");
+            }
+
+
+
+            var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(initialLocation);
+
+
+            var tourSession = new TourSession(tourId, location);
 
             if (tourSession == null)
             {
@@ -76,7 +142,76 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
             return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
         }
+
+
+
+
+        public bool UpdateLocation(int tourId, LocationDto locationDto)
+        {
+
+            var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(locationDto);
+
+            var keyPointsResult = _keyPointService.GetKeyPointsByTourId(tourId);
+
+
+
+            var keyPoints = keyPointsResult.Value;
+
+            if (keyPoints == null || !keyPoints.Any())
+            {
+                throw new Exception($"No keypoints found for tour ID {tourId}.");
+            }
+
+
+            var lastKeyPoint = keyPoints.Last();
+            var lastKeyPointLocation = new Domain.TourSessions.Location(lastKeyPoint.Latitude, lastKeyPoint.Longitude);
+
+            bool isNear = Domain.TourSessions.Location.IsWithinSimpleDistance(location, lastKeyPointLocation);
+            if (isNear)
+            {
+                var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
+                var existingSession = allSessions.FirstOrDefault(session =>
+                    session.TourId == tourId);
+
+
+                existingSession.CompleteSession();
+                _repository.Update(existingSession);
+                
+
+
+            }
+            return isNear;
+        }
+
+
+
+
+
+
+
+        public void UpdateSession(int tourId, LocationDto locationDto)
+        {
+
+            var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(locationDto);
+
+
+            var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
+
+            var existingSession = allSessions.FirstOrDefault(session =>
+                session.TourId == tourId);
+
+
+            existingSession.UpdateCurrentLocation(location);
+            _repository.Update(existingSession);
+
+
+        }
+
+
+
     }
-
-
 }
+
+
+
+

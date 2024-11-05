@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
@@ -22,17 +22,73 @@ namespace Explorer.Tours.Core.UseCases.Authoring
     {
 
         private readonly ITourRepository _tourRepository;
+        private readonly ICrudRepository<KeyPoint> _keyPointRepository;
         private readonly IMapper _mapper;
-        public TourService(ICrudRepository<Tour> repository, IMapper mapper, ITourRepository tourRepository) : base(repository, mapper) {          
+        public TourService(ICrudRepository<Tour> repository, IMapper mapper, ITourRepository tourRepository, ICrudRepository<KeyPoint> keyPointRepository) : base(repository, mapper)
+        {
             _mapper = mapper;
             _tourRepository = tourRepository;
+            _keyPointRepository = keyPointRepository;
         }
 
-        public Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id)
+        public Result<List<TourDto>> GetAllPublished(int page, int pageSize)
         {
             var tours = GetPaged(page, pageSize);
-            var authorTours = tours.Value.Results.FindAll(x => x.AuthorId == id);
-            return authorTours;
+            var publishedTours = tours.Value.Results.FindAll(x => x.Status == TourDto.TourStatus.Published);
+            return publishedTours;
+
+
+        }
+
+        public Result<KeyPointDto> AddKeyPointToTourAsync(int tourId, KeyPointDto keyPointDto)
+        {
+            try
+            {
+
+                var tour = GetTourByIdAsync(tourId);
+
+                if (tour == null)
+                {
+                    return Result.Fail<KeyPointDto>("Tour not found.");
+                }
+                Console.WriteLine($"Tour found: {tour.Id}, KeyPoints Count: {tour.KeyPoints.Count}");
+
+                var keyPoint = _mapper.Map<KeyPoint>(keyPointDto);
+
+
+                tour.KeyPoints.Add(keyPoint);
+
+                _keyPointRepository.Create(keyPoint);
+
+
+
+                var tourDto = _mapper.Map<TourDto>(tour);
+                Update(tourDto);
+
+
+                return Result.Ok(_mapper.Map<KeyPointDto>(keyPoint));
+            }
+            catch (Exception ex)
+            {
+                var innerExceptionMessage = ex.InnerException?.Message ?? "No inner exception.";
+                return Result.Fail<KeyPointDto>("An error occurred while adding the key point: " + ex.Message);
+            }
+        }
+
+        private Tour GetTourByIdAsync(int tourId)
+        {
+            return _tourRepository.GetByIdAsync(tourId);
+        }
+        public Result<PagedResult<TourDto>> GetByAuthorId(int page, int pageSize, int id)
+        {
+            var tours = GetPaged(page, pageSize);
+            var filteredResults = tours.Value.Results
+                .Where(x => x.AuthorId == id)
+                .ToList();
+
+            var pagedAuthorTours = new PagedResult<TourDto>(filteredResults, filteredResults.Count);
+
+            return tours.WithValue(pagedAuthorTours);
         }
 
         public Result<TourDto> Publish(TourDto tourDto)
@@ -71,8 +127,8 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
         public Result<List<TourDto>> GetAllToursWithKeyPoints()
         {
-           
-            var tours = _tourRepository.GetAllToursWithKeyPoints(); 
+
+            var tours = _tourRepository.GetAllToursWithKeyPoints();
 
             if (tours == null || !tours.Any())
             {
@@ -83,8 +139,10 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             return Result.Ok(tourDtos);
         }
+        
+
         public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
-         {
+        {
 
              var pagedTours = GetPaged(1, int.MaxValue); 
 
@@ -102,7 +160,43 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
 
              return tour.KeyPoints;
-         }       
+        }
 
+
+
+
+
+
+        public Result<TourDto> Get(int tourId)
+        {
+            
+            var tour = _tourRepository.GetTourWithKeyPoints(tourId);
+
+            if (tour == null)
+            {
+                return Result.Fail<TourDto>($"Tour with ID {tourId} not found.");
+            }
+
+            
+            var tourDto = _mapper.Map<TourDto>(tour);
+            return Result.Ok(tourDto);
+        }
+
+
+
+        public Result<TourDto> GetById(int tourId)
+        {
+            var tour = _tourRepository.GetById(tourId);
+            if (tour == null)
+            {
+                return Result.Fail("Tour not found");
+            }
+
+
+            var tourDto = _mapper.Map<TourDto>(tour);
+            return Result.Ok(tourDto);
+         }
+
+        
     }
 }

@@ -18,4 +18,3 @@ INSERT INTO tours."Tour"(
 VALUES 
     (-3, 1, 'Bird perspective', 'Helicopter tour over the city with panoramic views of famous landmarks', 0, '#flying', 5000, 0, '{{"type": 2, "time": 15, "distance": 2.0}}',
     '2024-10-15 14:15:00', '2024-10-15 14:15:00', 5.0);
-    
