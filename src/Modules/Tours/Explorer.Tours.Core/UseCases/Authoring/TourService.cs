@@ -79,6 +79,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         {
             return _tourRepository.GetByIdAsync(tourId);
         }
+        
         public Result<PagedResult<TourDto>> GetByAuthorId(int page, int pageSize, int id)
         {
             var tours = GetPaged(page, pageSize);
@@ -163,10 +164,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         }
 
 
-
-
-
-
         public Result<TourDto> Get(int tourId)
         {
             
@@ -196,7 +193,38 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             var tourDto = _mapper.Map<TourDto>(tour);
             return Result.Ok(tourDto);
          }
+         
+         public TourDto GetKeyPointsByTourId(int tourId)
+         {
 
+            var tour = _tourRepository.GetKeyPointsForTour(tourId);
+            var tourDto = _mapper.Map<TourDto>(tour);
+            //return Result.Ok(tourDto);
+            return tourDto;
+         }
+
+
+
+        public Result<bool> UpdateTransportInfo(int tourId, TransportInfoDto transportInfoDto)
+        {
+            
+            var tourDto = GetKeyPointsByTourId(tourId);
+            var tour = _mapper.Map<Tour>(tourDto);
+
+            if (tour == null)
+            {
+                return Result.Fail<bool>("Tour not found");
+            }
+
+            tour.UpdateTrasnportStatus(transportInfoDto.Distance, transportInfoDto.Time);
+
+            
+            
+            var updatedTourDto = _mapper.Map<TourDto>(tour);
+            Update(updatedTourDto);
+
+            return Result.Ok(true);
+        }
         
     }
 }

@@ -61,7 +61,21 @@ namespace Explorer.Tours.Core.Domain.Tours
             AverageScore = averageScore;
             PublishedAt = publishedAt;
         }
-
+        public Tour(string name, string description, DifficultyStatus difficulty, string tags, double price, int authorId, TransportInfo transportInfo)
+        {
+            Name = name;
+            Description = description;
+            Difficulty = difficulty;
+            Tags = tags;
+            Price = price;
+            AuthorId = authorId;
+            Status = TourStatus.Draft;
+            TransportInfo = transportInfo; 
+            KeyPoints = new List<KeyPoint>();
+            PublishedAt = DateTime.MinValue;
+            ArchivedAt = DateTime.MinValue;
+            AverageScore = 0;
+        }
         public void Archive()
         {
             if (Status == TourStatus.Published)
@@ -73,6 +87,12 @@ namespace Explorer.Tours.Core.Domain.Tours
             {
                 throw new InvalidOperationException("Only published tours can be archived.");
             }
+        }
+
+        public void UpdateTrasnportStatus(double distance, int time) 
+        {
+            TransportInfo.Distance = distance;
+            TransportInfo.Time = time;
         }
 
         public void Publish()

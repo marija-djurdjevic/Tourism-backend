@@ -18,8 +18,8 @@ namespace Explorer.Tours.Core.Domain.Tours
     }
     public class TransportInfo : ValueObject<TransportInfo>
     {
-        public int Time { get; private set; }
-        public double Distance { get; private set; }
+        public int Time { get;  set; }
+        public double Distance { get;  set; }
         public TransportType Transport {  get; private set; }
 
         protected override bool EqualsCore(TransportInfo other)
