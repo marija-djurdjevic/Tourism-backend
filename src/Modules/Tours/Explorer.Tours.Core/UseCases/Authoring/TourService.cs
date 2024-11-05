@@ -35,7 +35,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             return authorTours;
         }
 
-        public Result<bool> Publish(TourDto tourDto)
+        public Result<TourDto> Publish(TourDto tourDto)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
                 var updatedTourDto = _mapper.Map<TourDto>(tour);
                 Update(updatedTourDto);
 
-                return Result.Ok(true);
+                return Result.Ok(updatedTourDto);
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             }
         }
 
-        public Result<bool> Archive(TourDto tourDto)
+        public Result<TourDto> Archive(TourDto tourDto)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
                 var updatedTourDto = _mapper.Map<TourDto>(tour);
                 Update(updatedTourDto);
 
-                return Result.Ok(true);
+                return Result.Ok(updatedTourDto);
             }
             catch (Exception ex)
             {

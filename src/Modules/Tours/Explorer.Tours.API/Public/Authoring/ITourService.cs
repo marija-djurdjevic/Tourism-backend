@@ -18,7 +18,7 @@ namespace Explorer.Tours.API.Public.Authoring
         public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId);
         public Result<List<TourDto>> GetAllToursWithKeyPoints();
 
-        Result<bool> Publish(TourDto entity);
-        Result<bool> Archive(TourDto entity);
+        Result<TourDto> Publish(TourDto entity);
+        Result<TourDto> Archive(TourDto entity);
     }
 }
