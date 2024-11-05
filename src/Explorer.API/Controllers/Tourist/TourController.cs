@@ -14,11 +14,14 @@ namespace Explorer.API.Controllers.Tourist
     [Route("api/tourist/tour")]
     public class TourController : BaseApiController
     {
+
+        private readonly IShoppingService _shoppingService;
         private readonly ITourService _tourService;
         private readonly IKeyPointService _keyPointService;
 
-        public TourController(ITourService tourService, IKeyPointService keyPointService)
+        public TourController(IShoppingService shoppingService,ITourService tourService,IKeyPointService keyPointService )
         {
+            _shoppingService = shoppingService;
             _tourService = tourService;
             _keyPointService = keyPointService;
         }
@@ -36,6 +39,16 @@ namespace Explorer.API.Controllers.Tourist
             var result = _keyPointService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
+
+        [HttpGet("all")]
+        public ActionResult<List<TourDto>> GetAllTours()
+        {
+            var result = _tourService.GetAllToursWithKeyPoints();
+            return CreateResponse(result);
+        }
+
+
+
 
     }
 }

@@ -122,13 +122,50 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             return Result.Ok(tourDtos);
         }
-        public Result<TourDto> GetKeyPointsByTourId(int tourId)
+        
+
+        public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
         {
 
-            var tour = _tourRepository.GetKeyPointsForTour(tourId);
+             var pagedTours = GetPaged(1, int.MaxValue); 
+
+             if (pagedTours.IsFailed)
+             {
+                 return Result.Fail<List<KeyPointDto>>("Failed to retrieve tours.");
+             }
+
+             var tour = pagedTours.Value.Results.FirstOrDefault(x => x.Id == tourId);
+
+             if (tour == null)
+             {
+                 return Result.Fail<List<KeyPointDto>>($"Tour with ID {tourId} not found.");
+             }
+
+
+             return tour.KeyPoints;
+        }
+
+
+
+
+
+
+        public Result<TourDto> Get(int tourId)
+        {
+            
+            var tour = _tourRepository.GetTourWithKeyPoints(tourId);
+
+            if (tour == null)
+            {
+                return Result.Fail<TourDto>($"Tour with ID {tourId} not found.");
+            }
+
+            
             var tourDto = _mapper.Map<TourDto>(tour);
             return Result.Ok(tourDto);
         }
+
+
 
         public Result<TourDto> GetById(int tourId)
         {
@@ -138,8 +175,11 @@ namespace Explorer.Tours.Core.UseCases.Authoring
                 return Result.Fail("Tour not found");
             }
 
+
             var tourDto = _mapper.Map<TourDto>(tour);
             return Result.Ok(tourDto);
          }
+
+        
     }
 }
