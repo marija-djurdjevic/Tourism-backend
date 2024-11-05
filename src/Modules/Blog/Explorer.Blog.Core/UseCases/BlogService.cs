@@ -25,40 +25,62 @@ namespace Explorer.Blog.Core.UseCases
             _commentService = commentService;
         }
 
-
-
         public Result<BlogDto> AddVote(int blogId, VoteDto voteDto)
         {
-            var blog = _blogRepository.Get(blogId);
-            if (blog == null)
-                return Result.Fail("Blog not found.");
+            try {
+                var blog = _blogRepository.Get(blogId);
+                if (blog == null)
+                    return Result.Fail("Blog not found.");
 
-            blog.AddVote(_mapper.Map<VoteDto, Vote>(voteDto));
+                CheckIfEditable(blog);
 
-            _blogRepository.Update(blog);
+                blog.AddVote(_mapper.Map<VoteDto, Vote>(voteDto));
 
-            var resultDto = MapToDto(blog);
+                _blogRepository.Update(blog);
 
-            CheckStatus(blogId);
+                var resultDto = MapToDto(blog);
 
-            return Result.Ok(resultDto);
+                UpdateStatus(blogId);
+
+                return Result.Ok(resultDto);
+            }
+            catch (KeyNotFoundException e) {
+                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
+        }
+
+        private Result CheckIfEditable(Blogs blog)
+        {
+            if(blog.Status == BlogStatus.Closed)
+            {
+                return Result.Fail(FailureCode.InvalidArgument).WithError("Blog not editable");
+            }
+
+            return Result.Ok();
         }
 
         public Result<BlogDto> RemoveVote(int blogId, int authorId)
         {
-            var blog = _blogRepository.Get(blogId);
-            if (blog == null)
-                return Result.Fail("Blog not found.");
+            try {
+                var blog = _blogRepository.Get(blogId);
+                if (blog == null)
+                    return Result.Fail("Blog not found.");
 
-            blog.RemoveVote(authorId);
+                CheckIfEditable(blog);
 
-            _blogRepository.Update(blog);
+                blog.RemoveVote(authorId);
 
-            var resultDto = MapToDto(blog);
+                _blogRepository.Update(blog);
 
-            CheckStatus(blogId);
+                var resultDto = MapToDto(blog);
 
-            return Result.Ok(resultDto);
+                UpdateStatus(blogId);
+
+                return Result.Ok(resultDto);
+            }
+            catch (KeyNotFoundException e) {
+                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
         }
 
         public Result<List<VoteDto>> GetAllVotesByBlogId(int blogId)
@@ -72,7 +94,7 @@ namespace Explorer.Blog.Core.UseCases
             return Result.Ok(votesDto);
         }
 
-        private Result CheckStatus(int blogId)
+        private Result UpdateStatus(int blogId)
         {
             var blog = _blogRepository.Get(blogId);
             int badVotes = 0;
@@ -138,9 +160,17 @@ namespace Explorer.Blog.Core.UseCases
         {
             try
             {
+                var blog = _blogRepository.Get(blogId);
+                if (blog == null)
+                    return Result.Fail("Blog not found.");
+                if(CheckIfEditable(blog) != Result.Ok())
+                {
+                    return Result.Fail(FailureCode.NotFound).WithError("Blog closed.");
+                }
+
                 var resultDto = _commentService.Create(commentDto).Value;
 
-                CheckStatus(blogId);
+                UpdateStatus(blogId);
 
                 return Result.Ok(resultDto);
 
@@ -155,6 +185,12 @@ namespace Explorer.Blog.Core.UseCases
         {
             try
             {
+                var blog = _blogRepository.Get(blogId);
+                if (blog == null)
+                    return Result.Fail("Blog not found.");
+
+                CheckIfEditable(blog);
+
                 var resultDto = _commentService.Update(commentDto).Value;
 
                 return Result.Ok(resultDto);
@@ -170,9 +206,15 @@ namespace Explorer.Blog.Core.UseCases
         {
             try
             {
+                var blog = _blogRepository.Get(blogId);
+                if (blog == null)
+                    return Result.Fail("Blog not found.");
+
+                CheckIfEditable(blog);
+
                 _commentService.Delete(commentId);
 
-                CheckStatus(blogId);
+                UpdateStatus(blogId);
 
                 return Result.Ok();
 
@@ -182,6 +224,5 @@ namespace Explorer.Blog.Core.UseCases
                 return Result.Fail(FailureCode.NotFound).WithError(e.Message);
             }
         }
-
     }
 }

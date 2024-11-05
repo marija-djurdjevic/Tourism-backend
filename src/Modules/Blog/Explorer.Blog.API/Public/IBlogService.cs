@@ -18,8 +18,8 @@ namespace Explorer.Blog.API.Public
         Result<BlogDto> RemoveVote(int blogId, int authroId);
         Result<List<VoteDto>> GetAllVotesByBlogId(int blogId);
         Result<CommentDto> AddComment(int blogId, CommentDto comment);
-        Result<CommentDto> RemoveComment(int blogId, int commentId);
-        Result<CommentDto> UpdateComment(CommentDto comment);
+        Result<CommentDto> UpdateComment(int blogId, CommentDto comment);
+        Result RemoveComment(int blogId, int commentId);
         Result<List<CommentDto>> GetAllCommentsByBlogId(int blogId);
         Result Delete(int id);
     }

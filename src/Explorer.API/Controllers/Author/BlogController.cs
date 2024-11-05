@@ -84,9 +84,9 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpPut("{blogId}/comments/{commentId}")]
-        public ActionResult<BlogDto> UpdateComment([FromBody] CommentDto comment)
+        public ActionResult<BlogDto> UpdateComment(int blogId, [FromBody] CommentDto comment)
         {
-            var result = _blogService.UpdateComment(comment);
+            var result = _blogService.UpdateComment(blogId, comment);
             return CreateResponse(result);
         }
 
