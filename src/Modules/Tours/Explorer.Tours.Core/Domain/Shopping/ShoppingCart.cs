@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,16 +10,16 @@ namespace Explorer.Tours.Core.Domain.ShoppingCarts
 {
     public class ShoppingCart : Entity
     {
+       
+        public int TouristId { get; set; }
         public List<OrderItem> Items { get; private set; }
-
-        public List<TourPurchaseToken> Tokens { get; protected set; }
         public double TotalPrice { get; private set; }
 
-
         public ShoppingCart() { }
-
-        public ShoppingCart(double totalPrice) {
-            TotalPrice = totalPrice;
+        public ShoppingCart(int touristId, List<OrderItem> items,List<TourPurchaseToken> tokens)
+        {
+            TouristId = touristId;
+            Items = items;
         }
 
         public void AddItem(OrderItem item)
@@ -31,7 +32,7 @@ namespace Explorer.Tours.Core.Domain.ShoppingCarts
             Items.Remove(item);
         }
 
-        public double GetTotalPrice() {
+        public void CalculatePrice() {
 
             double totalPrice = 0;
             foreach(var item in Items)
@@ -39,12 +40,6 @@ namespace Explorer.Tours.Core.Domain.ShoppingCarts
                 totalPrice += item.Price;
             }
             TotalPrice = totalPrice;
-            return totalPrice;
-        }
-
-        public void Checkout()
-        {
-
         }
     }
 }

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Tests.Integration.Administration
+namespace Explorer.Tours.Tests.Integration.Authoring
 {
     [Collection("Sequential")]
     public class KeyPointCommandTests : BaseToursIntegrationTest

@@ -14,5 +14,6 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<PagedResult<KeyPointDto>> GetPaged(int page, int pageSize);
         Result<KeyPointDto> Create(KeyPointDto keyPoint);
 
+        Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId);
     }
 }

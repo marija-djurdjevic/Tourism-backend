@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
@@ -24,17 +24,27 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         private readonly ITourRepository _tourRepository;
         private readonly ICrudRepository<KeyPoint> _keyPointRepository;
         private readonly IMapper _mapper;
-        public TourService(ICrudRepository<Tour> repository, IMapper mapper, ITourRepository tourRepository, ICrudRepository<KeyPoint> keyPointRepository) : base(repository, mapper) {          
+        public TourService(ICrudRepository<Tour> repository, IMapper mapper, ITourRepository tourRepository, ICrudRepository<KeyPoint> keyPointRepository) : base(repository, mapper)
+        {
             _mapper = mapper;
             _tourRepository = tourRepository;
             _keyPointRepository = keyPointRepository;
+        }
+
+        public Result<List<TourDto>> GetAllPublished(int page, int pageSize)
+        {
+            var tours = GetPaged(page, pageSize);
+            var publishedTours = tours.Value.Results.FindAll(x => x.Status == TourDto.TourStatus.Published);
+            return publishedTours;
+
+
         }
 
         public Result<KeyPointDto> AddKeyPointToTourAsync(int tourId, KeyPointDto keyPointDto)
         {
             try
             {
-                
+
                 var tour = GetTourByIdAsync(tourId);
 
                 if (tour == null)
@@ -49,13 +59,13 @@ namespace Explorer.Tours.Core.UseCases.Authoring
                 tour.KeyPoints.Add(keyPoint);
 
                 _keyPointRepository.Create(keyPoint);
-               
+
 
 
                 var tourDto = _mapper.Map<TourDto>(tour);
                 Update(tourDto);
-                
-                
+
+
                 return Result.Ok(_mapper.Map<KeyPointDto>(keyPoint));
             }
             catch (Exception ex)
@@ -69,14 +79,20 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         {
             return _tourRepository.GetByIdAsync(tourId);
         }
-        public Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id)
+        
+        public Result<PagedResult<TourDto>> GetByAuthorId(int page, int pageSize, int id)
         {
             var tours = GetPaged(page, pageSize);
-            var authorTours = tours.Value.Results.FindAll(x => x.AuthorId == id);
-            return authorTours;
+            var filteredResults = tours.Value.Results
+                .Where(x => x.AuthorId == id)
+                .ToList();
+
+            var pagedAuthorTours = new PagedResult<TourDto>(filteredResults, filteredResults.Count);
+
+            return tours.WithValue(pagedAuthorTours);
         }
 
-        public Result<bool> Publish(TourDto tourDto)
+        public Result<TourDto> Publish(TourDto tourDto)
         {
             try
             {
@@ -85,7 +101,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
                 var updatedTourDto = _mapper.Map<TourDto>(tour);
                 Update(updatedTourDto);
 
-                return Result.Ok(true);
+                return Result.Ok(updatedTourDto);
             }
             catch (Exception ex)
             {
@@ -93,15 +109,27 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             }
         }
 
-        public Result<bool> Archive(TourDto tourDto)
+        public Result<TourDto> Archive(TourDto tourDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tour = _mapper.Map<Tour>(tourDto);
+                tour.Archive();
+                var updatedTourDto = _mapper.Map<TourDto>(tour);
+                Update(updatedTourDto);
+
+                return Result.Ok(updatedTourDto);
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail("An error occurred while publishing the tour: " + ex.Message);
+            }
         }
 
         public Result<List<TourDto>> GetAllToursWithKeyPoints()
         {
-           
-            var tours = _tourRepository.GetAllToursWithKeyPoints(); 
+
+            var tours = _tourRepository.GetAllToursWithKeyPoints();
 
             if (tours == null || !tours.Any())
             {
@@ -112,7 +140,61 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             return Result.Ok(tourDtos);
         }
-        public TourDto GetKeyPointsByTourId(int tourId)
+        
+
+        public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+        {
+
+             var pagedTours = GetPaged(1, int.MaxValue); 
+
+             if (pagedTours.IsFailed)
+             {
+                 return Result.Fail<List<KeyPointDto>>("Failed to retrieve tours.");
+             }
+
+             var tour = pagedTours.Value.Results.FirstOrDefault(x => x.Id == tourId);
+
+             if (tour == null)
+             {
+                 return Result.Fail<List<KeyPointDto>>($"Tour with ID {tourId} not found.");
+             }
+
+
+             return tour.KeyPoints;
+        }
+
+
+        public Result<TourDto> Get(int tourId)
+        {
+            
+            var tour = _tourRepository.GetTourWithKeyPoints(tourId);
+
+            if (tour == null)
+            {
+                return Result.Fail<TourDto>($"Tour with ID {tourId} not found.");
+            }
+
+            
+            var tourDto = _mapper.Map<TourDto>(tour);
+            return Result.Ok(tourDto);
+        }
+
+
+
+        public Result<TourDto> GetById(int tourId)
+        {
+            var tour = _tourRepository.GetById(tourId);
+            if (tour == null)
+            {
+                return Result.Fail("Tour not found");
+            }
+
+
+            var tourDto = _mapper.Map<TourDto>(tour);
+            return Result.Ok(tourDto);
+         }
+         
+         public TourDto GetKeyPointsByTourId(int tourId)
          {
 
             var tour = _tourRepository.GetKeyPointsForTour(tourId);
@@ -120,6 +202,8 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             //return Result.Ok(tourDto);
             return tourDto;
          }
+
+
 
         public Result<bool> UpdateTransportInfo(int tourId, TransportInfoDto transportInfoDto)
         {
@@ -141,7 +225,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             return Result.Ok(true);
         }
-
-
+        
     }
 }
