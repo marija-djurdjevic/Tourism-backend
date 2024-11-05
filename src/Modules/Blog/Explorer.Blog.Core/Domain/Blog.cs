@@ -67,7 +67,7 @@ namespace Explorer.Blog.Core.Domain
             var vote = Votes.FirstOrDefault(v => v?.AuthorId == newVote.AuthorId);
 
             if (vote == null)
-                Votes.Add(vote);
+                Votes.Add(newVote);
             else
             {
                 vote.CreationDate = newVote.CreationDate;
@@ -80,7 +80,7 @@ namespace Explorer.Blog.Core.Domain
             if (Votes == null || !Votes.Any())
                 throw new InvalidOperationException("No votes available to remove.");
 
-            var vote = Votes.FirstOrDefault(v => v.AuthorId == authorId);
+            var vote = Votes.FirstOrDefault(v => v?.AuthorId == authorId);
 
             if (vote == null)
                 throw new ArgumentException($"Vote by author with ID {authorId} does not exist.");
