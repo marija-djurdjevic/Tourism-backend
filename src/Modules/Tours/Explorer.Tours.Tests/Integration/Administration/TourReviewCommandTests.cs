@@ -35,12 +35,11 @@ namespace Explorer.Tours.Tests.Integration.Administration
                 TourId = -1,
                 UserId = -1,
                 Username = "Test",
-                Images = new List<string>(),
+                Images = "slika",
                 TourVisitDate = DateTime.UtcNow,
                 TourReviewDate = DateTime.UtcNow,
                 TourProgressPercentage = 50
             };
-            newEntity.Images.Add("image1");
 
             // Act
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as TourReviewDto;

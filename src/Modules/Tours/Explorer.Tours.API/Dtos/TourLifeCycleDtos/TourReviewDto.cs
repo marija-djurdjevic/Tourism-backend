@@ -11,7 +11,7 @@
 
         public int UserId { get; set; }
         public string Username { get; set; }
-        public List<string> Images { get; set; }
+        public string Images { get; set; }
 
         public DateTime TourVisitDate { get; set; }
 
