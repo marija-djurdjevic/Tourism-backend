@@ -98,6 +98,48 @@ namespace Explorer.API.Controllers.Tourist.Execution
             return Ok("Sesija uspešno ažurirana.");
         }
 
+        [HttpPost("updateLastActivity/{id}")]
+        public ActionResult<bool> UpdateLastActivity(int id)
+        {
+            int userId = User.PersonId();
+            var result = _tourSessionService.UpdateLastActivity(id, userId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(true);
+            }
+
+            return NotFound(false);
+        }
+
+        [HttpGet("getCompletedCheckpoints/{tourId}")]
+        public ActionResult<List<CompletedKeyPointDto>> GetCompletedKeyPoints(int tourId)
+        {
+            int userId = User.PersonId();
+            var result = _tourSessionService.GetCompletedKeyPoints(tourId, userId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value); // Returns list of completed checkpoints
+            }
+
+            return NotFound(result.Errors);
+        }
+
+        [HttpPost("addCompleteKeyPoint/{tourId}/{keyPointId}")]
+        public ActionResult<bool> CompleteKeyPoint(long tourId, long keyPointId)
+        {
+            int userId = User.PersonId();
+            var result = _tourSessionService.AddCompletedKeyPoint(tourId, keyPointId, userId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(true);
+            }
+
+            return BadRequest(false);
+        }
+
     }
 
 

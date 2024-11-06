@@ -248,6 +248,54 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
             return (tourProgressPercentage, existingSession.LastActivity);
         }
+
+        public Result<TourSessionDto> UpdateLastActivity(int tourId, int userId)
+        {
+            var tourSession = _repository.GetByTourId(tourId, userId);
+
+            if (tourSession == null)
+            {
+                return Result.Fail<TourSessionDto>("Tour session not found.");
+            }
+
+            tourSession.UpdateLastActivity();
+
+            _repository.Update(tourSession);
+
+            return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
+        }
+
+        public Result<List<CompletedKeyPointDto>> GetCompletedKeyPoints(int tourId, int userId)
+        {
+            var tourSession = _repository.GetByTourId(tourId, userId);
+
+            if (tourSession == null)
+            {
+                return Result.Fail<List<CompletedKeyPointDto>>("Tour session not found.");
+            }
+
+            var completedKeyPoints = _mapper.Map<List<CompletedKeyPointDto>>(tourSession.CompletedKeyPoints);
+
+            // Return the result as a successful operation
+            return Result.Ok(completedKeyPoints);
+        }
+
+        public Result<TourSessionDto> AddCompletedKeyPoint(long tourId, long keyPointId, int userId)
+        {
+            var tourSession = _repository.GetByTourId(tourId, userId);
+
+            if (tourSession == null)
+            {
+                return Result.Fail<TourSessionDto>("Tour session not found.");
+            }
+
+            CompletedKeyPoints newKeypoint = new CompletedKeyPoints((int)keyPointId, DateTime.UtcNow);
+            tourSession.CompletedKeyPoints.Add(newKeypoint);
+
+            _repository.Update(tourSession);
+
+            return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
+        }
     }
 }
 

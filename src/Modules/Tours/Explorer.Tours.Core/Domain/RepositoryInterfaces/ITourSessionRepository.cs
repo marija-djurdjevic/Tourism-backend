@@ -16,7 +16,7 @@ namespace Explorer.Tours.Core.Domain.RepositoryInterfaces
         public TourSession Create(TourSession entity);
         public TourSession Update(TourSession entity);
         public void Delete(long id);
-
+        public TourSession GetByTourId(long id, long userId);
        
 
 
