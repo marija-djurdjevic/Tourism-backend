@@ -14,5 +14,12 @@ namespace Explorer.Blog.Infrastructure.Database.Repositories
         public BlogRepository(BlogContext dbContext) : base(dbContext)
         {
         }
+
+        public Blogs GetBlogById(int id)
+        {
+            var blog = DbContext.Blogs.FirstOrDefault(c => c.Id == id);
+
+            return blog == null ? throw new Exception("Blog not found.") : blog;
+        }
     }
 }

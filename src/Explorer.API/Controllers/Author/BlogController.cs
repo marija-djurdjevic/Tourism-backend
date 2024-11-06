@@ -26,6 +26,13 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
+        [HttpGet("{blogId}")]
+        public ActionResult<BlogDto> GetBlogById(int blogId)
+        {
+            var result = _blogService.GetBlogById(blogId);
+            return CreateResponse(result);
+        }
+
         [HttpPost]
         public ActionResult<BlogDto> Create([FromBody] BlogDto blog)
         {

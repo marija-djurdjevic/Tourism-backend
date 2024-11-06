@@ -25,6 +25,11 @@ namespace Explorer.Blog.Core.UseCases
             _commentService = commentService;
         }
 
+        public Result<BlogDto> GetBlogById(int blogId)
+        {
+            return MapToDto(_blogRepository.GetBlogById(blogId));
+        }
+
         public Result<BlogDto> AddVote(int blogId, VoteDto voteDto)
         {
             try {
