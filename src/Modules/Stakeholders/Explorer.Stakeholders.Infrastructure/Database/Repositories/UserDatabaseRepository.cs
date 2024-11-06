@@ -40,4 +40,9 @@ public class UserDatabaseRepository : IUserRepository
     {
         return _dbContext.People.FirstOrDefault(i => i.UserId == userId);
     }
+
+    public User? GetUserById(long userId)
+    {
+        return _dbContext.Users.FirstOrDefault(i => i.Id == userId);
+    }
 }

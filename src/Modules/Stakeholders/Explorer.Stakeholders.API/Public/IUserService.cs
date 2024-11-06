@@ -14,6 +14,7 @@ namespace Explorer.Stakeholders.API.Public
         Result<UserDto> GetActiveByName(string username);
         Result<UserDto> Create(UserDto userDto);
         Result<long> GetPersonId(long userId);
+        Result<UserDto> GetUserById(long userId);
         Result<PersonDto> GetPersonByUserId(long userId);
     }
 }
