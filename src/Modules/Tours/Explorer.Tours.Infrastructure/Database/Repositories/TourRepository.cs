@@ -12,20 +12,23 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
 {
     public class TourRepository : CrudDatabaseRepository<Tour, ToursContext>, ITourRepository
     {
-        public TourRepository(ToursContext dbContext) : base(dbContext) { _dbContext = dbContext;  }
+        public TourRepository(ToursContext dbContext) : base(dbContext) { _dbContext = dbContext; }
         private readonly ToursContext _dbContext;
         public Tour GetTourWithKeyPoints(int tourId)
         {
             return _dbContext.Tour
                 .Include(t => t.KeyPoints)
+                .Include(t => t.Reviews)
                 .FirstOrDefault(t => t.Id == tourId);
         }
+        
         public List<Tour> GetAllToursWithKeyPoints()
         {
             return _dbContext.Tour
                 .Include(t => t.KeyPoints)
                 .ToList();
         }
+
 
         public void Detach(KeyPoint keyPoint)
         {

@@ -1,14 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
-namespace Explorer.Tours.Core.Domain
+namespace Explorer.Tours.Core.Domain.Tours
 {
     public class TourReview : Entity
     {
@@ -26,12 +18,13 @@ namespace Explorer.Tours.Core.Domain
         public DateTime TourVisitDate { get; private set; }
 
         public DateTime TourReviewDate { get; private set; }
+        public int TourProgressPercentage { get; private set; }
 
-        public TourReview(int grade, string comment, int tourId, int userId, string username, string images, DateTime tourVisitDate, DateTime tourReviewDate)
+        public TourReview(int grade, string comment, int tourId, int userId, string username, string images, DateTime tourVisitDate, DateTime tourReviewDate,int tourProgressPercentage)
         {
             if (string.IsNullOrWhiteSpace(comment)) throw new ArgumentException("Invalid Comment.");
             if (string.IsNullOrWhiteSpace(username)) throw new ArgumentException("Tourist must have username.");
-            if (string.IsNullOrWhiteSpace(images)) throw new ArgumentException("Tour must have at least one image.");
+            if (tourProgressPercentage<0 || tourProgressPercentage>100) throw new ArgumentException("Percentage must be between 0 and 100.");
             Grade = grade;
             Comment = comment;
             TourId = tourId;
@@ -40,7 +33,7 @@ namespace Explorer.Tours.Core.Domain
             Images = images;
             TourVisitDate = tourVisitDate;
             TourReviewDate = tourReviewDate;
-
+            TourProgressPercentage=tourProgressPercentage;
         }
     }
 

@@ -34,6 +34,7 @@ namespace Explorer.Tours.Core.Domain.Tours
         public DateTime PublishedAt {  get; private set; }
         public DateTime ArchivedAt {  get; private set; }
         public double AverageScore {  get; private set; }
+        public List<TourReview> Reviews { get; private set; }
         public Tour(string name, string description, DifficultyStatus difficulty, string tags, double price)
         { 
             Name = name;
@@ -44,6 +45,7 @@ namespace Explorer.Tours.Core.Domain.Tours
             Status = TourStatus.Draft;
             TransportInfo = new TransportInfo(0, 0, TransportType.Car);
             KeyPoints = new List<KeyPoint>();
+            Reviews = new List<TourReview>();
             PublishedAt = DateTime.MinValue;
             ArchivedAt = DateTime.MinValue;
             AverageScore = 0;
@@ -62,6 +64,7 @@ namespace Explorer.Tours.Core.Domain.Tours
             AuthorId = authorId;
             AverageScore = averageScore;
             PublishedAt = publishedAt;
+            Reviews = new List<TourReview>();
         }
         public Tour(string name, string description, DifficultyStatus difficulty, string tags, double price, int authorId, TransportInfo transportInfo)
         {

@@ -9,6 +9,7 @@ namespace Explorer.Tours.API.Dtos.TourSessionDtos
     public class TourSessionDto
     {
         public int TourId { get; set; }
+        public int UserId { get; set; }
         public LocationDto CurrentLocation { get; set; }
         public List<CompletedKeyPointDto> CompletedKeyPoints { get; set; }
         public DateTime LastActivity { get; set; }
@@ -17,9 +18,10 @@ namespace Explorer.Tours.API.Dtos.TourSessionDtos
         public DateTime? EndTime { get; private set; }
 
         public TourSessionDto() { }
-        public TourSessionDto(int tourId, LocationDto currentLocation, List<CompletedKeyPointDto> completedKeyPoints, DateTime lastActivity, TourSessionStatus tourSessionStatus)
+        public TourSessionDto(int tourId,int userId, LocationDto currentLocation, List<CompletedKeyPointDto> completedKeyPoints, DateTime lastActivity, TourSessionStatus tourSessionStatus)
         {
             TourId = tourId;
+            UserId = userId;
             CurrentLocation = currentLocation;
             CompletedKeyPoints = completedKeyPoints;
             LastActivity = lastActivity;
