@@ -27,10 +27,24 @@ namespace Explorer.API.Controllers.Tourist.Execution
             _tourService = tourService;
         }
 
-        [HttpGet("getByTouristId")]
-        public ActionResult<PagedResult<TourProblemDto>> GetByTouristId([FromQuery] int touristId)
+        [HttpGet("getAll")]
+        public ActionResult<PagedResult<TourProblemDto>> GetAll()
         {
-            var result = _tourProblemService.GetByTouristId(touristId);
+            var results = _tourProblemService.GetAll();
+            return CreateResponse(results);
+        }
+
+        [HttpGet("byId")]
+        public ActionResult<PagedResult<TourProblemDto>> GetById([FromQuery] int id)
+        {
+            var result = _tourProblemService.GetById(id);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("getByTouristId")]
+        public ActionResult<PagedResult<TourProblemDto>> GetByTouristId([FromQuery] int userId)
+        {
+            var result = _tourProblemService.GetByTouristId(userId);
             return CreateResponse(result);
         }
 

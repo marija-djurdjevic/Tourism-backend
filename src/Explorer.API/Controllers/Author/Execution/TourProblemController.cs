@@ -1,4 +1,5 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Authoring;
@@ -24,9 +25,9 @@ namespace Explorer.API.Controllers.Author.Execution
         }
 
         [HttpGet("getByAuthorId")]
-        public ActionResult<PagedResult<TourProblemDto>> GetByAuthorId([FromQuery] int authorId)
+        public ActionResult<PagedResult<TourProblemDto>> GetByAuthorId([FromQuery] int userId)
         {
-            var tours = _tourService.GetByAuthorId(0, 0, authorId);
+            var tours = _tourService.GetByAuthorId(0, 0, userId);
             var tourIds = tours.Value.Results.Select(tour => tour.Id).ToList();
             var results = _tourProblemService.GetByToursIds(tourIds);
             return CreateResponse(results);
@@ -46,6 +47,21 @@ namespace Explorer.API.Controllers.Author.Execution
             int touristId = tourProblemDto.TouristId;
             string content = $"You have a new comment on your report of a tour {tourName}!";
             _notificationService.Create(new NotificationDto(content, NotificationType.TourProblemComment, tourProblemDto.Id, touristId, false));
+        }
+
+        [HttpGet("byId")]
+        public ActionResult<PagedResult<TourProblemDto>> GetById([FromQuery] int id)
+        {
+            var result = _tourProblemService.GetById(id);
+            return CreateResponse(result);
+        }
+
+
+        [HttpGet("getAll")]
+        public ActionResult<PagedResult<TourProblemDto>> GetAll()
+        {
+            var results = _tourProblemService.GetAll();
+            return CreateResponse(results);
         }
     }
 }
