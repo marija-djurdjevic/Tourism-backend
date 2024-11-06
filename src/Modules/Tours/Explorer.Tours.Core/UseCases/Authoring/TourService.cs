@@ -97,6 +97,13 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             try
             {
                 var tour = _mapper.Map<Tour>(tourDto);
+                PagedResult<KeyPoint> pagedKeypoints = _keyPointRepository.GetPaged(1, 10);
+                var keypoints = pagedKeypoints.Results.FindAll(x => x.TourId == tour.Id).ToList();
+                foreach (var kp in keypoints)
+                {
+                    _tourRepository.Detach(kp);
+                    tour.KeyPoints.Add(kp);
+                }
                 tour.Publish();
                 var updatedTourDto = _mapper.Map<TourDto>(tour);
                 Update(updatedTourDto);
@@ -140,10 +147,11 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             return Result.Ok(tourDtos);
         }
-        
 
-        /*
-        public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+
+
+        /*public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+
         {
 
              var pagedTours = GetPaged(1, int.MaxValue); 

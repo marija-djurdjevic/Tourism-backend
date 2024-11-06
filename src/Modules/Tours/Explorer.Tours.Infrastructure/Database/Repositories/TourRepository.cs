@@ -23,8 +23,13 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
         public List<Tour> GetAllToursWithKeyPoints()
         {
             return _dbContext.Tour
-                .Include(t => t.KeyPoints) 
+                .Include(t => t.KeyPoints)
                 .ToList();
+        }
+
+        public void Detach(KeyPoint keyPoint)
+        {
+            _dbContext.Entry(keyPoint).State = EntityState.Detached;
         }
 
         public Tour? GetById(int tourId)
