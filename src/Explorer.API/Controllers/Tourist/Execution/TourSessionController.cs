@@ -1,4 +1,5 @@
 ﻿using Explorer.Stakeholders.Core.Domain.Users;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
@@ -30,9 +31,9 @@ namespace Explorer.API.Controllers.Tourist.Execution
         {
 
             var initialLocation = new LocationDto(latitude, longitude);
+            var userId = User.PersonId();
 
-
-            var result = _tourSessionService.StartTour(tourId, initialLocation,touristId);
+            var result = _tourSessionService.StartTour(tourId,userId, initialLocation);
 
 
             if (result.IsSuccess)
@@ -49,7 +50,8 @@ namespace Explorer.API.Controllers.Tourist.Execution
         [HttpPost("complete/{id}")]
         public ActionResult<bool> CompleteTour(int id)
         {
-            var result = _tourSessionService.CompleteTour(id);
+            var userId = User.PersonId();
+            var result = _tourSessionService.CompleteTour(id, userId);
 
             if (result.IsSuccess)
             {
@@ -63,7 +65,8 @@ namespace Explorer.API.Controllers.Tourist.Execution
         [HttpPost("abandon/{id}")]
         public ActionResult<bool> AbandonTour(int id)
         {
-            var result = _tourSessionService.AbandonTour(id);
+            var userId= User.PersonId();
+            var result = _tourSessionService.AbandonTour(id,userId);
 
             if (result.IsSuccess)
             {
@@ -79,7 +82,8 @@ namespace Explorer.API.Controllers.Tourist.Execution
         public ActionResult<bool> UpdateLocation([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude)
         {
             var location = new LocationDto(latitude,longitude);
-            bool isNear=_tourSessionService.UpdateLocation(tourId, location);
+            var userId = User.PersonId();
+            bool isNear=_tourSessionService.UpdateLocation(tourId, location,userId);
 
             return Ok(isNear);
         }
@@ -88,7 +92,8 @@ namespace Explorer.API.Controllers.Tourist.Execution
         public ActionResult UpdateSession([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude)
         {
             var locationDto = new LocationDto(latitude, longitude);
-            _tourSessionService.UpdateSession(tourId, locationDto);
+            var userId = User.PersonId();
+            _tourSessionService.UpdateSession(tourId, locationDto, userId);
 
             return Ok("Sesija uspešno ažurirana.");
         }
