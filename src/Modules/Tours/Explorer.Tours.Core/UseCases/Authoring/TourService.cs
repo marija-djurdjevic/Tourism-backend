@@ -142,7 +142,9 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         }
         
 
+
         /*public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+
         {
 
              var pagedTours = GetPaged(1, int.MaxValue); 
@@ -161,7 +163,9 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
 
              return tour.KeyPoints;
+
         }*/
+
 
 
         public Result<TourDto> Get(int tourId)

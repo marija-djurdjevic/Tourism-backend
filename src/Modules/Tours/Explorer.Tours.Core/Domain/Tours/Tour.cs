@@ -102,8 +102,8 @@ namespace Explorer.Tours.Core.Domain.Tours
             if (Status != TourStatus.Draft && Status != TourStatus.Archived)
                 throw new InvalidOperationException("Only tours in draft or archived status can be published (again).");
 
-            //if (!Validate() || !ValidateInput())
-               // throw new InvalidOperationException("Tour does not meet publishing requirements.");
+            if (!Validate() || !ValidateInput())
+                throw new InvalidOperationException("Tour does not meet publishing requirements.");
 
             Status = TourStatus.Published;
             PublishedAt = DateTime.UtcNow;
