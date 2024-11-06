@@ -1,6 +1,8 @@
 ﻿using Explorer.Blog.API.Dtos;
 using Explorer.Blog.API.Public;
 using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.API.Public;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +15,12 @@ namespace Explorer.API.Controllers.Author
     public class BlogController : BaseApiController
     {
         private readonly IBlogService _blogService;
+        private readonly IUserService _userService;
 
-        public BlogController(IBlogService blogService)
+        public BlogController(IBlogService blogService, IUserService userService)
         {
             _blogService = blogService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -30,6 +34,13 @@ namespace Explorer.API.Controllers.Author
         public ActionResult<BlogDto> GetBlogById(int blogId)
         {
             var result = _blogService.GetBlogById(blogId);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("user/{userId}")]
+        public ActionResult<UserDto> GetUserById(int userId)
+        {
+            var result = _userService.GetUserById(userId);
             return CreateResponse(result);
         }
 

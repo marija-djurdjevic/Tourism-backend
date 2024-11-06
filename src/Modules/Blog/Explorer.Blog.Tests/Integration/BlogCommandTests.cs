@@ -3,6 +3,7 @@ using Explorer.Blog.API.Dtos;
 using Explorer.Blog.API.Public;
 using Explorer.Blog.Core.Domain;
 using Explorer.Blog.Infrastructure.Database;
+using Explorer.Stakeholders.API.Public;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
@@ -71,6 +72,39 @@ namespace Explorer.Blog.Tests.Integration
             var storedEntity = dbContext.Blogs.FirstOrDefault(i => i.Title == newEntity.Title);
             storedEntity.ShouldNotBeNull();
             storedEntity.Id.ShouldBe(result.Id);
+        }
+
+        [Theory]
+        [InlineData("Title1", 456, "2024-11-06T00:00:00", true)]
+        public void AddSingleVoteToExistingBlog_ThroughController(string blogTitle, int voteAuthorId, string voteCreationDate, bool voteValue)
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
+            var existingBlog = dbContext.Blogs.FirstOrDefault(b => b.Title == blogTitle);
+            existingBlog.ShouldNotBeNull();
+
+            var newVote = new VoteDto
+            {
+                AuthorId = voteAuthorId,
+                CreationDate = DateTime.Parse(voteCreationDate),
+                Value = voteValue
+            };
+
+            // Act
+            var addVoteResult = controller.AddVote(Convert.ToInt32(existingBlog.Id), newVote).Result as ObjectResult;
+            var updatedBlog = dbContext.Blogs.FirstOrDefault(b => b.Title == blogTitle);
+
+            // Assert - Response and Database
+            addVoteResult.ShouldNotBeNull();
+            addVoteResult.StatusCode.ShouldBe(200);
+
+            updatedBlog.ShouldNotBeNull();
+            updatedBlog.Votes.ShouldContain(v =>
+                v.AuthorId == newVote.AuthorId &&
+                v.CreationDate == newVote.CreationDate &&
+                v.Value == newVote.Value);
         }
 
         [Fact]
@@ -180,7 +214,7 @@ namespace Explorer.Blog.Tests.Integration
 
         private static BlogController CreateController(IServiceScope scope)
         {
-            return new BlogController(scope.ServiceProvider.GetRequiredService<IBlogService>())
+            return new BlogController(scope.ServiceProvider.GetRequiredService<IBlogService>(), scope.ServiceProvider.GetRequiredService<IUserService>())
             {
                 ControllerContext = BuildContext("-1")
             };
