@@ -12,6 +12,7 @@ namespace Explorer.Blog.API.Public
     public interface IBlogService
     {
         Result<PagedResult<BlogDto>> GetPaged(int page, int pageSize);
+        Result<BlogDto> GetBlogById(int id);
         Result<BlogDto> Create(BlogDto blog);
         Result<BlogDto> Update(BlogDto blog);
         Result<BlogDto> AddVote(int blogId, VoteDto vote);
