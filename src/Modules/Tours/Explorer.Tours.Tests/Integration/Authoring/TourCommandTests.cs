@@ -3,8 +3,10 @@ using Explorer.API.Controllers.Author.Authoring;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System;
@@ -67,22 +69,26 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-            var updatedTour = new TourDto { Id = -1, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 100, Tags = "sss", Name = "Publish Test Tour", Status = TourStatus.Archived };
+
+            var updatedTour = new TourDto { Id = -1, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 0, Tags = "sss", Name = "Publish Test Tour", Status = API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Archived };
+
+
             updatedTour.KeyPoints = new List<KeyPointDto>();
             updatedTour.KeyPoints.Add(new KeyPointDto { Id = 100, Description = "kp1", ImagePath = "...", Latitude = 2.2, Longitude = 3.3, Name = "KP1", TourId = -1 });
             updatedTour.KeyPoints.Add(new KeyPointDto { Id = 200, Description = "kp2", ImagePath = "...", Latitude = 2.2, Longitude = 3.3, Name = "KP2", TourId = -1 });
             updatedTour.TransportInfo = new TransportInfoDto() { Distance = 2.0, Time = 100, Transport = TransportInfoDto.TransportType.Car }; 
+
             // Act
             var result = ((ObjectResult)controller.Publish(updatedTour).Result)?.Value as TourDto;
 
             // Assert
             result.ShouldNotBeNull();
-            result.Status.ShouldBe(TourStatus.Published);
+            result.Status.ShouldBe(API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Published);
 
             //Assert - database
             var storedEntity = dbContext.Tour.FirstOrDefault(i => i.Id == -1);
             storedEntity.ShouldNotBeNull();
-            storedEntity.Status.ToString().ShouldBe(TourStatus.Published.ToString());
+            storedEntity.Status.ToString().ShouldBe(API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Published.ToString());
 
         }
 
@@ -94,21 +100,82 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-            var updatedTour = new TourDto { Id = -2, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 0, Tags = "sss", Name = "Archive Test Tour", Status = TourStatus.Published };
+            var updatedTour = new TourDto { Id = -2, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 0, Tags = "sss", Name = "Archive Test Tour", Status = API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Published };
 
             // Act
             var result = ((ObjectResult)controller.Archive(updatedTour).Result)?.Value as TourDto;
 
             // Assert
             result.ShouldNotBeNull();
-            result.Status.ShouldBe(TourStatus.Archived);
+            result.Status.ShouldBe(API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Archived);
             //Assert - database
             var storedEntity = dbContext.Tour.FirstOrDefault(i => i.Id == -2);
             storedEntity.ShouldNotBeNull();
-            storedEntity.Status.ToString().ShouldBe(TourStatus.Archived.ToString());
+            storedEntity.Status.ToString().ShouldBe(API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Archived.ToString());
 
         }
 
+        [Fact]
+        public void UpdateTransportInfo_SuccessfulUpdate()
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+
+            
+            var tour = dbContext.Tour.AsNoTracking().FirstOrDefault(t => t.Id == 1);
+            tour.ShouldNotBeNull(); 
+
+            
+            var originalDistance = tour.TransportInfo.Distance;
+            var originalTime = tour.TransportInfo.Time;
+
+           
+            var transportInfoDto = new TransportInfoDto
+            {
+                Distance = originalDistance + 500, 
+                Time = originalTime + 30           
+            };
+
+            // Act 
+            var result = ((ObjectResult)controller.UpdateTransportInfo((int)tour.Id, transportInfoDto).Result)?.Value as bool?;
+
+            // Assert - Response
+            result.ShouldNotBeNull();
+            result.ShouldBe(true);
+
+            // Assert - Database
+            var updatedTour = dbContext.Tour.FirstOrDefault(t => t.Id == tour.Id);
+            updatedTour.ShouldNotBeNull();
+            updatedTour.TransportInfo.Distance.ShouldBe(transportInfoDto.Distance);
+            updatedTour.TransportInfo.Time.ShouldBe(transportInfoDto.Time);
+
+          
+            updatedTour.TransportInfo.Distance.ShouldNotBe(originalDistance);
+            updatedTour.TransportInfo.Time.ShouldNotBe(originalTime);
+        }
+
+        [Fact]
+        public void UpdateTransportInfo_Fails_InvalidId()
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            var invalidTourId = -1000; 
+            var transportInfoDto = new TransportInfoDto
+            {
+                Distance = 1500,
+                Time = 120
+            };
+
+            // Act
+            var result = (ObjectResult)controller.UpdateTransportInfo(invalidTourId, transportInfoDto).Result;
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.StatusCode.ShouldBe(400); 
+        }
 
         private static TourController CreateController(IServiceScope scope)
         {

@@ -49,6 +49,8 @@ namespace Explorer.Tours.Core.Domain.Tours
             AverageScore = 0;
         }
 
+        public Tour() { }
+
         public Tour(string name, string description, DifficultyStatus difficulty, TourStatus status, string tags, double price, int authorId, double averageScore, DateTime publishedAt)
         {
             Name = name;
