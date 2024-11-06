@@ -30,7 +30,7 @@ namespace Explorer.Tours.Core.Domain.Tours
 
         }
 
-        public KeyPoint(int id, string name, string description, string imagePath, int tourId, double longitude, double latitude)
+        public KeyPoint(int id, string name, string description, string imagePath, int tourId, double latitude, double longitude)
         {
             if (id < 0) throw new ArgumentException("Invalid Id.");
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
@@ -43,7 +43,7 @@ namespace Explorer.Tours.Core.Domain.Tours
             Description = description;
             ImagePath = imagePath;
             TourId = tourId;
-            Coordinates = new Coordinates(longitude, latitude);
+            Coordinates = new Coordinates(latitude, longitude);
         }
 
     }
