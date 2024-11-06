@@ -30,7 +30,21 @@ namespace Explorer.Tours.Core.Domain.Tours
 
         }
 
-       
+        public KeyPoint(int id, string name, string description, string imagePath, int tourId, double longitude, double latitude)
+        {
+            if (id < 0) throw new ArgumentException("Invalid Id.");
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
+            if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
+            if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path.");
+            if (tourId < 0) throw new ArgumentException("Invalid Tour Id.");
+
+            Id = id;
+            Name = name;
+            Description = description;
+            ImagePath = imagePath;
+            TourId = tourId;
+            Coordinates = new Coordinates(longitude, latitude);
+        }
 
     }
 }

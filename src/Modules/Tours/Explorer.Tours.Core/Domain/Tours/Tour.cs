@@ -49,6 +49,8 @@ namespace Explorer.Tours.Core.Domain.Tours
             AverageScore = 0;
         }
 
+        public Tour() { }
+
         public Tour(string name, string description, DifficultyStatus difficulty, TourStatus status, string tags, double price, int authorId, double averageScore, DateTime publishedAt)
         {
             Name = name;
@@ -61,7 +63,21 @@ namespace Explorer.Tours.Core.Domain.Tours
             AverageScore = averageScore;
             PublishedAt = publishedAt;
         }
-
+        public Tour(string name, string description, DifficultyStatus difficulty, string tags, double price, int authorId, TransportInfo transportInfo)
+        {
+            Name = name;
+            Description = description;
+            Difficulty = difficulty;
+            Tags = tags;
+            Price = price;
+            AuthorId = authorId;
+            Status = TourStatus.Draft;
+            TransportInfo = transportInfo; 
+            KeyPoints = new List<KeyPoint>();
+            PublishedAt = DateTime.MinValue;
+            ArchivedAt = DateTime.MinValue;
+            AverageScore = 0;
+        }
         public void Archive()
         {
             if (Status == TourStatus.Published)
@@ -75,13 +91,19 @@ namespace Explorer.Tours.Core.Domain.Tours
             }
         }
 
+        public void UpdateTrasnportStatus(double distance, int time) 
+        {
+            TransportInfo.Distance = distance;
+            TransportInfo.Time = time;
+        }
+
         public void Publish()
         {
             if (Status != TourStatus.Draft && Status != TourStatus.Archived)
                 throw new InvalidOperationException("Only tours in draft or archived status can be published (again).");
 
-            //if (!Validate() || !ValidateInput())
-               // throw new InvalidOperationException("Tour does not meet publishing requirements.");
+            if (!Validate() || !ValidateInput())
+                throw new InvalidOperationException("Tour does not meet publishing requirements.");
 
             Status = TourStatus.Published;
             PublishedAt = DateTime.UtcNow;
@@ -89,7 +111,7 @@ namespace Explorer.Tours.Core.Domain.Tours
 
         public bool Validate()
         {
-            return KeyPoints.Count >= 2 && TransportInfo.Time < 0;
+            return KeyPoints.Count >= 2 && TransportInfo.Time > 0;
         }
 
         public bool ValidateInput()

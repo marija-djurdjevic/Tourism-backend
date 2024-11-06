@@ -11,7 +11,7 @@ using Shouldly;
 using Explorer.API.Controllers.Author.Authoring;
 using Explorer.Tours.API.Public.Authoring;
 
-namespace Explorer.Tours.Tests.Integration.Administration
+namespace Explorer.Tours.Tests.Integration.Authoring
 {
     [Collection("Sequential")]
     public class KeyPointQueryTests : BaseToursIntegrationTest
