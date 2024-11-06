@@ -18,6 +18,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Explorer.Tours.API.Public.Execution;
 
 namespace Explorer.Tours.Tests.Integration
 {
@@ -27,7 +28,7 @@ namespace Explorer.Tours.Tests.Integration
         public ShoppingCartTests(ToursTestFactory factory) : base(factory) { }
 
         [Theory]
-        [InlineData("-1", true, 200.00, true)]  
+        [InlineData("-1", true, 200.00, true)]
         [InlineData("-1", false, 0.00, false)]
         public void Purchases_Tour_Test(string userId, bool shouldSucceed, double expectedTotalPrice, bool shouldStoreInDatabase)
         {
@@ -114,8 +115,8 @@ namespace Explorer.Tours.Tests.Integration
 
         private static ShoppingController CreateController(IServiceScope scope)
         {
-            return new ShoppingController(scope.ServiceProvider.GetRequiredService<IShoppingService>(), scope.ServiceProvider.GetRequiredService<ITourService>());
-            
+            return new ShoppingController(scope.ServiceProvider.GetRequiredService<IShoppingService>(), scope.ServiceProvider.GetRequiredService<ITourService>(), scope.ServiceProvider.GetRequiredService<ITourSessionService>(), scope.ServiceProvider.GetRequiredService<ITourReviewService>());
+
         }
     }
 }

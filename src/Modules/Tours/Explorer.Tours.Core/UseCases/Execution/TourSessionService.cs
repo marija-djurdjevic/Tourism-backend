@@ -38,14 +38,14 @@ namespace Explorer.Tours.Core.UseCases.Execution
             _purchaseTokenRepository = tourPurchaseTokenRepository;
 
         }
-        public Result<TourSessionDto> AbandonTour(int tourId)
+        public Result<TourSessionDto> AbandonTour(int tourId,int userId)
         {
 
             var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
 
 
             var tourSession = allSessions.FirstOrDefault(session =>
-                session.TourId == tourId);
+                session.TourId == tourId && session.UserId==userId);
 
 
 
@@ -63,13 +63,13 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
 
 
-        public Result<TourSessionDto> CompleteTour(int tourId)
+        public Result<TourSessionDto> CompleteTour(int tourId,int userId)
         {
             var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
 
 
             var tourSession = allSessions.FirstOrDefault(session =>
-                session.TourId == tourId);
+                session.TourId == tourId && session.UserId==userId);
 
 
             if (tourSession == null)
@@ -119,7 +119,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
 
             var existingSession = allSessions.FirstOrDefault(session =>
-                session.TourId == tourId && session.UserId==userId);
+                session.TourId == tourId && session.UserId == userId);
 
             if (existingSession != null)
             {
@@ -146,7 +146,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
 
 
-        public bool UpdateLocation(int tourId, LocationDto locationDto)
+        public bool UpdateLocation(int tourId, LocationDto locationDto,int userId)
         {
 
             var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(locationDto);
@@ -167,19 +167,21 @@ namespace Explorer.Tours.Core.UseCases.Execution
             var lastKeyPointLocation = new Domain.TourSessions.Location(lastKeyPoint.Latitude, lastKeyPoint.Longitude);
 
             bool isNear = Domain.TourSessions.Location.IsWithinSimpleDistance(location, lastKeyPointLocation);
+            var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
+            var existingSession = allSessions.FirstOrDefault(session =>
+                session.TourId == tourId && session.UserId==userId);
+
+
             if (isNear)
             {
-                var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
-                var existingSession = allSessions.FirstOrDefault(session =>
-                    session.TourId == tourId);
-
-
+                existingSession.UpdateCurrentLocation(location);
                 existingSession.CompleteSession();
                 _repository.Update(existingSession);
-
-
-
             }
+
+            existingSession.UpdateCurrentLocation(location);
+            _repository.Update(existingSession);
+
             return isNear;
         }
 
@@ -189,7 +191,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
 
 
-        public void UpdateSession(int tourId, LocationDto locationDto)
+        public void UpdateSession(int tourId, LocationDto locationDto,int userId)
         {
 
             var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(locationDto);
@@ -198,7 +200,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
             var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
 
             var existingSession = allSessions.FirstOrDefault(session =>
-                session.TourId == tourId);
+                session.TourId == tourId && session.UserId == userId);
 
 
             existingSession.UpdateCurrentLocation(location);
@@ -218,7 +220,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
             }
 
             int keyPointsCount = _keyPointService.GetKeyPointsByTourId(tourId).Value.Count;
-            var tourProgressPercentage = (int)((double)1/*existingSession.CompletedKeyPoints.Count*/ / (keyPointsCount <= 0 ? 1 : keyPointsCount)* 100);
+            var tourProgressPercentage = (int)((double)1/*existingSession.CompletedKeyPoints.Count*/ / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
 
             if (DateTime.UtcNow < existingSession.LastActivity.AddDays(7) &&
                 DateTime.UtcNow > existingSession.LastActivity && tourProgressPercentage > 35)

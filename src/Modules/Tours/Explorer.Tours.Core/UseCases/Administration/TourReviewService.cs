@@ -13,6 +13,8 @@ using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
+using Explorer.BuildingBlocks.Core.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Explorer.Tours.Core.UseCases.Administration
 {
@@ -28,12 +30,17 @@ namespace Explorer.Tours.Core.UseCases.Administration
         public override Result<TourReviewDto> Create(TourReviewDto tourReview)
         {
             (tourReview.TourProgressPercentage, tourReview.TourVisitDate) = _sessionService.GetProgressAndLastActivity(tourReview.TourId, tourReview.UserId);
-            var canCreate = !_sessionService.CanUserReviewTour(tourReview.TourId, tourReview.UserId);
+            var canCreate = _sessionService.CanUserReviewTour(tourReview.TourId, tourReview.UserId);
+            var existingReview = Get(tourReview.TourId, tourReview.UserId).Value;
+            
+            tourReview.Id = existingReview?.Id ?? 0;
+
             if (IsTourReviewedByTourist(tourReview.UserId, tourReview.TourId))
             {
                 if (canCreate)
                 {
-                    return base.Update(tourReview);
+                    base.Delete(existingReview.Id);
+                    return base.Create(tourReview);
                 }
                 throw new InvalidOperationException("Već ste ostavili review za ovaj tur.");
             }
