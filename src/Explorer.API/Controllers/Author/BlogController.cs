@@ -70,28 +70,28 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpGet("{blogId}/comments")]
-        public ActionResult<PagedResult<BlogDto>> GetComments(int blogId)
+        public ActionResult<List<CommentDto>> GetComments(int blogId)
         {
             var result = _blogService.GetAllCommentsByBlogId(blogId);
             return CreateResponse(result);
         }
 
         [HttpPost("{blogId}/comments")]
-        public ActionResult<BlogDto> AddComment(int blogId, [FromBody] CommentDto comment)
+        public ActionResult<CommentDto> AddComment(int blogId, [FromBody] CommentDto comment)
         {
             var result = _blogService.AddComment(blogId, comment);
             return CreateResponse(result);
         }
 
         [HttpPut("{blogId}/comments/{commentId}")]
-        public ActionResult<BlogDto> UpdateComment(int blogId, [FromBody] CommentDto comment)
+        public ActionResult<CommentDto> UpdateComment(int blogId, [FromBody] CommentDto comment)
         {
             var result = _blogService.UpdateComment(blogId, comment);
             return CreateResponse(result);
         }
 
         [HttpDelete("{blogId}/comments/{commentId}")]
-        public ActionResult<BlogDto> RemoveComment(int blogId, int commentId)
+        public ActionResult<CommentDto> RemoveComment(int blogId, int commentId)
         {
             var result = _blogService.RemoveComment(blogId, commentId);
             return CreateResponse(result);

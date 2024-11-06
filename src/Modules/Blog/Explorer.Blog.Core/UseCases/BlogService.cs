@@ -32,10 +32,12 @@ namespace Explorer.Blog.Core.UseCases
                 if (blog == null)
                     return Result.Fail("Blog not found.");
 
-                if (CheckIfEditable(blog) != Result.Ok())
+                var isClosed = CheckIfClosed(blog);
+                if (isClosed.IsFailed)
                 {
                     return Result.Fail(FailureCode.NotFound).WithError("Blog closed.");
                 }
+
 
                 blog.AddVote(_mapper.Map<VoteDto, Vote>(voteDto));
 
@@ -52,14 +54,15 @@ namespace Explorer.Blog.Core.UseCases
             }
         }
 
-        private Result CheckIfEditable(Blogs blog)
+        private Result<bool> CheckIfClosed(Blogs blog)
         {
-            if(blog.Status == BlogStatus.Closed)
+            bool isClosed = blog.Status == BlogStatus.Closed;
+            if (isClosed)
             {
                 return Result.Fail(FailureCode.InvalidArgument).WithError("Blog not editable");
             }
 
-            return Result.Ok();
+            return Result.Ok(isClosed);
         }
 
         public Result<BlogDto> RemoveVote(int blogId, int authorId)
@@ -69,7 +72,8 @@ namespace Explorer.Blog.Core.UseCases
                 if (blog == null)
                     return Result.Fail("Blog not found.");
 
-                if (CheckIfEditable(blog) != Result.Ok())
+                var isClosed = CheckIfClosed(blog);
+                if (isClosed.IsFailed)
                 {
                     return Result.Fail(FailureCode.NotFound).WithError("Blog closed.");
                 }
@@ -169,10 +173,13 @@ namespace Explorer.Blog.Core.UseCases
                 var blog = _blogRepository.Get(blogId);
                 if (blog == null)
                     return Result.Fail("Blog not found.");
-                if(CheckIfEditable(blog) != Result.Ok())
+
+                var isClosed = CheckIfClosed(blog);
+                if (isClosed.IsFailed)
                 {
                     return Result.Fail(FailureCode.NotFound).WithError("Blog closed.");
                 }
+
 
                 var resultDto = _commentService.Create(commentDto).Value;
 
@@ -195,10 +202,12 @@ namespace Explorer.Blog.Core.UseCases
                 if (blog == null)
                     return Result.Fail("Blog not found.");
 
-                if (CheckIfEditable(blog) != Result.Ok())
+                var isClosed = CheckIfClosed(blog);
+                if (isClosed.IsFailed)
                 {
                     return Result.Fail(FailureCode.NotFound).WithError("Blog closed.");
                 }
+
 
                 var resultDto = _commentService.Update(commentDto).Value;
 
@@ -219,10 +228,12 @@ namespace Explorer.Blog.Core.UseCases
                 if (blog == null)
                     return Result.Fail("Blog not found.");
 
-                if (CheckIfEditable(blog) != Result.Ok())
+                var isClosed = CheckIfClosed(blog);
+                if (isClosed.IsFailed)
                 {
                     return Result.Fail(FailureCode.NotFound).WithError("Blog closed.");
                 }
+
 
                 _commentService.Delete(commentId);
 
