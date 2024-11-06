@@ -8,7 +8,8 @@ namespace Explorer.Tours.API.Dtos.TourLifecycleDtos
         {
             WaitForReview,
             Reviewed,
-            UnableToReview
+            UnableToReview,
+            Modify
         }
         public enum DifficultyStatus
         {

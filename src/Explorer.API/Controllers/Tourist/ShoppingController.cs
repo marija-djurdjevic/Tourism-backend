@@ -61,13 +61,22 @@ namespace Explorer.API.Controllers.Tourist
             foreach (int id in tourIdsResult.Value)
             {
                 var tour = _tourService.GetById(id).Value;
-                if (!_sessionService.CanUserReviewTour(id, int.Parse(touristId)))
+                var userCanReview = _sessionService.CanUserReviewTour(id, int.Parse(touristId));
+
+                if (_reviewService.IsTourReviewedByTourist(int.Parse(touristId), id))
+                {
+                    if (userCanReview)
+                    {
+                        tour.ReviewStatus = TourDto.TourReviewStatus.Modify;
+                    }
+                    else
+                    {
+                        tour.ReviewStatus = TourDto.TourReviewStatus.Reviewed;
+                    }
+                }
+                else if (!userCanReview)
                 {
                     tour.ReviewStatus = TourDto.TourReviewStatus.UnableToReview;
-                }
-                else if (_reviewService.IsTourReviewedByTourist(int.Parse(touristId), id))
-                {
-                    tour.ReviewStatus = TourDto.TourReviewStatus.Reviewed;
                 }
                 else
                 {

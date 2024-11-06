@@ -14,6 +14,7 @@ namespace Explorer.Tours.API.Public.Administration
     {
         Result<PagedResult<TourReviewDto>> GetPaged(int page, int pageSize);
         Result<TourReviewDto> Create(TourReviewDto tourReview);
+        Result<TourReviewDto> Get(int tourId,int userId);
         Result<TourReviewDto> Update(TourReviewDto equipment);
         Result Delete(int id);
         public bool IsTourReviewedByTourist(int userId, int tourId);

@@ -49,6 +49,14 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(Result.Fail("Tour with this id doesn't exist"));
         }
 
+        [HttpGet("{id:int}")]
+        public ActionResult<TourReviewDto> GetById(int id)
+        {
+            var userId = User.PersonId();
+            var result = _tourReviewService.Get(id,userId);
+            return CreateResponse(result);
+        }
+
         [HttpPut("{id:int}")]
         public ActionResult<TourReviewDto> Update([FromBody] TourReviewDto tourReview)
         {

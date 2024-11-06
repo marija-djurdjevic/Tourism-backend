@@ -28,14 +28,18 @@ namespace Explorer.Tours.Core.UseCases.Administration
         public override Result<TourReviewDto> Create(TourReviewDto tourReview)
         {
             (tourReview.TourProgressPercentage, tourReview.TourVisitDate) = _sessionService.GetProgressAndLastActivity(tourReview.TourId, tourReview.UserId);
-
-            if (!_sessionService.CanUserReviewTour(tourReview.TourId, tourReview.UserId))
-            {
-                throw new InvalidOperationException("Ne može se kreirati review zbog zadatog uslova.");
-            }
+            var canCreate = !_sessionService.CanUserReviewTour(tourReview.TourId, tourReview.UserId);
             if (IsTourReviewedByTourist(tourReview.UserId, tourReview.TourId))
             {
+                if (canCreate)
+                {
+                    return base.Update(tourReview);
+                }
                 throw new InvalidOperationException("Već ste ostavili review za ovaj tur.");
+            }
+            if (!canCreate)
+            {
+                throw new InvalidOperationException("Ne može se kreirati review zbog zadatog uslova.");
             }
             return base.Create(tourReview);
         }
@@ -45,5 +49,9 @@ namespace Explorer.Tours.Core.UseCases.Administration
             return GetPaged(0, 0).Value.Results.Any(x => x.UserId == userId && x.TourId == tourId);
         }
 
+        public Result<TourReviewDto> Get(int tourId, int userId)
+        {
+            return GetPaged(0, 0).Value.Results.FirstOrDefault(x => x.UserId == userId && x.TourId == tourId);
+        }
     }
 }
