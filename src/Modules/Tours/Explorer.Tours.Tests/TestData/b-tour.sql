@@ -9,7 +9,7 @@ INSERT INTO tours."Tour"(
     "Id", "AuthorId", "Name", "Description", "Difficulty", "Tags", "Price", "Status", "TransportInfo",
     "PublishedAt", "ArchivedAt", "AverageScore")
 VALUES 
-    (-2, 1, 'Exploring nature', 'Walk through the forest with a guide', 0, '#nature', 730, 0, '{{"Type": 1, "Time": 30, "Distance": 5.0}}',
+    (200, 1, 'Exploring nature', 'Walk through the forest with a guide', 0, '#nature', 730, 0, '{{"Type": 1, "Time": 30, "Distance": 5.0}}',
     '2024-10-15 14:15:00', '2024-10-15 14:15:00', 4.0);
 	
 INSERT INTO tours."Tour"(
