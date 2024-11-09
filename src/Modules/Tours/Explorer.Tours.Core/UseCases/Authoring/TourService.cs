@@ -3,6 +3,7 @@ using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
+using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.Tours;
@@ -133,6 +134,23 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             }
         }
 
+        public Result<TourDto> Close(TourDto tourDto)
+        {
+            try
+            {
+                var tour = _mapper.Map<Tour>(tourDto);
+                tour.CLose();
+                var updatedTourDto = _mapper.Map<TourDto>(tour);
+                Update(updatedTourDto);
+
+                return Result.Ok(updatedTourDto);
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail("An error occurred while closing the tour: " + ex.Message);
+            }
+        }
+
         public Result<List<TourDto>> GetAllToursWithKeyPoints()
         {
 
@@ -202,9 +220,10 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             var tourDto = _mapper.Map<TourDto>(tour);
             return Result.Ok(tourDto);
-         }
-         
-         public TourDto GetKeyPointsByTourId(int tourId)
+        }
+
+
+        public TourDto GetKeyPointsByTourId(int tourId)
          {
 
             var tour = _tourRepository.GetKeyPointsForTour(tourId);

@@ -33,7 +33,7 @@ namespace Explorer.API.Controllers.Administrator.Execution
         {
             if (tourProblem.Deadline < DateTime.UtcNow)
             {
-                var result = _tourProblemService.SetProblemExpired(tourProblem);
+                var result = _tourProblemService.SetProblemClosed(tourProblem);
                 return CreateResponse(result);
             }
             return CreateResponse(Result.Ok("deadline hasn't passed."));

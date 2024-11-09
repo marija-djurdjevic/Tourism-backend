@@ -101,9 +101,9 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return results;
         }
 
-        public Result<TourProblemDto> SetProblemExpired(TourProblemDto tourProblemDto)
+        public Result<TourProblemDto> SetProblemClosed(TourProblemDto tourProblemDto)
         {
-            tourProblemDto.Status = API.Dtos.TourProblemDtos.ProblemStatus.Expired;
+            tourProblemDto.Status = API.Dtos.TourProblemDtos.ProblemStatus.Closed;
             var tourProblem = _tourProblemRepository.Update(MapToDomain(tourProblemDto));
 
             if (tourProblem == null)

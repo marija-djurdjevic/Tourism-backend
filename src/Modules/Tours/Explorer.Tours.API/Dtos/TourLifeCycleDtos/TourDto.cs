@@ -22,7 +22,8 @@ namespace Explorer.Tours.API.Dtos.TourLifecycleDtos
         {
             Draft,
             Published,
-            Archived
+            Archived,
+            Closed
         }
         public int Id { get; set; }
         public int AuthorId { get; set; }
