@@ -16,7 +16,8 @@ namespace Explorer.Tours.Core.Domain.Tours
     {
         Draft,
         Published,
-        Archived
+        Archived,
+        Closed
     }
     public class Tour : Entity
     {
@@ -110,6 +111,14 @@ namespace Explorer.Tours.Core.Domain.Tours
 
             Status = TourStatus.Published;
             PublishedAt = DateTime.UtcNow;
+        }
+
+        public void CLose()
+        {
+
+
+            Status = TourStatus.Closed;
+           
         }
 
         public bool Validate()
