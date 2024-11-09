@@ -300,6 +300,153 @@ namespace Explorer.Blog.Tests.Integration
             result.StatusCode.ShouldBe(404);
         }
 
+        [Theory]
+        [InlineData(1, "fnleasnga", -1, "cuke", 11, BlogStatus.Active)]
+        public void CheckBlogStatus(int authorId, string text, int blogId, string username, int numberOfComments, BlogStatus expectedStatus)
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
+            //var existingBlog = dbContext.Blogs.FirstOrDefault(b => b.Title == blogTitle);
+            //existingBlog.ShouldNotBeNull();
+            for (int i = 0; i <= numberOfComments; i++)
+            {
+                var newEntity = new CommentDto
+                {
+                    AuthorId = authorId,
+                    Text = text+i,
+                    CreationDate = DateTime.UtcNow,
+                    EditDate = DateTime.UtcNow,
+                    BlogId = blogId,
+                    Username = username
+                };
+                // Act
+                var result = ((ObjectResult)controller.AddComment(blogId, newEntity).Result)?.Value as CommentDto;
+
+                // Assert - Response
+                result.ShouldNotBeNull();
+                result.Id.ShouldNotBe(0);
+                result.Text.ShouldBe(newEntity.Text);
+                result.AuthorId.ShouldBe(newEntity.AuthorId);
+                result.BlogId.ShouldBe(newEntity.BlogId);
+                result.Username.ShouldBe(newEntity.Username);
+
+                // Assert - Database
+                var storedEntity = dbContext.Comment.FirstOrDefault(c => c.Text == newEntity.Text);
+                storedEntity.ShouldNotBeNull();
+                storedEntity.Id.ShouldBe(result.Id);
+            }
+
+            var blogResult = ((ObjectResult)controller.GetBlogById(blogId).Result)?.Value as BlogDto;
+            blogResult.ShouldNotBeNull();
+            Assert.True(BlogDto.BlogStatus.Active == blogResult.Status);
+        }
+
+        [Theory]
+        [InlineData(1, "fnleasnga", -1, "cuke")]
+        public void CreateComment(int authorId, string text, int blogId, string username)
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
+            //var existingBlog = dbContext.Blogs.FirstOrDefault(b => b.Title == blogTitle);
+            //existingBlog.ShouldNotBeNull();
+
+            var newEntity = new CommentDto
+            {
+                AuthorId = authorId,
+                Text = text,
+                CreationDate = DateTime.UtcNow,
+                EditDate = DateTime.UtcNow,
+                BlogId = blogId,
+                Username = username
+            };
+
+            // Act
+            var result = ((ObjectResult)controller.AddComment(blogId,newEntity).Result)?.Value as CommentDto;
+
+            // Assert - Response
+            result.ShouldNotBeNull();
+            result.Id.ShouldNotBe(0);
+            result.Text.ShouldBe(newEntity.Text);
+            result.AuthorId.ShouldBe(newEntity.AuthorId);
+            result.BlogId.ShouldBe(newEntity.BlogId);
+            result.Username.ShouldBe(newEntity.Username);
+
+            // Assert - Database
+            var storedEntity = dbContext.Comment.FirstOrDefault(i => i.Text == newEntity.Text);
+            storedEntity.ShouldNotBeNull();
+            storedEntity.Id.ShouldBe(result.Id);
+        }
+
+        [Theory]
+        [InlineData(1, "komeeeeeeeeentar", -1, "cuke")]
+        public void UpdateComment(int authorId, string text, int blogId, string username)
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
+            //var existingBlog = dbContext.Blogs.FirstOrDefault(b => b.Title == blogTitle);
+            //existingBlog.ShouldNotBeNull();
+
+            var updatedEntity = new CommentDto
+            {
+                Id = -1,
+                AuthorId = authorId,
+                Text = text,
+                CreationDate = DateTime.UtcNow,
+                EditDate = DateTime.UtcNow,
+                BlogId = blogId,
+                Username = username
+            };
+
+            // Act
+            var result = ((ObjectResult)controller.UpdateComment(blogId, updatedEntity).Result)?.Value as CommentDto;
+
+            // Assert - Response
+            result.ShouldNotBeNull();
+            result.Id.ShouldBe(-1);
+            result.Text.ShouldBe(updatedEntity.Text);
+            result.AuthorId.ShouldBe(updatedEntity.AuthorId);
+            result.BlogId.ShouldBe(updatedEntity.BlogId);
+            result.Username.ShouldBe(updatedEntity.Username);
+
+            // Assert - Database
+            var storedEntity = dbContext.Comment.FirstOrDefault(i => i.Text == "komeeeeeeeeentar");
+            storedEntity.ShouldNotBeNull();
+            storedEntity.AuthorId.ShouldBe(updatedEntity.AuthorId);
+            storedEntity.CreationDate.ShouldBe(updatedEntity.CreationDate);
+            storedEntity.EditDate.ShouldBe(updatedEntity.EditDate);
+            var oldEntity = dbContext.Comment.FirstOrDefault(i => i.Text == "Komentarcina");
+            oldEntity.ShouldBeNull();
+        }
+
+        //[Theory]
+        //[InlineData(-1)]
+        //public void DeleteComment(int commentId)
+        //{
+        //    // Arrange
+        //    using var scope = Factory.Services.CreateScope();
+        //    var controller = CreateController(scope);
+        //    var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
+        //    //var existingBlog = dbContext.Blogs.FirstOrDefault(b => b.Title == blogTitle);
+        //    //existingBlog.ShouldNotBeNull();
+
+        //    // Act
+        //    var result = (OkResult)controller.Delete(commentId);
+
+        //    // Assert - Response
+        //    result.ShouldNotBeNull();
+        //    result.StatusCode.ShouldBe(200);
+
+        //    // Assert - Database
+        //    var storedCourse = dbContext.Comment.FirstOrDefault(i => i.Id == commentId);
+        //    storedCourse.ShouldBeNull();
+        //}
+
         private static BlogController CreateController(IServiceScope scope)
         {
             return new BlogController(scope.ServiceProvider.GetRequiredService<IBlogService>(), scope.ServiceProvider.GetRequiredService<IUserService>())

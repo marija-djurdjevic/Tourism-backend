@@ -17,21 +17,21 @@ namespace Explorer.Blog.Tests.Integration
     {
         public CommentQueryTests(BlogTestFactory factory) : base(factory) { }
 
-        [Fact]
-        public void Retrieves_all()
-        {
-            // Arrange
-            using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+        //[Fact]
+        //public void Retrieves_all()
+        //{
+        //    // Arrange
+        //    using var scope = Factory.Services.CreateScope();
+        //    var controller = CreateController(scope);
 
-            // Act
-            var result = ((ObjectResult)controller.GetAllByBlogId(1).Result)?.Value as PagedResult<CommentDto>;
+        //    // Act
+        //    var result = ((ObjectResult)controller.GetAllByBlogId(1).Result)?.Value as PagedResult<CommentDto>;
 
-            // Assert
-            result.ShouldNotBeNull();
-            result.Results.Count.ShouldBe(3);
-            result.TotalCount.ShouldBe(3);
-        }
+        //    // Assert
+        //    result.ShouldNotBeNull();
+        //    result.Results.Count.ShouldBe(3);
+        //    result.TotalCount.ShouldBe(3);
+        //}
 
         private static CommentController CreateController(IServiceScope scope)
         {

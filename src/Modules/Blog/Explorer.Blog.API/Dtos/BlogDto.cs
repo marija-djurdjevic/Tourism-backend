@@ -13,7 +13,9 @@ namespace Explorer.Blog.API.Dtos
             Draft,
             Published,
             Canceled,
-            Completed
+            Completed,
+            Active,
+            Famous
         }
         public int Id { get; set; }
         public int AuthorId { get; set; }
