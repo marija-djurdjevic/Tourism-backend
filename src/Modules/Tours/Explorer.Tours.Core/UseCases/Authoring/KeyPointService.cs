@@ -11,6 +11,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 {
     public class KeyPointService : CrudService<KeyPointDto, KeyPoint>, IKeyPointService
     {
+
         private readonly ICrudRepository<KeyPoint> _repository;
         private readonly IMapper _mapper;
 

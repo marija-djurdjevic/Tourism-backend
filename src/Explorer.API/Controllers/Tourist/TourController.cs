@@ -33,6 +33,13 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(result);
         }
 
+        [HttpPost("search")]
+        public ActionResult<List<TourDto>> SearchTours([FromBody] SearchByDistanceDto searchByDistanceDto)
+        {
+            var result = _tourService.SearchTours(searchByDistanceDto);
+            return CreateResponse(result);
+        }
+
         [HttpGet("keyPoints")]
         public ActionResult<PagedResult<KeyPointDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {

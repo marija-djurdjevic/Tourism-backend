@@ -1,6 +1,8 @@
 using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Core.Domain;
+using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
@@ -37,7 +39,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             var tours = GetPaged(page, pageSize);
             var publishedTours = tours.Value.Results.FindAll(x => x.Status == TourDto.TourStatus.Published);
             return publishedTours;
-
 
         }
 
@@ -207,8 +208,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             return Result.Ok(tourDto);
         }
 
-
-
         public Result<TourDto> GetById(int tourId)
         {
             var tour = _tourRepository.GetById(tourId);
@@ -232,6 +231,20 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             return tourDto;
          }
 
+        public Result<List<TourDto>> SearchTours(SearchByDistanceDto searchByDistance)
+        {
+            var tours = _tourRepository.GetAllToursWithKeyPoints();
+            List<TourDto> matchingTours = new List<TourDto>();
+            var coordinate = new Coordinates(searchByDistance.Latitude, searchByDistance.Longitude);
+            foreach (var t in tours)
+            {
+                if (t.Status == TourStatus.Published && t.HasKeyPointsInDesiredDistance(coordinate, searchByDistance.Distance))
+                    matchingTours.Add(MapToDto(t));
+            }
+            Result<List<TourDto>> result = new Result<List<TourDto>>();
+            result.WithValue(matchingTours);
+            return result;
+        }
 
 
         public Result<bool> UpdateTransportInfo(int tourId, TransportInfoDto transportInfoDto)

@@ -12,43 +12,40 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
 {
     public class TourRepository : CrudDatabaseRepository<Tour, ToursContext>, ITourRepository
     {
-        public TourRepository(ToursContext dbContext) : base(dbContext) { _dbContext = dbContext; }
+        public TourRepository(ToursContext dbContext) : base(dbContext) { _dbContext = dbContext;  }
         private readonly ToursContext _dbContext;
         public Tour GetTourWithKeyPoints(int tourId)
         {
-            return DbContext.Tour
+            return _dbContext.Tour
                 .Include(t => t.KeyPoints)
-                .Include(t => t.Reviews)
                 .FirstOrDefault(t => t.Id == tourId);
         }
-        
         public List<Tour> GetAllToursWithKeyPoints()
         {
             return _dbContext.Tour
-                .Include(t => t.KeyPoints!)
+                .Include(t => t.KeyPoints)
+                .ThenInclude(c => c.Coordinates)
                 .ToList();
+        }
+
+        public Tour GetById(int tourId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Tour GetByIdAsync(int tourId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Tour GetKeyPointsForTour(int tourId)
+        {
+            throw new NotImplementedException();
         }
 
         public void Detach(KeyPoint keyPoint)
         {
-            _dbContext.Entry(keyPoint).State = EntityState.Detached;
-        }
-
-        public Tour? GetById(int tourId)
-        {
-            return _dbContext.Tour
-               .FirstOrDefault(t => t.Id == tourId);
-        }
-        public Tour GetByIdAsync(int tourId)
-        {
-            return _dbContext.Tour.AsNoTracking().Include(t => t.KeyPoints)
-                                        .FirstOrDefault(t => t.Id == tourId);
-        }
-        public Tour GetKeyPointsForTour(int tourId)
-        {
-            return _dbContext.Tour.AsNoTracking()
-                .Include(t => t.KeyPoints)
-                .FirstOrDefault(t => t.Id == tourId);
+            throw new NotImplementedException();
         }
     }
 }
