@@ -8,6 +8,7 @@ namespace Explorer.Tours.API.Dtos.TourProblemDtos
 {
     public class NotificationDto
     {
+        public int Id { get; set; }
         public string Content { get; set; }
         public NotificationType Type { get; set; }
         public int ReferenceId { get; set; }

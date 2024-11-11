@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 
 namespace Explorer.Tours.Tests.Integration.Administration
 {
@@ -34,9 +35,10 @@ namespace Explorer.Tours.Tests.Integration.Administration
                 TourId = -1,
                 UserId = -1,
                 Username = "Test",
-                Images = "slika1test",
+                Images = "slika",
                 TourVisitDate = DateTime.UtcNow,
-                TourReviewDate = DateTime.UtcNow
+                TourReviewDate = DateTime.UtcNow,
+                TourProgressPercentage = 50
             };
 
             // Act

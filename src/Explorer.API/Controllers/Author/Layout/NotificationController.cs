@@ -1,10 +1,13 @@
 ﻿using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Execution;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Author.Layout
 {
+    [Authorize(Policy = "authorPolicy")]
+    [Route("api/author/notification")]
     public class NotificationController : BaseApiController
     {
         private readonly INotificationService _notificationService;
@@ -22,7 +25,7 @@ namespace Explorer.API.Controllers.Author.Layout
         }
 
         [HttpPut("setSeen")]
-        public ActionResult<TourPreferencesDto> Update([FromBody] NotificationDto notification)
+        public ActionResult<NotificationDto> Update([FromBody] NotificationDto notification)
         {
             notification.IsRead = true;
             var result = _notificationService.Update(notification);

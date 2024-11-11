@@ -48,9 +48,9 @@ namespace Explorer.API.Controllers.Tourist
         }
 
         [HttpGet("all")]
-        public ActionResult<List<TourDto>> GetAllTours()
+        public ActionResult<PagedResult<TourDto>> GetAllTours()
         {
-            var result = _tourService.GetAllToursWithKeyPoints();
+            var result = _tourService.GetPaged(0, 0);
             return CreateResponse(result);
         }
     }

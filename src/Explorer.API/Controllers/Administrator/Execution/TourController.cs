@@ -30,5 +30,19 @@ namespace Explorer.API.Controllers.Administrator.Execution
             var result = _tourService.GetPaged(0, 0);
             return CreateResponse(result);
         }
+
+        [HttpGet("getTour")]
+        public ActionResult<TourDto> GetTour([FromQuery] int tourId)
+        {
+            var result = _tourService.GetById(tourId);
+            return CreateResponse(result);
+        }
+
+        [HttpPost("close-tour")]
+        public ActionResult<TourDto> Close([FromBody] TourDto tourDto)
+        {
+            var result = _tourService.Close(tourDto);
+            return CreateResponse(result);
+        }
     }
 }

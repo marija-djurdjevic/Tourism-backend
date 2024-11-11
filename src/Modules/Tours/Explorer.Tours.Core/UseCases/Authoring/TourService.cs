@@ -5,6 +5,7 @@ using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
+using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.Tours;
@@ -80,23 +81,36 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         {
             return _tourRepository.GetByIdAsync(tourId);
         }
-        public Result<List<TourDto>> GetByAuthorId(int page, int pageSize, int id)
+        
+        public Result<PagedResult<TourDto>> GetByAuthorId(int page, int pageSize, int id)
         {
             var tours = GetPaged(page, pageSize);
-            var authorTours = tours.Value.Results.FindAll(x => x.AuthorId == id);
-            return authorTours;
+            var filteredResults = tours.Value.Results
+                .Where(x => x.AuthorId == id)
+                .ToList();
+
+            var pagedAuthorTours = new PagedResult<TourDto>(filteredResults, filteredResults.Count);
+
+            return tours.WithValue(pagedAuthorTours);
         }
 
-        public Result<bool> Publish(TourDto tourDto)
+        public Result<TourDto> Publish(TourDto tourDto)
         {
             try
             {
                 var tour = _mapper.Map<Tour>(tourDto);
+                PagedResult<KeyPoint> pagedKeypoints = _keyPointRepository.GetPaged(1, 10);
+                var keypoints = pagedKeypoints.Results.FindAll(x => x.TourId == tour.Id).ToList();
+                foreach (var kp in keypoints)
+                {
+                    _tourRepository.Detach(kp);
+                    tour.KeyPoints.Add(kp);
+                }
                 tour.Publish();
                 var updatedTourDto = _mapper.Map<TourDto>(tour);
                 Update(updatedTourDto);
 
-                return Result.Ok(true);
+                return Result.Ok(updatedTourDto);
             }
             catch (Exception ex)
             {
@@ -104,9 +118,38 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             }
         }
 
-        public Result<bool> Archive(TourDto tourDto)
+        public Result<TourDto> Archive(TourDto tourDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tour = _mapper.Map<Tour>(tourDto);
+                tour.Archive();
+                var updatedTourDto = _mapper.Map<TourDto>(tour);
+                Update(updatedTourDto);
+
+                return Result.Ok(updatedTourDto);
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail("An error occurred while publishing the tour: " + ex.Message);
+            }
+        }
+
+        public Result<TourDto> Close(TourDto tourDto)
+        {
+            try
+            {
+                var tour = _mapper.Map<Tour>(tourDto);
+                tour.CLose();
+                var updatedTourDto = _mapper.Map<TourDto>(tour);
+                Update(updatedTourDto);
+
+                return Result.Ok(updatedTourDto);
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail("An error occurred while closing the tour: " + ex.Message);
+            }
         }
 
         public Result<List<TourDto>> GetAllToursWithKeyPoints()
@@ -123,9 +166,11 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             return Result.Ok(tourDtos);
         }
-        
 
-        public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+
+
+        /*public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+
         {
 
              var pagedTours = GetPaged(1, int.MaxValue); 
@@ -145,6 +190,8 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
              return tour.KeyPoints;
         }
+        */
+
 
         public Result<TourDto> Get(int tourId)
         {
@@ -172,6 +219,16 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             var tourDto = _mapper.Map<TourDto>(tour);
             return Result.Ok(tourDto);
+        }
+
+
+        public TourDto GetKeyPointsByTourId(int tourId)
+         {
+
+            var tour = _tourRepository.GetKeyPointsForTour(tourId);
+            var tourDto = _mapper.Map<TourDto>(tour);
+            //return Result.Ok(tourDto);
+            return tourDto;
          }
 
         public Result<List<TourDto>> SearchTours(SearchByDistanceDto searchByDistance)
@@ -187,6 +244,28 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             Result<List<TourDto>> result = new Result<List<TourDto>>();
             result.WithValue(matchingTours);
             return result;
+        }
+
+
+        public Result<bool> UpdateTransportInfo(int tourId, TransportInfoDto transportInfoDto)
+        {
+            
+            var tourDto = GetKeyPointsByTourId(tourId);
+            var tour = _mapper.Map<Tour>(tourDto);
+
+            if (tour == null)
+            {
+                return Result.Fail<bool>("Tour not found");
+            }
+
+            tour.UpdateTrasnportStatus(transportInfoDto.Distance, transportInfoDto.Time);
+
+            
+            
+            var updatedTourDto = _mapper.Map<TourDto>(tour);
+            Update(updatedTourDto);
+
+            return Result.Ok(true);
         }
         
     }

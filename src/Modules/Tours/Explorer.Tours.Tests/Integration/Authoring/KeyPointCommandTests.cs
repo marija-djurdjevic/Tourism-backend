@@ -1,6 +1,7 @@
 ﻿using Explorer.API.Controllers.Author.Authoring;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Tests.Integration.Administration
+namespace Explorer.Tours.Tests.Integration.Authoring
 {
     [Collection("Sequential")]
     public class KeyPointCommandTests : BaseToursIntegrationTest
@@ -27,13 +28,14 @@ namespace Explorer.Tours.Tests.Integration.Administration
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var newEntity = new KeyPointDto
             {
-                Id = 10,
+                Id = 11,
                 TourId = 1,
                 Name = "Test",
                 Description = "desc test",
                 Longitude = 20,
                 Latitude = 25,
-                ImagePath = "path test"
+                ImagePath = "path test",
+                
             };
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as KeyPointDto;
             //Assert response 

@@ -3,6 +3,7 @@ using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.ShoppingDtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
+using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.Core.Domain;

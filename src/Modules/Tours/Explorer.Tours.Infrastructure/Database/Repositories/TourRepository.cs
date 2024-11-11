@@ -12,20 +12,28 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
 {
     public class TourRepository : CrudDatabaseRepository<Tour, ToursContext>, ITourRepository
     {
-        public TourRepository(ToursContext dbContext) : base(dbContext) { _dbContext = dbContext;  }
+        public TourRepository(ToursContext dbContext) : base(dbContext) { _dbContext = dbContext; }
         private readonly ToursContext _dbContext;
         public Tour GetTourWithKeyPoints(int tourId)
         {
             return DbContext.Tour
                 .Include(t => t.KeyPoints)
+                .Include(t => t.Reviews)
                 .FirstOrDefault(t => t.Id == tourId);
         }
+        
         public List<Tour> GetAllToursWithKeyPoints()
         {
-            return DbContext.Tour
-                .Include(t => t.KeyPoints!) 
+            return _dbContext.Tour
+                .Include(t => t.KeyPoints!)
                 .ToList();
         }
+
+        public void Detach(KeyPoint keyPoint)
+        {
+            _dbContext.Entry(keyPoint).State = EntityState.Detached;
+        }
+
         public Tour? GetById(int tourId)
         {
             return _dbContext.Tour
@@ -38,7 +46,7 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
         }
         public Tour GetKeyPointsForTour(int tourId)
         {
-            return _dbContext.Tour
+            return _dbContext.Tour.AsNoTracking()
                 .Include(t => t.KeyPoints)
                 .FirstOrDefault(t => t.Id == tourId);
         }

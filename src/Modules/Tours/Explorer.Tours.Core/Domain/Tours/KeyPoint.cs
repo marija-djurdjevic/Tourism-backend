@@ -25,6 +25,21 @@ namespace Explorer.Tours.Core.Domain.Tours
             Coordinates = coordinates;
 
         }
+        public KeyPoint(int id, string name, string description, string imagePath, int tourId, double latitude, double longitude)
+        {
+            if (id < 0) throw new ArgumentException("Invalid Id.");
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
+            if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
+            if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path.");
+            if (tourId < 0) throw new ArgumentException("Invalid Tour Id.");
+
+            Id = id;
+            Name = name;
+            Description = description;
+            ImagePath = imagePath;
+            TourId = tourId;
+            Coordinates = new Coordinates(latitude, longitude);
+        }
 
         public double GetDistance(Coordinates desiredCoordinates)
         {
@@ -36,6 +51,5 @@ namespace Explorer.Tours.Core.Domain.Tours
             var actualDistance = GetDistance(desiredCoordinates);
             return actualDistance < distance;
         }
-
     }
 }

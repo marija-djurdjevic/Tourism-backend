@@ -42,5 +42,10 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public void Detach(KeyPoint keyPoint)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
