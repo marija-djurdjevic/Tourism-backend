@@ -296,6 +296,22 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
             return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
         }
+
+        public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+        {
+            var keyPointsResult = _keyPointService.GetKeyPointsByTourId(tourId);
+
+
+
+            var keyPoints = keyPointsResult.Value;
+
+            if (keyPoints == null || !keyPoints.Any())
+            {
+                throw new Exception($"No keypoints found for tour ID {tourId}.");
+            }
+
+            return Result.Ok(keyPoints);
+        }
     }
 }
 

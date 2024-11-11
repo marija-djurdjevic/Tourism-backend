@@ -1,5 +1,6 @@
 ﻿using Explorer.Stakeholders.Core.Domain.Users;
 using Explorer.Stakeholders.Infrastructure.Authentication;
+using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
@@ -23,29 +24,43 @@ namespace Explorer.API.Controllers.Tourist.Execution
 
 
 
-       
 
+
+
+        //[HttpPost("start")]
+        //public ActionResult<bool> StartTour([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] int touristId)
+        //{
+
+        //    var initialLocation = new LocationDto(latitude, longitude);
+        //    var userId = User.PersonId();
+
+        //    var result = _tourSessionService.StartTour(tourId, userId, initialLocation);
+
+
+        //    if (result.IsSuccess)
+        //    {
+        //        return Ok(true);
+        //    }
+
+
+        //    return BadRequest(false);
+        //}
 
         [HttpPost("start")]
-        public ActionResult<bool> StartTour([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] int touristId)
+        public ActionResult<bool> StartTour([FromBody] StartTourDto startTourDto)
         {
-
-            var initialLocation = new LocationDto(latitude, longitude);
+            var initialLocation = new LocationDto(startTourDto.Latitude, startTourDto.Longitude);
             var userId = User.PersonId();
 
-            var result = _tourSessionService.StartTour(tourId,userId, initialLocation);
-
+            var result = _tourSessionService.StartTour(startTourDto.TourId, userId, initialLocation);
 
             if (result.IsSuccess)
             {
                 return Ok(true);
             }
 
-
             return BadRequest(false);
         }
-
-
 
         [HttpPost("complete/{id}")]
         public ActionResult<bool> CompleteTour(int id)
@@ -140,8 +155,29 @@ namespace Explorer.API.Controllers.Tourist.Execution
             return BadRequest(false);
         }
 
+        [HttpGet("getKeyPointsByTourId/{tourId}")]
+        public ActionResult<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+        {
+            var keyPointsResult = _tourSessionService.GetKeyPointsByTourId(tourId);
+
+            if (keyPointsResult.IsSuccess && keyPointsResult.Value != null && keyPointsResult.Value.Any())
+            {
+                return Ok(keyPointsResult.Value); // Return the list of key points
+            }
+
+            return NotFound($"No key points found for tour ID {tourId}.");
+        }
+
+
     }
 
+    public class StartTourDto
+    {
+        public int TourId { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public int TouristId { get; set; }
+    }
 
 }
 

@@ -1,5 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Core.Domain.Users;
+using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using FluentResults;
 using System;
@@ -27,6 +28,7 @@ namespace Explorer.Tours.API.Public.Execution
         public Result<TourSessionDto> UpdateLastActivity(int tourSessionId, int userId);
         public Result<List<CompletedKeyPointDto>> GetCompletedKeyPoints(int tourSessionId, int userId);
         public Result<TourSessionDto> AddCompletedKeyPoint(long tourId, long keyPointId, int userId);
+        public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId);
 
     }
 }
