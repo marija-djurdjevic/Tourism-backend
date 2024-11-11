@@ -235,7 +235,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         {
             var tours = _tourRepository.GetAllToursWithKeyPoints();
             List<TourDto> matchingTours = new List<TourDto>();
-            var coordinate = new Coordinates(searchByDistance.Longitude, searchByDistance.Latitude);
+            var coordinate = new Coordinates(searchByDistance.Latitude, searchByDistance.Longitude);
             foreach (var t in tours)
             {
                 if (t.HasKeyPointsInDesiredDistance(coordinate, searchByDistance.Distance))

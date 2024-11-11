@@ -43,7 +43,35 @@ namespace Explorer.Tours.Core.Domain.Tours
 
         public double GetDistance(Coordinates desiredCoordinates)
         {
-            return Math.Sqrt(Math.Pow(desiredCoordinates.Latitude - Coordinates.Latitude, 2) + Math.Pow(desiredCoordinates.Longitude - Coordinates.Longitude, 2));
+            const double EarthRadius = 6371.0; // Poluprečnik Zemlje u kilometrima
+
+            // Konvertovanje koordinata iz stepeni u radijane
+            double lat1 = ToRadians(Coordinates.Latitude);
+            double lon1 = ToRadians(Coordinates.Longitude);
+            double lat2 = ToRadians(desiredCoordinates.Latitude);
+            double lon2 = ToRadians(desiredCoordinates.Longitude);
+
+            // Razlika između latituda i longitud
+            double latDifference = lat2 - lat1;
+            double lonDifference = lon2 - lon1;
+
+            // Primena Haversinove formule
+            double a = Math.Pow(Math.Sin(latDifference / 2), 2) +
+                       Math.Cos(lat1) * Math.Cos(lat2) *
+                       Math.Pow(Math.Sin(lonDifference / 2), 2);
+
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+            // Vraćanje distance u kilometrima
+            double distance = EarthRadius * c;
+
+            // Vraćamo distancu
+            return distance;
+        }
+
+        private double ToRadians(double angle)
+        {
+            return angle * Math.PI / 180.0;
         }
 
         public bool IsInDesiredDistance(Coordinates desiredCoordinates, double distance)
