@@ -14,10 +14,8 @@ namespace Explorer.Tours.Core.Domain.Tours
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
-            if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path.");
-            if (tourId < 0) throw new ArgumentException("Invalid Author Id.");
+            if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path.");;
            
-
             Name = name;
             Description = description;
             ImagePath = imagePath;
@@ -31,7 +29,6 @@ namespace Explorer.Tours.Core.Domain.Tours
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
             if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path.");
-            if (tourId < 0) throw new ArgumentException("Invalid Tour Id.");
 
             Id = id;
             Name = name;

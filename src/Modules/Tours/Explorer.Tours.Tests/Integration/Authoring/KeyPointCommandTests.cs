@@ -29,7 +29,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             var newEntity = new KeyPointDto
             {
                 Id = 11,
-                TourId = 1,
+                TourId = -2,
                 Name = "Test",
                 Description = "desc test",
                 Longitude = 20,
