@@ -238,7 +238,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             var coordinate = new Coordinates(searchByDistance.Latitude, searchByDistance.Longitude);
             foreach (var t in tours)
             {
-                if (t.HasKeyPointsInDesiredDistance(coordinate, searchByDistance.Distance))
+                if (t.Status == TourStatus.Published && t.HasKeyPointsInDesiredDistance(coordinate, searchByDistance.Distance))
                     matchingTours.Add(MapToDto(t));
             }
             Result<List<TourDto>> result = new Result<List<TourDto>>();
