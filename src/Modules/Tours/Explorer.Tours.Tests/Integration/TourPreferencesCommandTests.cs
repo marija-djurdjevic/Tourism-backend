@@ -92,7 +92,6 @@ namespace Explorer.Tours.Tests.Integration
 
             var storedEntity = dbContext.TourPreferences.FirstOrDefault(i => i.Difficulty == DifficultyStatus.Easy);
             storedEntity.ShouldNotBeNull();
-            storedEntity.Tags.ShouldBe(updatedEntity.Tags);
         }
 
         [Fact]

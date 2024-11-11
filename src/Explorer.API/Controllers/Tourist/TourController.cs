@@ -53,5 +53,12 @@ namespace Explorer.API.Controllers.Tourist
             var result = _tourService.GetPaged(0, 0);
             return CreateResponse(result);
         }
+
+        [HttpGet("allTours")]
+        public ActionResult<List<TourDto>> GetTours()
+        {
+            var result = _tourService.GetAllToursWithKeyPoints();
+            return CreateResponse(result);
+        }
     }
 }

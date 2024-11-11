@@ -9,3 +9,4 @@ DELETE FROM tours."Object";
 DELETE FROM tours."TourPreferences";
 DELETE FROM tours."TourPurchaseTokens";
 DELETE FROM tours."ShoppingCarts";
+DELETE FROM tours."TourSessions";

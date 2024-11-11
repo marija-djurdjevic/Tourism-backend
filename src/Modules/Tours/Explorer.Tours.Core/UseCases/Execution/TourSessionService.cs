@@ -95,8 +95,6 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
             }
 
-
-
             var tourResult = _tourService.Get(tourId);
 
             var tour = tourResult.Value;
@@ -126,10 +124,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
                 return Result.Fail<TourSessionDto>("An active tour session already exists for this tour.");
             }
 
-
-
             var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(initialLocation);
-
 
             var tourSession = new TourSession(tourId, location, userId);
 

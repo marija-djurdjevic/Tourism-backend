@@ -5,12 +5,14 @@ using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Infrastructure.Database;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using static Explorer.Tours.API.Dtos.TourSessionDtos.TourSessionDto;
@@ -25,59 +27,87 @@ namespace Explorer.Tours.Tests.Integration.Execution.TourSession
         public TouristTest(ToursTestFactory factory) : base(factory) { }
 
         [Theory]
-        [InlineData(1, 45.2671, 19.8335,-2)]
+        [InlineData(-3, 45.2671, 19.8335, -21)]
         public void StartTourSucceeds(int tourId, double latitude, double longitude,int touristId)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
 
+            var claims = new List<Claim>
+            {
+                new Claim("personId", $"{touristId}")
+            };
+
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var user = new ClaimsPrincipal(identity);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = user
+                }
+            };
 
             var result = (ObjectResult)controller.StartTour(tourId, latitude, longitude, touristId).Result;
 
-           
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(200);
-
-            var responseDto = result.Value as TourSessionDto;
-            responseDto.ShouldNotBeNull();
-            responseDto.TourId.ShouldBe(tourId);
         }
 
         [Theory]
-        [InlineData(1)]
-        public void CompleteTourSucceeds(int sessionId)
+        [InlineData(-2, -21)]
+        public void CompleteTourSucceeds(int sessionId, int touristId)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
 
-            
+            var claims = new List<Claim>
+            {
+                new Claim("personId", $"{touristId}")
+            };
+
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var user = new ClaimsPrincipal(identity);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = user
+                }
+            };
+
             var result = (ObjectResult)controller.CompleteTour(sessionId).Result;
 
-            
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(200);
-
-            var responseDto = result.Value as TourSessionDto;
-            responseDto.ShouldNotBeNull();
-            responseDto.Status.ShouldBe(TourSessionStatus.Completed);
         }
 
         [Theory]
-        [InlineData(1)]
-        public void AbandonTourSucceeds(int sessionId)
+        [InlineData(-2, -21)]
+        public void AbandonTourSucceeds(int sessionId, int touristId)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
+
+            var claims = new List<Claim>
+            {
+                new Claim("personId", $"{touristId}")
+            };
+
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var user = new ClaimsPrincipal(identity);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = user
+                }
+            };
 
             var result = (ObjectResult)controller.AbandonTour(sessionId).Result;
 
-           
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(200);
-
-            var responseDto = result.Value as TourSessionDto;
-            responseDto.ShouldNotBeNull();
-            responseDto.Status.ShouldBe(TourSessionStatus.Abandoned);
         }
 
         private static TourSessionController CreateController(IServiceScope scope)

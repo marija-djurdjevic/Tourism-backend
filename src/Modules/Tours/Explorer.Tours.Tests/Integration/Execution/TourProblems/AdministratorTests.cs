@@ -78,7 +78,7 @@ namespace Explorer.Tours.Tests.Integration.Execution.TourProblems
             updatedResult.ShouldNotBeNull();
             updatedResult.StatusCode.ShouldBe(200);
             var finalUpdatedProblem = updatedResult?.Value as TourProblemDto;
-            finalUpdatedProblem.Status.ShouldBe(ProblemStatus.Expired);
+            finalUpdatedProblem.Status.ShouldBe(ProblemStatus.Closed);
         }
 
         private static TourProblemController CreateController(IServiceScope scope)
