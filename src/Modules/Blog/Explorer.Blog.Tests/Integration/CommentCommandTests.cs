@@ -32,7 +32,7 @@ namespace Explorer.Blog.Tests.Integration
             var newEntity = new CommentDto
             {
                 AuthorId = 1,
-                Text = "komeeeeeeeeentar",
+                Text = "Komntar",
                 CreationDate = DateTime.UtcNow,
                 EditDate = DateTime.UtcNow,
                 BlogId = 1,

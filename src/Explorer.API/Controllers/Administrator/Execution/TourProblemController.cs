@@ -1,5 +1,4 @@
 using Explorer.Stakeholders.API.Dtos;
-using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Execution;
 using FluentResults;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Explorer.Tours.Core.UseCases.Execution;
 using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.API.Dtos;
 
 namespace Explorer.API.Controllers.Administrator.Execution
 {

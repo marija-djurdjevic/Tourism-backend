@@ -1,5 +1,5 @@
 ﻿using Explorer.API.Controllers.Administrator.Administration;
-using Explorer.API.Controllers.Author.Authoring;
+using Explorer.API.Controllers.Author;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;

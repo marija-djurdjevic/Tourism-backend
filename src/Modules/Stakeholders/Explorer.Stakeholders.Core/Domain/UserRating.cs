@@ -16,12 +16,13 @@ namespace Explorer.Stakeholders.Core.Domain
         public string Username { get; private set; }
         public UserRating() { }
 
-        public UserRating(int rating, string? comment, long userId)
+        public UserRating(int rating, string? comment, long userId, string username)
         {
             Rating = rating;
             Comment = comment;
             UserId = userId;
             CreatedAt = DateTime.UtcNow;
+            Username = username;
             Validate();
         }
 

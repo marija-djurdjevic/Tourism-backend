@@ -19,7 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Core.UseCases.Administration
+namespace Explorer.Tours.Core.UseCases.Authoring
 {
     public class TourService : CrudService<TourDto, Tour>, ITourService
 

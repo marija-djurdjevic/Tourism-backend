@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
 
 namespace Explorer.Tours.Core.UseCases.Execution
 {

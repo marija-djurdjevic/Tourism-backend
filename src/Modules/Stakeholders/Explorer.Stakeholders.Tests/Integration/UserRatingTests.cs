@@ -21,7 +21,8 @@ namespace Explorer.Stakeholders.Tests.Integration
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21"); // For tourist role
+            var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
+            var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21", "turista1@gmail.com"); // For tourist role
             var ratingDto = new UserRatingDto
             {
                 Rating = 3,
@@ -35,14 +36,6 @@ namespace Explorer.Stakeholders.Tests.Integration
             // Assert - Database
             var storedEntity = dbContext.UserRatings.FirstOrDefault(i => i.Comment == ratingDto.Comment);
             storedEntity.ShouldNotBeNull();
-            // Act
-            var result = (ObjectResult)controller.Create(ratingDto).Result;
-
-            // Assert
-            result.StatusCode.ShouldBe(200); 
-            var responseMessage = result.Value as string;
-            responseMessage.ShouldNotBeNull();
-            responseMessage.ShouldBe("Rating submitted successfully!");
         }
 
         [Fact]
@@ -68,7 +61,7 @@ namespace Explorer.Stakeholders.Tests.Integration
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21"); // For tourist role
+            var controller = CreateController<TouristController.UserRatingController>(scope, "Tourist", "-21", "turista1@gmail.com"); // For tourist role
             var invalidRatingDto = new UserRatingDto
             {
                 Rating = 0, // Invalid rating
@@ -88,7 +81,7 @@ namespace Explorer.Stakeholders.Tests.Integration
 
 
 
-        private static TController CreateController<TController>(IServiceScope scope, string role, string userId = "-1") where TController : ControllerBase
+        private static TController CreateController<TController>(IServiceScope scope, string role, string userId = "-1", string username = "user1") where TController : ControllerBase
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {

@@ -23,7 +23,7 @@ namespace Explorer.Tours.API.Dtos.TourLifecycleDtos
             Draft,
             Published,
             Archived,
-            Closed
+            Closed,
             Canceled,
             Completed
         }
