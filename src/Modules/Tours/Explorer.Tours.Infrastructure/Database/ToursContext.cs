@@ -3,7 +3,6 @@ using Explorer.Tours.Core.Domain.ShoppingCarts;
 using Explorer.Tours.Core.Domain.TourSessions;
 using Explorer.Tours.Core.Domain.TourProblems;
 using Microsoft.EntityFrameworkCore;
-using Explorer.Tours.Core.Domain.Tours;
 
 
 namespace Explorer.Tours.Infrastructure.Database;

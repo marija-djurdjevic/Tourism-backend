@@ -18,7 +18,7 @@ namespace Explorer.Tours.Tests.Integration.Administration
     public class TourProblemCommandTests : BaseToursIntegrationTest
     {
         public TourProblemCommandTests(ToursTestFactory factory) : base(factory) { }
-        /*
+
         [Fact]
         public void Creates()
         {
@@ -78,7 +78,6 @@ namespace Explorer.Tours.Tests.Integration.Administration
                 ControllerContext = BuildContext("-1")
             };
         }
-        */
 
     }
 }

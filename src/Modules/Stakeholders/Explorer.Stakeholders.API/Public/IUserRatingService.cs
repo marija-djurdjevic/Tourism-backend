@@ -10,7 +10,7 @@ namespace Explorer.Stakeholders.API.Public
 {
     public interface IUserRatingService
     {
-        Result<UserRatingDto> Create(UserRatingDto ratingDto, string userId, string username);
+        Result<string> Create(UserRatingDto ratingDto, string userId);
         Result<List<UserRatingDto>> GetAll();
     }
 

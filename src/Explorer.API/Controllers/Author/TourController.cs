@@ -5,7 +5,7 @@ using Explorer.Tours.API.Public.Authoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Explorer.API.Controllers.Author.Authoring
+namespace Explorer.API.Controllers.Author
 {
     [Authorize(Policy = "authorPolicy")]
     [Route("api/administration/tour")]
@@ -19,8 +19,7 @@ namespace Explorer.API.Controllers.Author.Authoring
         }
 
         [HttpGet]
-        public ActionResult<PagedResult<TourDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
-        {
+        public ActionResult<PagedResult<TourDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize) {
             var result = _tourService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
@@ -40,7 +39,7 @@ namespace Explorer.API.Controllers.Author.Authoring
         }
 
         [HttpPost]
-        public ActionResult<TourDto> Create([FromBody] TourDto tourDto)
+        public ActionResult <TourDto> Create([FromBody] TourDto tourDto)
         {
             var result = _tourService.Create(tourDto);
             return CreateResponse(result);

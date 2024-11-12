@@ -3,7 +3,7 @@ using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using System.Xml.Linq;
 using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
 
-namespace Explorer.Tours.Core.Domain.Tours
+namespace Explorer.Tours.Core.Domain
 {
     public enum DifficultyStatus
     {
