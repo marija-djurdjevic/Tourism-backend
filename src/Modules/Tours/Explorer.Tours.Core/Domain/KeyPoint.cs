@@ -1,6 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
 
-namespace Explorer.Tours.Core.Domain.Tours
+namespace Explorer.Tours.Core.Domain
 {
     public class KeyPoint : Entity
     {
@@ -34,6 +34,8 @@ namespace Explorer.Tours.Core.Domain.Tours
             Name = name;
             Description = description;
             ImagePath = imagePath;
+            Longitude = longitude;
+            Latitude = latitude;
             TourId = tourId;
             Coordinates = new Coordinates(latitude, longitude);
         }

@@ -7,7 +7,7 @@ using FluentResults;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Explorer.Tours.Core.UseCases.Authoring
+namespace Explorer.Tours.Core.UseCases.Administration
 {
     public class KeyPointService : CrudService<KeyPointDto, KeyPoint>, IKeyPointService
     {
