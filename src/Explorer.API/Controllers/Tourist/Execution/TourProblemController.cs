@@ -1,5 +1,6 @@
 using Explorer.Blog.API.Dtos;
 using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Authoring;
@@ -42,8 +43,10 @@ namespace Explorer.API.Controllers.Tourist.Execution
         }
 
         [HttpGet("getByTouristId")]
-        public ActionResult<PagedResult<TourProblemDto>> GetByTouristId([FromQuery] int userId)
+        public ActionResult<PagedResult<TourProblemDto>> GetByTouristId()
         {
+            int userId = User.PersonId();
+
             var result = _tourProblemService.GetByTouristId(userId);
             return CreateResponse(result);
         }

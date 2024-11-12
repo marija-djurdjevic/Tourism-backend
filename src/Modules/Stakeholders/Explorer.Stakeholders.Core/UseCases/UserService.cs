@@ -124,6 +124,18 @@ namespace Explorer.Stakeholders.Core.UseCases
             }
             return Result.Fail(FailureCode.NotFound).WithError($"Unable to set location");
         }
+
+        public Result<string> GetUsernameById(long userId)
+        {
+            var user = _userRepository.Get(userId);
+
+            if (user == null)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError($"User with id '{userId}' not found.");
+            }
+
+            return Result.Ok(user.Username);
+        }   
     }
 }
 

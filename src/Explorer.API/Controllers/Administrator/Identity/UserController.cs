@@ -3,7 +3,7 @@ using Explorer.Stakeholders.API.Public;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Explorer.API.Controllers.Administrator
+namespace Explorer.API.Controllers.Administrator.Identity
 {
     [Authorize(Policy = "administratorPolicy")]
     [Route("api/administrator/users")]
@@ -45,6 +45,13 @@ namespace Explorer.API.Controllers.Administrator
         public ActionResult<PersonDto> GetPersonByUserId(long userId)
         {
             var result = _userService.GetPersonByUserId(userId);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("getUsername")]
+        public ActionResult<string> getUsername([FromQuery] int userId)
+        {
+            var result = _userService.GetUsernameById(userId);
             return CreateResponse(result);
         }
     }
