@@ -24,7 +24,7 @@ namespace Explorer.Tours.Tests.Integration
             {
                 Name = "nesvrstani",
                 Description = "jaki momci titovi",
-                Image = "slikatop.jpg",
+                ImageId = -1,
             };
 
             // Act
@@ -73,7 +73,7 @@ namespace Explorer.Tours.Tests.Integration
                 OwnerId = 0,
                 Name = "klub amatera",
                 Description = "jos bolji ljudi",
-                Image = "slika3.jpg"
+                ImageId = -1
             };
 
             // Act
@@ -105,7 +105,7 @@ namespace Explorer.Tours.Tests.Integration
                 OwnerId = 0,
                 Name = "klub amatera",
                 Description = "o joko joko",
-                Image = "asam se naroko"
+                ImageId = -1
             };
 
             // Act
