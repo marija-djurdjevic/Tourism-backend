@@ -1,4 +1,4 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using FluentResults;
 using System;
@@ -13,7 +13,7 @@ namespace Explorer.Tours.API.Public.Execution
     {
         Result<TourProblemDto> GetById(int id);
         Result<PagedResult<TourProblemDto>> GetByToursIds(List<int> ids);
-        Result<List<TourProblemDto>> GetByTouristId(int id);
+        Result<PagedResult<TourProblemDto>> GetByTouristId(int id);
         Result<TourProblemDto> Create(TourProblemDto tourProblemDto);
         Result<TourProblemDto> Update(TourProblemDto tourProblemDto);
         Result<PagedResult<TourProblemDto>> GetAll();

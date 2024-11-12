@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public;
@@ -108,10 +108,14 @@ namespace Explorer.Tours.Core.UseCases.Execution
             );
         }
 
-        public Result<List<TourProblemDto>> GetByTouristId(int id)
+        public Result<PagedResult<TourProblemDto>> GetByTouristId(int id)
         {
             var results = GetAll().Value.Results.Where(x => x.TouristId == id).ToList();
-            return results;
+
+            return new PagedResult<TourProblemDto>(
+              results,
+              totalCount: results.Count
+          );
         }
 
         public Result<TourProblemDto> SetProblemClosed(TourProblemDto tourProblemDto)
