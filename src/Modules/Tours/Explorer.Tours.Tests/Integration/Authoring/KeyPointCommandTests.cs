@@ -1,4 +1,4 @@
-﻿using Explorer.API.Controllers.Author;
+﻿using Explorer.API.Controllers.Author.Authoring;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.Domain.Tours;

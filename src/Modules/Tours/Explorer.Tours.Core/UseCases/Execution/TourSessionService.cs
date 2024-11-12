@@ -3,7 +3,7 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Core.Domain.Users;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
-using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.API.Public.Shopping;
 using Explorer.Tours.Core.Domain;

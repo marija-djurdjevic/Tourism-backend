@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Explorer.Tours.API.Public.Authoring;
 
 namespace Explorer.Tours.Tests.Integration.Administration
 {

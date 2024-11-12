@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
+using Explorer.Tours.API.Public.Authoring;
 
 namespace Explorer.API.Controllers.Tourist
 {

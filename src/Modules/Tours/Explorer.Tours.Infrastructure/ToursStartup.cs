@@ -19,6 +19,7 @@ using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Infrastructure.Database.Repositories;
 using Explorer.Tours.Core.Domain.TourSessions;
 using Explorer.Tours.Core.Domain.TourProblems;
+using Explorer.Tours.API.Public.Authoring;
 
 namespace Explorer.Tours.Infrastructure;
 

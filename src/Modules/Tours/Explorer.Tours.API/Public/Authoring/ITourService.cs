@@ -1,6 +1,5 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using FluentResults;
 using System;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.API.Public.Administration
+namespace Explorer.Tours.API.Public.Authoring
 {
     public interface ITourService
     {
@@ -29,4 +28,4 @@ namespace Explorer.Tours.API.Public.Administration
         Result<TourDto> Close(TourDto entity);
         public Result<bool> UpdateTransportInfo(int tourId, TransportInfoDto transportInfoDto);
     }
- }
+}

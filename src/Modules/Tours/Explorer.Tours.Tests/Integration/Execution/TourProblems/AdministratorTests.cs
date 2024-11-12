@@ -1,5 +1,4 @@
 using Explorer.Tours.API.Dtos.TourProblemDtos;
-using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain.TourProblems;
 using Explorer.Tours.Infrastructure.Database;

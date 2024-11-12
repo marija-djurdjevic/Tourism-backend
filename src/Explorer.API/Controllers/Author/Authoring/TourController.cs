@@ -1,11 +1,11 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
-using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.Authoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Explorer.API.Controllers.Author
+namespace Explorer.API.Controllers.Author.Authoring
 {
     [Authorize(Policy = "authorPolicy")]
     [Route("api/administration/tour")]
@@ -19,7 +19,8 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpGet]
-        public ActionResult<PagedResult<TourDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize) {
+        public ActionResult<PagedResult<TourDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        {
             var result = _tourService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
@@ -39,7 +40,7 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpPost]
-        public ActionResult <TourDto> Create([FromBody] TourDto tourDto)
+        public ActionResult<TourDto> Create([FromBody] TourDto tourDto)
         {
             var result = _tourService.Create(tourDto);
             return CreateResponse(result);
@@ -80,26 +81,26 @@ namespace Explorer.API.Controllers.Author
 
             if (result.IsSuccess)
             {
-                return Ok(result.Value); 
+                return Ok(result.Value);
             }
             else
             {
-                return BadRequest(result.Errors); 
+                return BadRequest(result.Errors);
             }
         }
 
         [HttpPost("{tourId}/key-points")]
         public async Task<ActionResult<KeyPointDto>> AddKeyPointToTour(int tourId, [FromBody] KeyPointDto keyPointDto)
         {
-            var result =  _tourService.AddKeyPointToTourAsync(tourId, keyPointDto);
+            var result = _tourService.AddKeyPointToTourAsync(tourId, keyPointDto);
 
             if (result.IsSuccess)
             {
-                return CreateResponse(result); 
+                return CreateResponse(result);
             }
             else
             {
-                return BadRequest(result); 
+                return BadRequest(result);
             }
         }
     }
