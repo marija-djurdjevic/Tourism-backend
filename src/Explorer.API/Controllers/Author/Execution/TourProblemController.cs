@@ -2,7 +2,6 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Administration;
-using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

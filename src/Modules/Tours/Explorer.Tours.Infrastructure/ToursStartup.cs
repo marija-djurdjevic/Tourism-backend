@@ -63,7 +63,7 @@ public static class ToursStartup
         services.AddScoped(typeof(ICrudRepository<Explorer.Tours.Core.Domain.Object>), typeof(CrudDatabaseRepository<Explorer.Tours.Core.Domain.Object, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Tour>), typeof(CrudDatabaseRepository<Tour, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<KeyPoint>), typeof(CrudDatabaseRepository<KeyPoint, ToursContext>));
-        services.AddScoped(typeof(ICrudRepository<TourProblem>), typeof(CrudDatabaseRepository<TourProblem, ToursContext>));
+        services.AddScoped(typeof(ICrudRepository<Core.Domain.TourProblems.TourProblem>), typeof(CrudDatabaseRepository<Core.Domain.TourProblems.TourProblem, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<ShoppingCart>), typeof(CrudDatabaseRepository<ShoppingCart, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Notification>), typeof(CrudDatabaseRepository<Notification, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<TourSession>), typeof(CrudDatabaseRepository<TourSession, ToursContext>));

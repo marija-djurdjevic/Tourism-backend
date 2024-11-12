@@ -2,7 +2,6 @@
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Tours.API.Dtos.ShoppingDtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
-using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Shopping;
 using Explorer.Tours.Core.Domain.ShoppingCarts;
 using Explorer.Tours.Core.Domain.Tours;

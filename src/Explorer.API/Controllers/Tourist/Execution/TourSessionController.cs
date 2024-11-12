@@ -1,4 +1,5 @@
-﻿using Explorer.Stakeholders.Core.Domain.Users;
+﻿using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.Core.Domain.Users;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Administration;

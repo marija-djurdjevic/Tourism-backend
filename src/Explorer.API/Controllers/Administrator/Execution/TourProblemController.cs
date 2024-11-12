@@ -8,7 +8,6 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Explorer.Tours.Core.UseCases.Execution;
-using Explorer.Tours.API.Public.Authoring;
 
 namespace Explorer.API.Controllers.Administrator.Execution
 {

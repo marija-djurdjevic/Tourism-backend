@@ -2,7 +2,6 @@
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Administration;
-using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Shopping;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
