@@ -7,9 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
-using Explorer.Tours.API.Dtos;
-using Explorer.Tours.Infrastructure.Database;
 using Explorer.Stakeholders.Infrastructure.Database;
 
 namespace Explorer.Stakeholders.Tests.Integration
@@ -39,7 +36,6 @@ namespace Explorer.Stakeholders.Tests.Integration
             // Assert - Database
             var storedEntity = dbContext.UserRatings.FirstOrDefault(i => i.Comment == ratingDto.Comment);
             storedEntity.ShouldNotBeNull();
-
         }
 
         [Fact]
@@ -47,7 +43,7 @@ namespace Explorer.Stakeholders.Tests.Integration
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController<adminController.UserRatingController>(scope, "Administrator", "-1", "admin@gmail.com"); // For admin role
+            var controller = CreateController<adminController.UserRatingController>(scope, "Administrator", "-1", "admin@gmail.com");
 
             // Act
             var result = (ObjectResult)controller.GetAll().Result;
@@ -92,7 +88,7 @@ namespace Explorer.Stakeholders.Tests.Integration
                 new Claim(ClaimTypes.NameIdentifier, userId),
                 new Claim("id", userId),
                 new Claim("username", username),
-                new Claim(ClaimTypes.Role, role) 
+                new Claim(ClaimTypes.Role, role)
             }, "TestAuth"));
 
             // Simulate user being authenticated

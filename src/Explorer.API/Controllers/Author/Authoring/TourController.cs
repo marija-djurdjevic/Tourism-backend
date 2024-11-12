@@ -81,26 +81,26 @@ namespace Explorer.API.Controllers.Author.Authoring
 
             if (result.IsSuccess)
             {
-                return Ok(result.Value); 
+                return Ok(result.Value);
             }
             else
             {
-                return BadRequest(result.Errors); 
+                return BadRequest(result.Errors);
             }
         }
 
         [HttpPost("{tourId}/key-points")]
         public async Task<ActionResult<KeyPointDto>> AddKeyPointToTour(int tourId, [FromBody] KeyPointDto keyPointDto)
         {
-            var result =  _tourService.AddKeyPointToTourAsync(tourId, keyPointDto);
+            var result = _tourService.AddKeyPointToTourAsync(tourId, keyPointDto);
 
             if (result.IsSuccess)
             {
-                return CreateResponse(result); 
+                return CreateResponse(result);
             }
             else
             {
-                return BadRequest(result); 
+                return BadRequest(result);
             }
         }
     }

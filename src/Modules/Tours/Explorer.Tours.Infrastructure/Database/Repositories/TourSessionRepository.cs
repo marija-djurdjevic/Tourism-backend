@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace Explorer.Tours.Infrastructure.Database.Repositories
 {
-    public class TourSessionRepository : CrudDatabaseRepository<TourSession,ToursContext>,ITourSessionRepository
+    public class TourSessionRepository : CrudDatabaseRepository<TourSession, ToursContext>, ITourSessionRepository
     {
-        
-        public TourSessionRepository(ToursContext dbContext):base(dbContext) { }
 
-       
+        public TourSessionRepository(ToursContext dbContext) : base(dbContext) { }
+
+
     }
 }

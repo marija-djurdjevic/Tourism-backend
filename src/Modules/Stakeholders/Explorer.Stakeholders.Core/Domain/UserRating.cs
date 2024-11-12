@@ -14,7 +14,6 @@ namespace Explorer.Stakeholders.Core.Domain
         public DateTime CreatedAt { get; private set; }
         public long UserId { get; private set; }
         public string Username { get; private set; }
-
         public UserRating() { }
 
         public UserRating(int rating, string? comment, long userId, string username)

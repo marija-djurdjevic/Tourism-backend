@@ -13,5 +13,5 @@ namespace Explorer.Stakeholders.API.Public
         Result<UserRatingDto> Create(UserRatingDto ratingDto, string userId, string username);
         Result<List<UserRatingDto>> GetAll();
     }
-    
+
 }

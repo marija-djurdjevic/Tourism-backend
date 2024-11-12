@@ -1,6 +1,5 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using FluentResults;
 using System;
@@ -29,4 +28,4 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<TourDto> Close(TourDto entity);
         public Result<bool> UpdateTransportInfo(int tourId, TransportInfoDto transportInfoDto);
     }
- }
+}

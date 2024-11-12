@@ -18,7 +18,7 @@ namespace Explorer.Blog.Tests.Integration
     [Collection("Sequential")]
     public class BlogCommandTests : BaseBlogIntegrationTest
     {
-        public BlogCommandTests(BlogTestFactory factory) : base(factory){}
+        public BlogCommandTests(BlogTestFactory factory) : base(factory) { }
 
         [Fact]
         public void Creates()
@@ -30,7 +30,7 @@ namespace Explorer.Blog.Tests.Integration
             var newEntity = new BlogDto
             {
                 Title = "NASLOVCINA",
-                AuthorId = 1 ,
+                AuthorId = 1,
                 Description = "Description",
                 CreationDate = DateTime.UtcNow,
                 Image = "image.png",
@@ -41,7 +41,7 @@ namespace Explorer.Blog.Tests.Integration
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as BlogDto;
 
             // Assert - Response
-            
+
             result.ShouldNotBeNull();
             result.Id.ShouldNotBe(0);
             result.Title.ShouldBe(newEntity.Title);

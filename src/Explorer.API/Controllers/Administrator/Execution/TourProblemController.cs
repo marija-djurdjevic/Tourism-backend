@@ -1,7 +1,6 @@
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
-using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
 using FluentResults;
 using Explorer.BuildingBlocks.Core.UseCases;

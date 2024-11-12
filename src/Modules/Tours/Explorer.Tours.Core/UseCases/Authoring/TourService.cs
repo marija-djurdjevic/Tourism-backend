@@ -7,6 +7,7 @@ using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.Tours;
 using FluentResults;
@@ -81,7 +82,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         {
             return _tourRepository.GetByIdAsync(tourId);
         }
-        
+
         public Result<PagedResult<TourDto>> GetByAuthorId(int page, int pageSize, int id)
         {
             var tours = GetPaged(page, pageSize);
@@ -195,7 +196,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
         public Result<TourDto> Get(int tourId)
         {
-            
+
             var tour = _tourRepository.GetTourWithKeyPoints(tourId);
 
             if (tour == null)
@@ -203,7 +204,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
                 return Result.Fail<TourDto>($"Tour with ID {tourId} not found.");
             }
 
-            
+
             var tourDto = _mapper.Map<TourDto>(tour);
             return Result.Ok(tourDto);
         }
@@ -223,13 +224,13 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
 
         public TourDto GetKeyPointsByTourId(int tourId)
-         {
+        {
 
             var tour = _tourRepository.GetKeyPointsForTour(tourId);
             var tourDto = _mapper.Map<TourDto>(tour);
             //return Result.Ok(tourDto);
             return tourDto;
-         }
+        }
 
         public Result<List<TourDto>> SearchTours(SearchByDistanceDto searchByDistance)
         {
@@ -249,7 +250,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
         public Result<bool> UpdateTransportInfo(int tourId, TransportInfoDto transportInfoDto)
         {
-            
+
             var tourDto = GetKeyPointsByTourId(tourId);
             var tour = _mapper.Map<Tour>(tourDto);
 
@@ -260,13 +261,13 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             tour.UpdateTrasnportStatus(transportInfoDto.Distance, transportInfoDto.Time);
 
-            
-            
+
+
             var updatedTourDto = _mapper.Map<TourDto>(tour);
             Update(updatedTourDto);
 
             return Result.Ok(true);
         }
-        
+
     }
 }

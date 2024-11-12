@@ -1,7 +1,6 @@
 ﻿using Explorer.API.Controllers.Tourist;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
-using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -15,6 +14,7 @@ using System.Threading.Tasks;
 using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Explorer.Tours.API.Public.Authoring;
 
 namespace Explorer.Tours.Tests.Integration.Administration
 {

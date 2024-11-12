@@ -28,7 +28,7 @@ namespace Explorer.Stakeholders.Core.UseCases
         public Result<UserRatingDto> Create(UserRatingDto ratingDto, string userId, string username)
         {
             var userRating = MapToDomain(ratingDto);
-            
+
 
             try
             {
@@ -40,9 +40,5 @@ namespace Explorer.Stakeholders.Core.UseCases
                 return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
             }
         }
-
-
-
-
     }
 }

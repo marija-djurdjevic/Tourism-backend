@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
+using Explorer.Tours.Core.Domain.Tours;
 
-namespace Explorer.Tours.Core.Domain.Tours
+namespace Explorer.Tours.Core.Domain
 {
     public class KeyPoint : Entity
     {
