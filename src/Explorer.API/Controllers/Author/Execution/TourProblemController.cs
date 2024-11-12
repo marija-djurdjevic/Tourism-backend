@@ -48,5 +48,20 @@ namespace Explorer.API.Controllers.Author.Execution
             string content = $"You have a new comment on your report of a tour {tourName}!";
             _notificationService.Create(new NotificationDto(content, NotificationType.TourProblemComment, tourProblemDto.Id, touristId, false));
         }
+
+        [HttpGet("byId")]
+        public ActionResult<PagedResult<TourProblemDto>> GetById([FromQuery] int id)
+        {
+            var result = _tourProblemService.GetById(id);
+            return CreateResponse(result);
+        }
+
+
+        [HttpGet("getAll")]
+        public ActionResult<PagedResult<TourProblemDto>> GetAll()
+        {
+            var results = _tourProblemService.GetAll();
+            return CreateResponse(results);
+        }
     }
 }
