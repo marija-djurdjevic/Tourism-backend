@@ -1,5 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
+using Explorer.Tours.Core.Domain.Tours;
 using System.Xml.Linq;
 using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
 
