@@ -14,22 +14,22 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
     {
         public TourProblemRepository(ToursContext dbContext) : base(dbContext) { }
 
-        public Core.Domain.TourProblem Create(Core.Domain.TourProblem entity)
+        public TourProblem Create(TourProblem entity)
         {
             throw new NotImplementedException();
         }
 
-        public Core.Domain.TourProblem Update(Core.Domain.TourProblem entity)
+        public TourProblem Update(TourProblem entity)
         {
             throw new NotImplementedException();
         }
 
-        Core.Domain.TourProblem ITourProblemRepository.Get(long id)
+        TourProblem ITourProblemRepository.Get(long id)
         {
             throw new NotImplementedException();
         }
 
-        PagedResult<Core.Domain.TourProblem> ITourProblemRepository.GetPaged(int page, int pageSize)
+        PagedResult<TourProblem> ITourProblemRepository.GetPaged(int page, int pageSize)
         {
             throw new NotImplementedException();
         }
