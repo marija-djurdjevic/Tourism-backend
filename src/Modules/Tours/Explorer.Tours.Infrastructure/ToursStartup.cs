@@ -6,7 +6,6 @@ using Explorer.Tours.API.Public.Shopping;
 using Explorer.Tours.Core.Domain.ShoppingCarts;
 using Explorer.Tours.Core.UseCases.Shopping;
 using Explorer.Tours.API.Public.Execution;
-using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Mappers;
 using Explorer.Tours.Core.UseCases;
@@ -14,6 +13,12 @@ using Explorer.Tours.Core.UseCases.Administration;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Explorer.Tours.Core.Domain.RepositoryInterfaces;
+using Explorer.Tours.Core.UseCases.Execution;
+using Explorer.Tours.Core.Domain.Tours;
+using Explorer.Tours.Infrastructure.Database.Repositories;
+using Explorer.Tours.Core.Domain.TourSessions;
+using Explorer.Tours.Core.Domain.TourProblems;
 
 namespace Explorer.Tours.Infrastructure;
 
