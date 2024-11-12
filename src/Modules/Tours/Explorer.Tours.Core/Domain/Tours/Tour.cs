@@ -1,10 +1,9 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
-using Explorer.Tours.Core.Domain.Tours;
 using System.Xml.Linq;
 using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
 
-namespace Explorer.Tours.Core.Domain
+namespace Explorer.Tours.Core.Domain.Tours
 {
     public enum DifficultyStatus
     {
@@ -31,14 +30,14 @@ namespace Explorer.Tours.Core.Domain
         public string Tags { get; private set; }
         public double Price { get; private set; }
         public TourStatus Status { get; private set; }
-        public TransportInfo TransportInfo { get; private set; } 
+        public TransportInfo TransportInfo { get; private set; }
         public List<KeyPoint> KeyPoints { get; private set; }
-        public DateTime PublishedAt {  get; private set; }
-        public DateTime ArchivedAt {  get; private set; }
-        public double AverageScore {  get; private set; }
+        public DateTime PublishedAt { get; private set; }
+        public DateTime ArchivedAt { get; private set; }
+        public double AverageScore { get; private set; }
         public List<TourReview> Reviews { get; private set; }
         public Tour(string name, string description, DifficultyStatus difficulty, string tags, double price)
-        { 
+        {
             Name = name;
             Description = description;
             Difficulty = difficulty;
@@ -77,7 +76,7 @@ namespace Explorer.Tours.Core.Domain
             Price = price;
             AuthorId = authorId;
             Status = TourStatus.Draft;
-            TransportInfo = transportInfo; 
+            TransportInfo = transportInfo;
             KeyPoints = new List<KeyPoint>();
             PublishedAt = DateTime.MinValue;
             ArchivedAt = DateTime.MinValue;
@@ -96,7 +95,7 @@ namespace Explorer.Tours.Core.Domain
             }
         }
 
-        public void UpdateTrasnportStatus(double distance, int time) 
+        public void UpdateTrasnportStatus(double distance, int time)
         {
             TransportInfo.Distance = distance;
             TransportInfo.Time = time;
@@ -119,7 +118,7 @@ namespace Explorer.Tours.Core.Domain
 
 
             Status = TourStatus.Closed;
-           
+
         }
 
         public bool Validate()

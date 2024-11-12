@@ -19,7 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Core.UseCases.Administration
+namespace Explorer.Tours.Core.UseCases.Authoring
 {
     public class TourService : CrudService<TourDto, Tour>, ITourService
 
@@ -82,7 +82,7 @@ namespace Explorer.Tours.Core.UseCases.Administration
         {
             return _tourRepository.GetByIdAsync(tourId);
         }
-        
+
         public Result<PagedResult<TourDto>> GetByAuthorId(int page, int pageSize, int id)
         {
             var tours = GetPaged(page, pageSize);
@@ -196,7 +196,7 @@ namespace Explorer.Tours.Core.UseCases.Administration
 
         public Result<TourDto> Get(int tourId)
         {
-            
+
             var tour = _tourRepository.GetTourWithKeyPoints(tourId);
 
             if (tour == null)
@@ -204,7 +204,7 @@ namespace Explorer.Tours.Core.UseCases.Administration
                 return Result.Fail<TourDto>($"Tour with ID {tourId} not found.");
             }
 
-            
+
             var tourDto = _mapper.Map<TourDto>(tour);
             return Result.Ok(tourDto);
         }
@@ -224,13 +224,13 @@ namespace Explorer.Tours.Core.UseCases.Administration
 
 
         public TourDto GetKeyPointsByTourId(int tourId)
-         {
+        {
 
             var tour = _tourRepository.GetKeyPointsForTour(tourId);
             var tourDto = _mapper.Map<TourDto>(tour);
             //return Result.Ok(tourDto);
             return tourDto;
-         }
+        }
 
         public Result<List<TourDto>> SearchTours(SearchByDistanceDto searchByDistance)
         {
@@ -250,7 +250,7 @@ namespace Explorer.Tours.Core.UseCases.Administration
 
         public Result<bool> UpdateTransportInfo(int tourId, TransportInfoDto transportInfoDto)
         {
-            
+
             var tourDto = GetKeyPointsByTourId(tourId);
             var tour = _mapper.Map<Tour>(tourDto);
 
@@ -261,13 +261,13 @@ namespace Explorer.Tours.Core.UseCases.Administration
 
             tour.UpdateTrasnportStatus(transportInfoDto.Distance, transportInfoDto.Time);
 
-            
-            
+
+
             var updatedTourDto = _mapper.Map<TourDto>(tour);
             Update(updatedTourDto);
 
             return Result.Ok(true);
         }
-        
+
     }
 }
