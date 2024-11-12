@@ -18,7 +18,7 @@ namespace Explorer.Blog.Tests.Integration
     [Collection("Sequential")]
     public class BlogCommandTests : BaseBlogIntegrationTest
     {
-        public BlogCommandTests(BlogTestFactory factory) : base(factory){}
+        public BlogCommandTests(BlogTestFactory factory) : base(factory) { }
 
         [Fact]
         public void Creates()
@@ -30,7 +30,7 @@ namespace Explorer.Blog.Tests.Integration
             var newEntity = new BlogDto
             {
                 Title = "NASLOVCINA",
-                AuthorId = 1 ,
+                AuthorId = 1,
                 Description = "Description",
                 CreationDate = DateTime.UtcNow,
                 Image = "image.png",
@@ -41,7 +41,7 @@ namespace Explorer.Blog.Tests.Integration
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as BlogDto;
 
             // Assert - Response
-            
+
             result.ShouldNotBeNull();
             result.Id.ShouldNotBe(0);
             result.Title.ShouldBe(newEntity.Title);
@@ -136,14 +136,14 @@ namespace Explorer.Blog.Tests.Integration
             var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
 
             // Act
-            var result = (OkResult)controller.Delete(1);
+            var result = (OkResult)controller.Delete(-1);
 
             // Assert - Response
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(200);
 
             // Assert - Database
-            var storedCourse = dbContext.Blogs.FirstOrDefault(i => i.Id == 1);
+            var storedCourse = dbContext.Blogs.FirstOrDefault(i => i.Id == -1);
             storedCourse.ShouldBeNull();
         }
 
