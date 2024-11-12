@@ -12,7 +12,7 @@ namespace Explorer.Tours.API.Public.Execution
     public interface ITourProblemService
     {
         Result<TourProblemDto> GetById(int id);
-        Result<List<TourProblemDto>> GetByToursIds(List<int> ids);
+        Result<PagedResult<TourProblemDto>> GetByToursIds(List<int> ids);
         Result<List<TourProblemDto>> GetByTouristId(int id);
         Result<TourProblemDto> Create(TourProblemDto tourProblemDto);
         Result<TourProblemDto> Update(TourProblemDto tourProblemDto);

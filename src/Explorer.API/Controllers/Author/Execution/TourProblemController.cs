@@ -25,8 +25,10 @@ namespace Explorer.API.Controllers.Author.Execution
         }
 
         [HttpGet("getByAuthorId")]
-        public ActionResult<PagedResult<TourProblemDto>> GetByAuthorId([FromQuery] int userId)
+        public ActionResult<PagedResult<TourProblemDto>> GetByAuthorId()
         {
+            int userId = User.PersonId();
+
             var tours = _tourService.GetByAuthorId(0, 0, userId);
             var tourIds = tours.Value.Results.Select(tour => tour.Id).ToList();
             var results = _tourProblemService.GetByToursIds(tourIds);

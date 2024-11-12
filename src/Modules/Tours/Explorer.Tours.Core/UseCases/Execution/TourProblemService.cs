@@ -64,7 +64,17 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
         public Result<PagedResult<TourProblemDto>> GetAll()
         {
-            return MapToDto(_tourProblemRepository.GetPaged(0, 0));
+            var pagedResult = _tourProblemRepository.GetPaged(0, 0);
+            var openTourProblems = pagedResult.Results
+                .Where(tp => tp.Status != Domain.TourProblems.ProblemStatus.Closed)
+                .ToList();
+
+            var mappedResults = MapToDto(openTourProblems);
+
+            return new PagedResult<TourProblemDto>(
+                mappedResults.Value,
+                totalCount: mappedResults.Value.Count 
+            );
         }
 
         public Result<TourProblemDto> GetById(int id)
@@ -89,10 +99,14 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return Result.Ok(MapToDto(tourProblem));
         }
 
-        public Result<List<TourProblemDto>> GetByToursIds(List<int> ids)
+        public Result<PagedResult<TourProblemDto>> GetByToursIds(List<int> ids)
         {
             var results = GetAll().Value.Results.Where(x => ids.Contains(x.TourId)).ToList();
-            return results;   
+
+            return new PagedResult<TourProblemDto>(
+                results,
+                totalCount: results.Count
+            );
         }
 
         public Result<List<TourProblemDto>> GetByTouristId(int id)
