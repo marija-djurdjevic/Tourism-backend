@@ -22,7 +22,8 @@ namespace Explorer.API.Controllers.Tourist
         public ActionResult<UserRatingDto> Create([FromBody] UserRatingDto rating)
         {
             var userId = User.FindFirst("id").Value;
-            var result = _userRatingService.Create(rating, userId);
+            var username = User.FindFirst("username").Value;
+            var result = _userRatingService.Create(rating, userId, username);
             return CreateResponse(result);
         }
 

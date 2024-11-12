@@ -32,6 +32,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Explorer.Tours.Core", "Modules\Tours\Explorer.Tours.Core\Explorer.Tours.Core.csproj", "{97FFFAD1-71C8-4E9A-93DE-D5CE60E87FA5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Explorer.Tours.API", "Modules\Tours\Explorer.Tours.API\Explorer.Tours.API.csproj", "{1EC26004-9BCF-4E9C-8700-4E58F79757E8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{965EAFCE-C069-4A22-A2D6-F2795DF6EF13} = {965EAFCE-C069-4A22-A2D6-F2795DF6EF13}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Explorer.Tours.Infrastructure", "Modules\Tours\Explorer.Tours.Infrastructure\Explorer.Tours.Infrastructure.csproj", "{E7B9D2F1-1DCE-4498-B806-4987C5594625}"
 EndProject

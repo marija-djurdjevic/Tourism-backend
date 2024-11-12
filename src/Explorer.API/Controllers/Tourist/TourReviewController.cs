@@ -1,6 +1,9 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.UseCases.Administration;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +36,8 @@ namespace Explorer.API.Controllers.Tourist
         [HttpPost]
         public ActionResult<TourReviewDto> Create([FromBody] TourReviewDto tourReview)
         {
-
+            tourReview.UserId = User.PersonId();
+            tourReview.Username = User.Username();
 
             var list = _tourService.GetPaged(0, 0);
             if (list.Value.Results.Any(x => x.Id == tourReview.TourId))
@@ -43,6 +47,14 @@ namespace Explorer.API.Controllers.Tourist
             }
            
             return CreateResponse(Result.Fail("Tour with this id doesn't exist"));
+        }
+
+        [HttpGet("{id:int}")]
+        public ActionResult<TourReviewDto> GetById(int id)
+        {
+            var userId = User.PersonId();
+            var result = _tourReviewService.Get(id,userId);
+            return CreateResponse(result);
         }
 
         [HttpPut("{id:int}")]

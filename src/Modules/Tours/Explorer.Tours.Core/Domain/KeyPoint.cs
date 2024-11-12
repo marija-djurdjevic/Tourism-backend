@@ -1,37 +1,81 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
+using Explorer.Tours.Core.Domain.Tours;
 
 namespace Explorer.Tours.Core.Domain
 {
     public class KeyPoint : Entity
     {
-        public int Id { get; private set; }
-        public String Name { get; private set; }
-        public String Description { get; private set; }
-        public String ImagePath { get; private set; }
-        public double Longitude { get; private set; }
-        public double Latitude { get; private set;}
-        public int TourId { get; private set; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public string ImagePath { get; private set; }
+        public long TourId { get; private set; }
+        public Coordinates Coordinates { get; private set; }
+        private KeyPoint() { }
+        public KeyPoint(string name, string description, string imagePath, long tourId, Coordinates coordinates)
+        {
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
+            if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
+            if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path."); ;
 
-        public KeyPoint(int id, string name, string description, string imagePath, double longitude, double latitude, int tourId)
+            Name = name;
+            Description = description;
+            ImagePath = imagePath;
+            TourId = tourId;
+            Coordinates = coordinates;
+
+        }
+        public KeyPoint(int id, string name, string description, string imagePath, int tourId, double latitude, double longitude)
         {
             if (id < 0) throw new ArgumentException("Invalid Id.");
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
             if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path.");
-            if (longitude < -180 || longitude > 180) throw new ArgumentException("Longitude must be between -180 and 180.");
-            if (latitude < -90 || latitude > 90) throw new ArgumentException("Latitude must be between -90 and 90.");
-            if (tourId < 0) throw new ArgumentException("Invalid Author Id.");
 
             Id = id;
             Name = name;
             Description = description;
             ImagePath = imagePath;
-            Longitude = longitude;
-            Latitude = latitude;
             TourId = tourId;
+            Coordinates = new Coordinates(latitude, longitude);
         }
 
+        public double GetDistance(Coordinates desiredCoordinates)
+        {
+            const double EarthRadius = 6371.0; // Poluprečnik Zemlje u kilometrima
 
+            // Konvertovanje koordinata iz stepeni u radijane
+            double lat1 = ToRadians(Coordinates.Latitude);
+            double lon1 = ToRadians(Coordinates.Longitude);
+            double lat2 = ToRadians(desiredCoordinates.Latitude);
+            double lon2 = ToRadians(desiredCoordinates.Longitude);
 
+            // Razlika između latituda i longitud
+            double latDifference = lat2 - lat1;
+            double lonDifference = lon2 - lon1;
+
+            // Primena Haversinove formule
+            double a = Math.Pow(Math.Sin(latDifference / 2), 2) +
+                       Math.Cos(lat1) * Math.Cos(lat2) *
+                       Math.Pow(Math.Sin(lonDifference / 2), 2);
+
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+            // Vraćanje distance u kilometrima
+            double distance = EarthRadius * c;
+
+            // Vraćamo distancu
+            return distance;
+        }
+
+        private double ToRadians(double angle)
+        {
+            return angle * Math.PI / 180.0;
+        }
+
+        public bool IsInDesiredDistance(Coordinates desiredCoordinates, double distance)
+        {
+            var actualDistance = GetDistance(desiredCoordinates);
+            return actualDistance < distance;
+        }
     }
 }
