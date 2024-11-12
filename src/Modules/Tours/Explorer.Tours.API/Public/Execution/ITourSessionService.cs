@@ -1,5 +1,4 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Stakeholders.API.Dtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using FluentResults;
 using System;
