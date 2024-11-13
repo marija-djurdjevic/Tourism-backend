@@ -150,6 +150,123 @@ namespace Explorer.Tours.Tests.Integration.Execution.TourSession
             result.StatusCode.ShouldBe(200);
         }
 
+        [Theory]
+        [InlineData(-2, -21)]  
+        public void UpdateLastActivitySucceeds(int sessionId, int userId)
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+
+            // Set up mock claims to simulate the authenticated user
+            var claims = new List<Claim>
+    {
+        new Claim("personId", $"{userId}")
+    };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var user = new ClaimsPrincipal(identity);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = user
+                }
+            };
+
+            // Act
+            var result = (ObjectResult)controller.UpdateLastActivity(sessionId).Result;
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.StatusCode.ShouldBe(200);
+            result.Value.ShouldBe(true);
+        }
+
+        [Theory]
+        [InlineData(-999, -21)]  // Use non-existent or invalid session ID
+        public void UpdateLastActivityFails_NotFound(int sessionId, int userId)
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+
+            var claims = new List<Claim>
+    {
+        new Claim("personId", $"{userId}")
+    };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var user = new ClaimsPrincipal(identity);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = user
+                }
+            };
+
+            // Act
+            var result = (NotFoundObjectResult)controller.UpdateLastActivity(sessionId).Result;
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.StatusCode.ShouldBe(404);
+            result.Value.ShouldBe(false);
+        }
+
+        [Theory]
+        [InlineData(-2, -101, -21)]
+        public void CompleteKeyPoint_Succeeds(long tourId, long keyPointId, int userId)
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+
+            // Mock user identity
+            var claims = new List<Claim> { new Claim("personId", $"{userId}") };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var user = new ClaimsPrincipal(identity);
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            // Act
+            var result = (ObjectResult)controller.CompleteKeyPoint(tourId, keyPointId).Result;
+
+            // Assert
+            result.ShouldNotBeNull("Expected a non-null result from CompleteKeyPoint.");
+            result.StatusCode.ShouldBe(200, "Expected a 200 OK status code.");
+            result.Value.ShouldBe(true, "Expected the action to return true.");
+        }
+
+        [Theory]
+        [InlineData(-999, -101, -21)]  // Using a tourId that doesn't exist
+        public void CompleteKeyPoint_Fails_WhenTourSessionNotFound(long tourId, long keyPointId, int userId)
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+
+            // Mock user identity
+            var claims = new List<Claim> { new Claim("personId", $"{userId}") };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var user = new ClaimsPrincipal(identity);
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            // Act
+            var result = (ObjectResult)controller.CompleteKeyPoint(tourId, keyPointId).Result;
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.StatusCode.ShouldBe(400);  // Expecting BadRequest (400)
+            result.Value.ShouldBe(false);  // The return value should be false
+        }
+
+
         private static TourSessionController CreateController(IServiceScope scope)
         {
             return new TourSessionController(scope.ServiceProvider.GetRequiredService<ITourSessionService>())
