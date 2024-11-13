@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shouldly;
-using Explorer.API.Controllers.Author.Authoring;
+using Explorer.API.Controllers.Author;
 using Explorer.Tours.API.Public.Authoring;
 
 namespace Explorer.Tours.Tests.Integration.Authoring
@@ -27,8 +27,8 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             var result = ((ObjectResult)controller.GetAll(0, 0).Result)?.Value as PagedResult<KeyPointDto>;
             //Assert 
             result.ShouldNotBeNull();
-            result.Results.Count.ShouldBe(2);
-            result.TotalCount.ShouldBe(2);
+            result.Results.Count.ShouldBe(4);
+            result.TotalCount.ShouldBe(4);
         }
         public static KeyPointController CreateController(IServiceScope scope)
         {

@@ -1,4 +1,5 @@
-﻿using Explorer.BuildingBlocks.Infrastructure.Database;
+﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.TourProblems;
 using System;
@@ -11,6 +12,6 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
 {
     public class TourProblemRepository : CrudDatabaseRepository<TourProblem, ToursContext>, ITourProblemRepository
     {
-        public TourProblemRepository(ToursContext dbContext) : base(dbContext) {}
+        public TourProblemRepository(ToursContext dbContext) : base(dbContext) { }
     }
 }

@@ -34,5 +34,11 @@ namespace Explorer.API.Controllers.Tourist.Identity
             return CreateResponse(result);
         }
 
+        [HttpGet("getUsername")]
+        public ActionResult<string> getUsername([FromQuery] int userId)
+        {
+            var result = _userService.GetUsernameById(userId);
+            return CreateResponse(result);
+        }
     }
 }

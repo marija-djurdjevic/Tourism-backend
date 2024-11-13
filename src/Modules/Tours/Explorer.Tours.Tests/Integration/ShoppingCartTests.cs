@@ -90,9 +90,9 @@ namespace Explorer.Tours.Tests.Integration
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
 
             var claims = new List<Claim>
-                {
-                new Claim("id", "-1")
-                };
+            {
+                new Claim("id", "-2")
+            };
 
             var identity = new ClaimsIdentity(claims, "TestAuth");
             var user = new ClaimsPrincipal(identity);
@@ -102,10 +102,10 @@ namespace Explorer.Tours.Tests.Integration
             };
 
             List<OrderItemDto> orderItems = new List<OrderItemDto>
-                {
-                    new OrderItemDto(2, "Desert Adventure", 120.00),
-                    new OrderItemDto(3, "City Lights", 80.00)
-                };
+            {
+                new OrderItemDto(-1, "Desert Adventure", 120.00),
+                new OrderItemDto(-2, "City Lights", 80.00)
+            };
 
             // Act
             var result = ((ObjectResult)controller.Checkout(orderItems).Result)?.Value as ShoppingCartDto;

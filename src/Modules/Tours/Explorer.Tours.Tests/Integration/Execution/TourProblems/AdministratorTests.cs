@@ -1,5 +1,4 @@
 using Explorer.Tours.API.Dtos.TourProblemDtos;
-using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain.TourProblems;
 using Explorer.Tours.Infrastructure.Database;
@@ -78,7 +77,7 @@ namespace Explorer.Tours.Tests.Integration.Execution.TourProblems
             updatedResult.ShouldNotBeNull();
             updatedResult.StatusCode.ShouldBe(200);
             var finalUpdatedProblem = updatedResult?.Value as TourProblemDto;
-            finalUpdatedProblem.Status.ShouldBe(ProblemStatus.Expired);
+            finalUpdatedProblem.Status.ShouldBe(ProblemStatus.Closed);
         }
 
         private static TourProblemController CreateController(IServiceScope scope)

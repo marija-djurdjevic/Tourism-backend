@@ -37,7 +37,7 @@ namespace Explorer.Tours.Core.Domain.TourProblems
         protected override int GetHashCodeCore()
         {
             return HashCode.Combine(Category, ProblemPriority, Explanation, Time);
-        }   
+        }
     }
 
     public enum ProblemCategory

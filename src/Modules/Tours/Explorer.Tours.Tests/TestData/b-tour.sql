@@ -9,12 +9,12 @@ INSERT INTO tours."Tour"(
     "Id", "AuthorId", "Name", "Description", "Difficulty", "Tags", "Price", "Status", "TransportInfo",
     "PublishedAt", "ArchivedAt", "AverageScore")
 VALUES 
-    (200, 1, 'Exploring nature', 'Walk through the forest with a guide', 0, '#nature', 730, 0, '{{"Type": 1, "Time": 30, "Distance": 5.0}}',
+    (-2, 1, 'Exploring nature', 'Walk through the forest with a guide', 0, '#nature', 730, 1, '{{"Type": 1, "Time": 30, "Distance": 5.0}}',
     '2024-10-15 14:15:00', '2024-10-15 14:15:00', 4.0);
 	
 INSERT INTO tours."Tour"(
     "Id", "AuthorId", "Name", "Description", "Difficulty", "Tags", "Price", "Status", "TransportInfo",
     "PublishedAt", "ArchivedAt", "AverageScore")
 VALUES 
-    (-3, 1, 'Bird perspective', 'Helicopter tour over the city with panoramic views of famous landmarks', 0, '#flying', 5000, 0, '{{"Type": 2, "Time": 15, "Distance": 2.0}}',
+    (-3, 1, 'Bird perspective', 'Helicopter tour over the city with panoramic views of famous landmarks', 0, '#flying', 5000, 1, '{{"Type": 2, "Time": 15, "Distance": 2.0}}',
     '2024-10-15 14:15:00', '2024-10-15 14:15:00', 5.0);

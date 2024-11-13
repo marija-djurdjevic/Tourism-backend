@@ -1,5 +1,5 @@
 ﻿using Explorer.API.Controllers.Administrator.Administration;
-using Explorer.API.Controllers.Author.Authoring;
+using Explorer.API.Controllers.Author;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;
@@ -70,7 +70,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
 
-            var updatedTour = new TourDto { Id = 200, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 100, Tags = "sss", Name = "Publish Test Tour", Status = API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Archived };
+            var updatedTour = new TourDto { Id = -2, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 100, Tags = "sss", Name = "Publish Test Tour", Status = API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Archived };
 
             updatedTour.KeyPoints = new List<KeyPointDto>();
             updatedTour.KeyPoints.Add(new KeyPointDto { Id = 100, Description = "kp1", ImagePath = "...", Latitude = 2.2, Longitude = 3.3, Name = "KP1", TourId = 200 });
@@ -84,7 +84,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             result.Status.ShouldBe(API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Published);
 
             //Assert - database
-            var storedEntity = dbContext.Tour.FirstOrDefault(i => i.Id == 200);
+            var storedEntity = dbContext.Tour.FirstOrDefault(i => i.Id == -2);
             storedEntity.ShouldNotBeNull();
             storedEntity.Status.ToString().ShouldBe(API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Published.ToString());
 
@@ -98,7 +98,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-            var updatedTour = new TourDto { Id = 200, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 0, Tags = "sss", Name = "Archive Test Tour", Status = API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Published };
+            var updatedTour = new TourDto { Id = -2, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 0, Tags = "sss", Name = "Archive Test Tour", Status = API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Published };
 
             // Act
             var result = ((ObjectResult)controller.Archive(updatedTour).Result)?.Value as TourDto;
@@ -107,7 +107,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             result.ShouldNotBeNull();
             result.Status.ShouldBe(API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Archived);
             //Assert - database
-            var storedEntity = dbContext.Tour.FirstOrDefault(i => i.Id == 200);
+            var storedEntity = dbContext.Tour.FirstOrDefault(i => i.Id == -2);
             storedEntity.ShouldNotBeNull();
             storedEntity.Status.ToString().ShouldBe(API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Archived.ToString());
 

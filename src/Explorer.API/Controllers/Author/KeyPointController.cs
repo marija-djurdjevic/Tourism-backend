@@ -4,7 +4,7 @@ using Explorer.Tours.API.Public.Authoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Explorer.API.Controllers.Author.Authoring
+namespace Explorer.API.Controllers.Author
 
 {
 

@@ -1,6 +1,5 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public;
 using Explorer.Tours.API.Public.Execution;
@@ -64,7 +63,17 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
         public Result<PagedResult<TourProblemDto>> GetAll()
         {
-            return MapToDto(_tourProblemRepository.GetPaged(0, 0));
+            var pagedResult = _tourProblemRepository.GetPaged(0, 0);
+            var openTourProblems = pagedResult.Results
+                .Where(tp => tp.Status != Domain.TourProblems.ProblemStatus.Closed)
+                .ToList();
+
+            var mappedResults = MapToDto(openTourProblems);
+
+            return new PagedResult<TourProblemDto>(
+                mappedResults.Value,
+                totalCount: mappedResults.Value.Count 
+            );
         }
 
         public Result<TourProblemDto> GetById(int id)
@@ -89,21 +98,29 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return Result.Ok(MapToDto(tourProblem));
         }
 
-        public Result<List<TourProblemDto>> GetByToursIds(List<int> ids)
+        public Result<PagedResult<TourProblemDto>> GetByToursIds(List<int> ids)
         {
             var results = GetAll().Value.Results.Where(x => ids.Contains(x.TourId)).ToList();
-            return results;   
+
+            return new PagedResult<TourProblemDto>(
+                results,
+                totalCount: results.Count
+            );
         }
 
-        public Result<List<TourProblemDto>> GetByTouristId(int id)
+        public Result<PagedResult<TourProblemDto>> GetByTouristId(int id)
         {
             var results = GetAll().Value.Results.Where(x => x.TouristId == id).ToList();
-            return results;
+
+            return new PagedResult<TourProblemDto>(
+              results,
+              totalCount: results.Count
+          );
         }
 
-        public Result<TourProblemDto> SetProblemExpired(TourProblemDto tourProblemDto)
+        public Result<TourProblemDto> SetProblemClosed(TourProblemDto tourProblemDto)
         {
-            tourProblemDto.Status = API.Dtos.TourProblemDtos.ProblemStatus.Expired;
+            tourProblemDto.Status = API.Dtos.TourProblemDtos.ProblemStatus.Closed;
             var tourProblem = _tourProblemRepository.Update(MapToDomain(tourProblemDto));
 
             if (tourProblem == null)

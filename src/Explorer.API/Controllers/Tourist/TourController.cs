@@ -1,7 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
-using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Shopping;
 using Microsoft.AspNetCore.Authorization;
@@ -33,6 +32,13 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(result);
         }
 
+        [HttpPost("search")]
+        public ActionResult<List<TourDto>> SearchTours([FromBody] SearchByDistanceDto searchByDistanceDto)
+        {
+            var result = _tourService.SearchTours(searchByDistanceDto);
+            return CreateResponse(result);
+        }
+
         [HttpGet("keyPoints")]
         public ActionResult<PagedResult<KeyPointDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {
@@ -44,6 +50,13 @@ namespace Explorer.API.Controllers.Tourist
         public ActionResult<PagedResult<TourDto>> GetAllTours()
         {
             var result = _tourService.GetPaged(0, 0);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("allTours")]
+        public ActionResult<List<TourDto>> GetTours()
+        {
+            var result = _tourService.GetAllToursWithKeyPoints();
             return CreateResponse(result);
         }
     }

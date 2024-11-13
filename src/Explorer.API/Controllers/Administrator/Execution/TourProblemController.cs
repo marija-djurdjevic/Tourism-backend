@@ -1,7 +1,5 @@
 using Explorer.Stakeholders.API.Dtos;
-using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
-using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Execution;
 using FluentResults;
 using Explorer.BuildingBlocks.Core.UseCases;
@@ -9,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Explorer.Tours.Core.UseCases.Execution;
 using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.API.Dtos;
 
 namespace Explorer.API.Controllers.Administrator.Execution
 {
@@ -33,7 +32,7 @@ namespace Explorer.API.Controllers.Administrator.Execution
         {
             if (tourProblem.Deadline < DateTime.UtcNow)
             {
-                var result = _tourProblemService.SetProblemExpired(tourProblem);
+                var result = _tourProblemService.SetProblemClosed(tourProblem);
                 return CreateResponse(result);
             }
             return CreateResponse(Result.Ok("deadline hasn't passed."));

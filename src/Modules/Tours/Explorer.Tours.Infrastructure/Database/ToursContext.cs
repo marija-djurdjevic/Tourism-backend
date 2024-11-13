@@ -24,7 +24,7 @@ public class ToursContext : DbContext
     public DbSet<TourReview> TourReview { get; set; }
 
     public DbSet<TourSession> TourSessions { get; set; }
-    public DbSet<TourProblem> TourProblems { get; set; }
+    public DbSet<Core.Domain.TourProblems.TourProblem> TourProblems { get; set; }
     public DbSet<Notification> Notifications { get; set; }
 
     public ToursContext(DbContextOptions<ToursContext> options) : base(options) {}
@@ -39,7 +39,7 @@ public class ToursContext : DbContext
         modelBuilder.Entity<TourSession>().Property(ts => ts.CompletedKeyPoints).HasColumnType("jsonb");
         modelBuilder.Entity<KeyPoint>().Property(item => item.Coordinates).HasColumnType("jsonb");
         modelBuilder.Entity<Tour>().Property(item => item.TransportInfo).HasColumnType("jsonb");
-        modelBuilder.Entity<TourProblem>().Property(item => item.Details).HasColumnType("jsonb");
-        modelBuilder.Entity<TourProblem>().Property(item => item.Comments).HasColumnType("jsonb");
+        modelBuilder.Entity<Core.Domain.TourProblems.TourProblem>().Property(item => item.Details).HasColumnType("jsonb");
+        modelBuilder.Entity<Core.Domain.TourProblems.TourProblem>().Property(item => item.Comments).HasColumnType("jsonb");
     }
 }

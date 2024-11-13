@@ -1,4 +1,4 @@
-﻿using Explorer.API.Controllers.Author.Authoring;
+﻿using Explorer.API.Controllers.Author;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.Domain.Tours;
@@ -29,7 +29,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             var newEntity = new KeyPointDto
             {
                 Id = 11,
-                TourId = 1,
+                TourId = -2,
                 Name = "Test",
                 Description = "desc test",
                 Longitude = 20,

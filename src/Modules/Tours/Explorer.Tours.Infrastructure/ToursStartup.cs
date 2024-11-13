@@ -6,21 +6,21 @@ using Explorer.Tours.API.Public.Shopping;
 using Explorer.Tours.Core.Domain.ShoppingCarts;
 using Explorer.Tours.Core.UseCases.Shopping;
 using Explorer.Tours.API.Public.Execution;
-using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.Domain;
-using Explorer.Tours.Core.Domain.RepositoryInterfaces;
-using Explorer.Tours.Core.Domain.TourProblems;
-using Explorer.Tours.Core.Domain.Tours;
-using Explorer.Tours.Core.Domain.TourSessions;
 using Explorer.Tours.Core.Mappers;
 using Explorer.Tours.Core.UseCases;
 using Explorer.Tours.Core.UseCases.Administration;
-using Explorer.Tours.Core.UseCases.Execution;
-using Explorer.Tours.Core.UseCases.Authoring;
 using Explorer.Tours.Infrastructure.Database;
-using Explorer.Tours.Infrastructure.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Explorer.Tours.Core.Domain.RepositoryInterfaces;
+using Explorer.Tours.Core.UseCases.Execution;
+using Explorer.Tours.Core.Domain.Tours;
+using Explorer.Tours.Infrastructure.Database.Repositories;
+using Explorer.Tours.Core.Domain.TourSessions;
+using Explorer.Tours.Core.Domain.TourProblems;
+using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.Core.UseCases.Authoring;
 
 namespace Explorer.Tours.Infrastructure;
 
@@ -65,7 +65,7 @@ public static class ToursStartup
         services.AddScoped(typeof(ICrudRepository<Explorer.Tours.Core.Domain.Object>), typeof(CrudDatabaseRepository<Explorer.Tours.Core.Domain.Object, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Tour>), typeof(CrudDatabaseRepository<Tour, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<KeyPoint>), typeof(CrudDatabaseRepository<KeyPoint, ToursContext>));
-        services.AddScoped(typeof(ICrudRepository<TourProblem>), typeof(CrudDatabaseRepository<TourProblem, ToursContext>));
+        services.AddScoped(typeof(ICrudRepository<Core.Domain.TourProblems.TourProblem>), typeof(CrudDatabaseRepository<Core.Domain.TourProblems.TourProblem, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<ShoppingCart>), typeof(CrudDatabaseRepository<ShoppingCart, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Notification>), typeof(CrudDatabaseRepository<Notification, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<TourSession>), typeof(CrudDatabaseRepository<TourSession, ToursContext>));

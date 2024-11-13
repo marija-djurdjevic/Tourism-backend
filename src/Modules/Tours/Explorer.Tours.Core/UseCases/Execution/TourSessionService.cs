@@ -3,11 +3,9 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Core.Domain.Users;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
-using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.API.Public.Shopping;
-using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Core.Domain.TourSessions;
@@ -17,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
 
 namespace Explorer.Tours.Core.UseCases.Execution
 {
@@ -95,8 +94,6 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
             }
 
-
-
             var tourResult = _tourService.Get(tourId);
 
             var tour = tourResult.Value;
@@ -126,10 +123,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
                 return Result.Fail<TourSessionDto>("An active tour session already exists for this tour.");
             }
 
-
-
             var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(initialLocation);
-
 
             var tourSession = new TourSession(tourId, location, userId);
 

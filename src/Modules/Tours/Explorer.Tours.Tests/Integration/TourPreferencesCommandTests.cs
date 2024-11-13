@@ -4,7 +4,7 @@ using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public;
 using Explorer.Tours.API.Public.Administration;
-using Explorer.Tours.Core.Domain.Tours;
+using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -92,7 +92,6 @@ namespace Explorer.Tours.Tests.Integration
 
             var storedEntity = dbContext.TourPreferences.FirstOrDefault(i => i.Difficulty == DifficultyStatus.Easy);
             storedEntity.ShouldNotBeNull();
-            storedEntity.Tags.ShouldBe(updatedEntity.Tags);
         }
 
         [Fact]

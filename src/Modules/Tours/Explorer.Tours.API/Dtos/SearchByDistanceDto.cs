@@ -4,17 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.API.Dtos.TourSessionDtos
+namespace Explorer.Tours.API.Dtos
 {
-    public class LocationDto
+    public class SearchByDistanceDto
     {
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public double Distance { get; set; }
 
-        public LocationDto(double latitude, double longitude)
+        public SearchByDistanceDto(double latitude, double longitude, double distance)
         {
             Latitude = latitude;
             Longitude = longitude;
+            Distance = distance;
         }
     }
 }

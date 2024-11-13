@@ -1,7 +1,6 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
-using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
 using Microsoft.AspNetCore.Authorization;
@@ -25,8 +24,10 @@ namespace Explorer.API.Controllers.Author.Execution
         }
 
         [HttpGet("getByAuthorId")]
-        public ActionResult<PagedResult<TourProblemDto>> GetByAuthorId([FromQuery] int userId)
+        public ActionResult<PagedResult<TourProblemDto>> GetByAuthorId()
         {
+            int userId = User.PersonId();
+
             var tours = _tourService.GetByAuthorId(0, 0, userId);
             var tourIds = tours.Value.Results.Select(tour => tour.Id).ToList();
             var results = _tourProblemService.GetByToursIds(tourIds);

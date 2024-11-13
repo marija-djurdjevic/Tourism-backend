@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Explorer.Tours.Infrastructure.Database.Repositories
 {
-    public class TourSessionRepository : CrudDatabaseRepository<TourSession,ToursContext>,ITourSessionRepository
+    public class TourSessionRepository : CrudDatabaseRepository<TourSession, ToursContext>, ITourSessionRepository
     {
         
         public TourSessionRepository(ToursContext dbContext):base(dbContext) { _dbContext = dbContext; }
@@ -19,5 +19,6 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
                 //.Include(ts => ts.CompletedKeyPoints) // Include related data if needed
                 .FirstOrDefault(ts => ts.TourId == tourId && ts.UserId == userId);
         }
+
     }
 }
