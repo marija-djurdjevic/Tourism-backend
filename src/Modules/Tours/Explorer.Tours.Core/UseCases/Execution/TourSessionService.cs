@@ -157,7 +157,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
             }
 
 
-            var lastKeyPoint = keyPoints.Last();
+            var lastKeyPoint = keyPoints.First();
             var lastKeyPointLocation = new Domain.TourSessions.Location(lastKeyPoint.Longitude, lastKeyPoint.Latitude);
 
             bool isNear = Domain.TourSessions.Location.IsWithinSimpleDistance(location, lastKeyPointLocation);
