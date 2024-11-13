@@ -18,7 +18,10 @@ namespace Explorer.Tours.Core.Domain.TourSessions
 
         public DateTime? EndTime { get; private set; }
 
-        private TourSession() { }
+        private TourSession() 
+        {
+            CompletedKeyPoints = new List<CompletedKeyPoints>();
+        }
         public TourSession(int tourId, Location initialLocation, int userId)
         {
             TourId = tourId;
@@ -58,6 +61,10 @@ namespace Explorer.Tours.Core.Domain.TourSessions
             LastActivity = DateTime.UtcNow;
         }
 
+        public void UpdateLastActivity()
+        { 
+            LastActivity = DateTime.UtcNow; 
+        }
         public enum TourSessionStatus
         {
             Active,
