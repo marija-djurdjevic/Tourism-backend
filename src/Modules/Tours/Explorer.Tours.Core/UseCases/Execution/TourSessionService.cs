@@ -158,7 +158,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
 
             var lastKeyPoint = keyPoints.Last();
-            var lastKeyPointLocation = new Domain.TourSessions.Location(lastKeyPoint.Latitude, lastKeyPoint.Longitude);
+            var lastKeyPointLocation = new Domain.TourSessions.Location(lastKeyPoint.Longitude, lastKeyPoint.Latitude);
 
             bool isNear = Domain.TourSessions.Location.IsWithinSimpleDistance(location, lastKeyPointLocation);
             var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
@@ -213,8 +213,13 @@ namespace Explorer.Tours.Core.UseCases.Execution
                 return false;
             }
 
+            if (existingSession.CompletedKeyPoints == null)
+            {
+                return false;
+            }
+
             int keyPointsCount = _keyPointService.GetKeyPointsByTourId(tourId).Value.Count;
-            var tourProgressPercentage = (int)((double)1/*existingSession.CompletedKeyPoints.Count*/ / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
+            var tourProgressPercentage = (int)((double)existingSession.CompletedKeyPoints.Count / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
 
             if (DateTime.UtcNow < existingSession.LastActivity.AddDays(7) &&
                 DateTime.UtcNow > existingSession.LastActivity && tourProgressPercentage > 35)
