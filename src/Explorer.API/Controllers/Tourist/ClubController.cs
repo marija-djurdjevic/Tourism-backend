@@ -51,12 +51,18 @@ namespace Explorer.API.Controllers.Tourist
         {
             var club = _clubService.GetById(id);
 
-            // Check if the logged-in user is the owner of the club
-            if (club?.OwnerId != User.PersonId())
+            // Check if the club exists
+            if (club == null)
             {
-                // Return Forbidden response if the user is not the owner
-                return Forbid();  // Or Unauthorized() depending on the use case
+                return NotFound(); // Return 404 if the club doesn't exist
             }
+
+            // Check if the logged-in user is the owner of the club
+            if (club.OwnerId != User.PersonId())
+            {
+                return Forbid();
+            }
+
             var result = _clubService.Delete(id);
             return CreateResponse(result);
         }

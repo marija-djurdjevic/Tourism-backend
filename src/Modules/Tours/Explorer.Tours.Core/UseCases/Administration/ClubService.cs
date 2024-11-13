@@ -29,17 +29,15 @@ namespace Explorer.Tours.Core.UseCases.Administration
 
         public ClubDto GetById(int id)
         {
-            // Retrieve the club entity from the repository using the ID
-            var club = _repository.Get(id);
-
-            // If the club doesn't exist, you can return null or throw an exception based on your application's needs
-            if (club == null)
+            try
             {
-                return null; // Or throw an exception if preferred
+                var club = _repository.Get(id);
+                return club == null ? null : _mapper.Map<ClubDto>(club);
             }
-
-            // Map the club entity to a ClubDto and return it
-            return _mapper.Map<ClubDto>(club);
+            catch (KeyNotFoundException)
+            {
+                return null; // or handle appropriately
+            }
         }
     }
 }
