@@ -26,6 +26,7 @@ namespace Explorer.Tours.Tests.Integration.Execution.TourSession
 
         public TouristTest(ToursTestFactory factory) : base(factory) { }
 
+        /*
         [Theory]
         [InlineData(-3, 45.2671, 19.8335, -21)]
         public void StartTourSucceeds(int tourId, double latitude, double longitude,int touristId)
@@ -53,6 +54,45 @@ namespace Explorer.Tours.Tests.Integration.Execution.TourSession
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(200);
         }
+        */
+        [Theory]
+        [InlineData(-3, 45.2671, 19.8335, -21)]
+        public void StartTourSucceeds(int tourId, double latitude, double longitude, int touristId)
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+
+            // Mock user claims to simulate logged-in user
+            var claims = new List<Claim>
+    {
+        new Claim("personId", $"{touristId}")
+    };
+
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var user = new ClaimsPrincipal(identity);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = user
+                }
+            };
+
+            // Create StartTourDto with test data
+            var startTourDto = new StartTourDto
+            {
+                TourId = tourId,
+                Latitude = latitude,
+                Longitude = longitude
+            };
+
+            // Call the modified StartTour method and assert results
+            var result = (ObjectResult)controller.StartTour(startTourDto).Result;
+
+            result.ShouldNotBeNull();
+            result.StatusCode.ShouldBe(200);
+        }
+
 
         [Theory]
         [InlineData(-2, -21)]

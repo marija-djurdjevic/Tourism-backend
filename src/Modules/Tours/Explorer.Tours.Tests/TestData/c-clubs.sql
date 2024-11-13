@@ -1,9 +1,4 @@
-﻿INSERT INTO tours."Clubs"(
-    "Id", "OwnerId", "Name", "Description", "Image")
-VALUES (-1, 0, 'klub amatera', 'najbolji ljudi', 'slika3.jpg');
-INSERT INTO tours."Clubs"(
-    "Id", "OwnerId", "Name", "Description", "Image")
-VALUES (-2, 0, 'ESVATINI', 'dobra muzika', 'slika4.jpg');
-INSERT INTO tours."Clubs"(
-    "Id", "OwnerId", "Name", "Description", "Image")
-VALUES (-3, 0, 'RUANDA', 'ozbiljna ekipa', 'slika5.jpg');
+﻿INSERT INTO tours."Clubs" ("Id", "OwnerId", "Name", "Description", "ImageId")
+VALUES (-1, 0, 'klub amatera', 'najbolji ljudi', -1),
+       (-2, 0, 'ESVATINI', 'dobra muzika', -2),
+       (-3, 0, 'RUANDA', 'ozbiljna ekipa', -3);

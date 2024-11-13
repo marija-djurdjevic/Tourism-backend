@@ -157,8 +157,8 @@ namespace Explorer.Tours.Core.UseCases.Execution
             }
 
 
-            var lastKeyPoint = keyPoints.Last();
-            var lastKeyPointLocation = new Domain.TourSessions.Location(lastKeyPoint.Latitude, lastKeyPoint.Longitude);
+            var lastKeyPoint = keyPoints.First();
+            var lastKeyPointLocation = new Domain.TourSessions.Location(lastKeyPoint.Longitude, lastKeyPoint.Latitude);
 
             bool isNear = Domain.TourSessions.Location.IsWithinSimpleDistance(location, lastKeyPointLocation);
             var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
@@ -213,8 +213,13 @@ namespace Explorer.Tours.Core.UseCases.Execution
                 return false;
             }
 
+            if (existingSession.CompletedKeyPoints == null)
+            {
+                return false;
+            }
+
             int keyPointsCount = _keyPointService.GetKeyPointsByTourId(tourId).Value.Count;
-            var tourProgressPercentage = (int)((double)1/*existingSession.CompletedKeyPoints.Count*/ / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
+            var tourProgressPercentage = (int)((double)existingSession.CompletedKeyPoints.Count / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
 
             if (DateTime.UtcNow < existingSession.LastActivity.AddDays(7) &&
                 DateTime.UtcNow > existingSession.LastActivity && tourProgressPercentage > 35)
@@ -241,6 +246,70 @@ namespace Explorer.Tours.Core.UseCases.Execution
             var tourProgressPercentage = (int)((double)1 /*existingSession.CompletedKeyPoints.Count*/ / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
 
             return (tourProgressPercentage, existingSession.LastActivity);
+        }
+
+        public Result<TourSessionDto> UpdateLastActivity(int tourId, int userId)
+        {
+            var tourSession = _repository.GetByTourId(tourId, userId);
+
+            if (tourSession == null)
+            {
+                return Result.Fail<TourSessionDto>("Tour session not found.");
+            }
+
+            tourSession.UpdateLastActivity();
+
+            _repository.Update(tourSession);
+
+            return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
+        }
+
+        public Result<List<CompletedKeyPointDto>> GetCompletedKeyPoints(int tourId, int userId)
+        {
+            var tourSession = _repository.GetByTourId(tourId, userId);
+
+            if (tourSession == null)
+            {
+                return Result.Fail<List<CompletedKeyPointDto>>("Tour session not found.");
+            }
+
+            var completedKeyPoints = _mapper.Map<List<CompletedKeyPointDto>>(tourSession.CompletedKeyPoints);
+
+            // Return the result as a successful operation
+            return Result.Ok(completedKeyPoints);
+        }
+
+        public Result<TourSessionDto> AddCompletedKeyPoint(long tourId, long keyPointId, int userId)
+        {
+            var tourSession = _repository.GetByTourId(tourId, userId);
+
+            if (tourSession == null)
+            {
+                return Result.Fail<TourSessionDto>("Tour session not found.");
+            }
+
+            CompletedKeyPoints newKeypoint = new CompletedKeyPoints((int)keyPointId, DateTime.UtcNow);
+            tourSession.CompletedKeyPoints.Add(newKeypoint);
+
+            _repository.Update(tourSession);
+
+            return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
+        }
+
+        public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
+        {
+            var keyPointsResult = _keyPointService.GetKeyPointsByTourId(tourId);
+
+
+
+            var keyPoints = keyPointsResult.Value;
+
+            if (keyPoints == null || !keyPoints.Any())
+            {
+                throw new Exception($"No keypoints found for tour ID {tourId}.");
+            }
+
+            return Result.Ok(keyPoints);
         }
     }
 }

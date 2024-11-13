@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public;

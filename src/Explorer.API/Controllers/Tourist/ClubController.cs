@@ -1,6 +1,8 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.UseCases.Administration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +30,7 @@ namespace Explorer.API.Controllers.Tourist
         [HttpPost]
         public ActionResult<ClubDto> Create([FromBody] ClubDto clubDto)
         {
+            clubDto.OwnerId = User.PersonId(); 
             var result = _clubService.Create(clubDto);
             return CreateResponse(result);
         }
@@ -35,6 +38,10 @@ namespace Explorer.API.Controllers.Tourist
         [HttpPut("{id:int}")]
         public ActionResult<ClubDto> Update([FromBody] ClubDto club)
         {
+            if (club.OwnerId != User.PersonId())
+            {
+                return Forbid();
+            } 
             var result = _clubService.Update(club);
             return CreateResponse(result);
         }
@@ -42,6 +49,20 @@ namespace Explorer.API.Controllers.Tourist
         [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
+            var club = _clubService.GetById(id);
+
+            // Check if the club exists
+            if (club == null)
+            {
+                return NotFound(); // Return 404 if the club doesn't exist
+            }
+
+            // Check if the logged-in user is the owner of the club
+            if (club.OwnerId != User.PersonId())
+            {
+                return Forbid();
+            }
+
             var result = _clubService.Delete(id);
             return CreateResponse(result);
         }

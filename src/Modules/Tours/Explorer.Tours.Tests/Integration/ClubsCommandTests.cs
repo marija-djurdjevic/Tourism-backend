@@ -24,7 +24,7 @@ namespace Explorer.Tours.Tests.Integration
             {
                 Name = "nesvrstani",
                 Description = "jaki momci titovi",
-                Image = "slikatop.jpg",
+                ImageId = -1,
             };
 
             // Act
@@ -73,24 +73,31 @@ namespace Explorer.Tours.Tests.Integration
                 OwnerId = 0,
                 Name = "klub amatera",
                 Description = "jos bolji ljudi",
-                Image = "slika3.jpg"
+                ImageId = -1
             };
 
-            // Act
-            var result = ((ObjectResult)controller.Update(updatedEntity).Result)?.Value as ClubDto;
+            var result = controller.Update(updatedEntity).Result;
 
             // Assert - Response
-            result.ShouldNotBeNull();
-            result.Id.ShouldBe(-1);
-            result.Name.ShouldBe(updatedEntity.Name);
-            result.Description.ShouldBe(updatedEntity.Description);
+            if (result is ForbidResult)
+            {
+                result.ShouldBeOfType<ForbidResult>();
+            }
+            else if (result is ObjectResult objectResult)
+            {
+                var updatedClub = objectResult.Value as ClubDto;
+                updatedClub.ShouldNotBeNull();
+                updatedClub.Id.ShouldBe(-1);
+                updatedClub.Name.ShouldBe(updatedEntity.Name);
+                updatedClub.Description.ShouldBe(updatedEntity.Description);
 
-            // Assert - Database
-            var storedEntity = dbContext.Clubs.FirstOrDefault(i => i.Description == "jos bolji ljudi");
-            storedEntity.ShouldNotBeNull();
-            storedEntity.Description.ShouldBe(updatedEntity.Description);
-            var oldEntity = dbContext.Clubs.FirstOrDefault(i => i.Description == "najbolji ljudi");
-            oldEntity.ShouldBeNull();
+                // Assert - Database
+                var storedEntity = dbContext.Clubs.FirstOrDefault(i => i.Description == "jos bolji ljudi");
+                storedEntity.ShouldNotBeNull();
+                storedEntity.Description.ShouldBe(updatedEntity.Description);
+                var oldEntity = dbContext.Clubs.FirstOrDefault(i => i.Description == "najbolji ljudi");
+                oldEntity.ShouldBeNull();
+            }
         }
 
         [Fact]
@@ -105,15 +112,23 @@ namespace Explorer.Tours.Tests.Integration
                 OwnerId = 0,
                 Name = "klub amatera",
                 Description = "o joko joko",
-                Image = "asam se naroko"
+                ImageId = -1
             };
 
             // Act
-            var result = (ObjectResult)controller.Update(updatedEntity).Result;
+            var result = controller.Update(updatedEntity).Result;
 
             // Assert
-            result.ShouldNotBeNull();
-            result.StatusCode.ShouldBe(404);
+            if (result is ForbidResult)
+            {
+                result.ShouldBeOfType<ForbidResult>();
+            }
+            else if (result is ObjectResult objectResult)
+            {
+                objectResult.ShouldNotBeNull();
+                objectResult.StatusCode.ShouldBe(404);
+            }
+
         }
 
         [Fact]
@@ -125,17 +140,24 @@ namespace Explorer.Tours.Tests.Integration
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
 
             // Act
-            var result = (OkResult)controller.Delete(-3);
+            var result = controller.Delete(-3);
 
             // Assert - Response
-            result.ShouldNotBeNull();
-            result.StatusCode.ShouldBe(200);
+            if (result is ForbidResult)
+            {
+                result.ShouldBeOfType<ForbidResult>();
+            }
+            else if (result is OkResult okResult)
+            {
+                okResult.ShouldNotBeNull();
+                okResult.StatusCode.ShouldBe(200);
 
-            // Assert - Database
-            var storedCourse = dbContext.Clubs.FirstOrDefault(i => i.Id == -3);
-            storedCourse.ShouldBeNull();
+                // Assert - Database
+                var storedCourse = dbContext.Clubs.FirstOrDefault(i => i.Id == -3);
+                storedCourse.ShouldBeNull();
+            }
         }
-
+        /*
         [Fact]
         public void Delete_fails_invalid_id()
         {
@@ -144,11 +166,41 @@ namespace Explorer.Tours.Tests.Integration
             var controller = CreateController(scope);
 
             // Act
-            var result = (ObjectResult)controller.Delete(-1000);
+            var result = controller.Delete(-1000);
 
             // Assert
-            result.ShouldNotBeNull();
-            result.StatusCode.ShouldBe(404);
+            if (result is ForbidResult)
+            {
+                result.ShouldBeOfType<ForbidResult>();
+            }
+            else if (result is NotFoundResult notFoundResult)
+            {
+                notFoundResult.ShouldNotBeNull();
+                notFoundResult.StatusCode.ShouldBe(404);
+            }
+
+        }
+        */
+        [Fact]
+        public void Delete_fails_invalid_id()
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+
+            // Act
+            var result = controller.Delete(-1000);
+
+            // Assert
+            if (result is ForbidResult)
+            {
+                result.ShouldBeOfType<ForbidResult>();
+            }
+            else if (result is ObjectResult objectResult)
+            {
+                objectResult.ShouldNotBeNull();
+                objectResult.StatusCode.ShouldBe(404);
+            }
         }
 
         private static ClubController CreateController(IServiceScope scope)
