@@ -13,3 +13,7 @@ INSERT INTO blog."Blogs"(
 ) 
 VALUES (-3, '[{{"AuthorId": 123, "CreationDate": "2024-11-01T00:00:00", "Value": true}}]', 'Title3', 1, 'blogara3', '2024-10-14 15:23:44.223+02', 'slika1', 1);
 
+INSERT INTO blog."Blogs"(
+    "Id", "Votes", "Title", "AuthorId", "Description", "CreationDate", "Image", "Status"
+) 
+VALUES (-4, '[{{"AuthorId": 123, "CreationDate": "2024-11-01T00:00:00", "Value": true}}]', 'Title4', 2, 'blogara4', '2024-10-14 15:23:44.223+02', 'slika1', 1);
