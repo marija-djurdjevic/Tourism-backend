@@ -18,6 +18,7 @@ namespace Explorer.API.Controllers.Author.Authoring
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<PagedResult<TourDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _tourService.GetPaged(page, pageSize);
