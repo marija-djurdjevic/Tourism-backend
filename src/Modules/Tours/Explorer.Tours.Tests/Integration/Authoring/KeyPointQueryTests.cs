@@ -32,7 +32,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
         }
         public static KeyPointController CreateController(IServiceScope scope)
         {
-            return new KeyPointController(scope.ServiceProvider.GetRequiredService<IKeyPointService>())
+            return new KeyPointController(scope.ServiceProvider.GetRequiredService<IKeyPointService>(), scope.ServiceProvider.GetRequiredService<IPublishRequestService>())
             {
                 ControllerContext = BuildContext("-1")
             };

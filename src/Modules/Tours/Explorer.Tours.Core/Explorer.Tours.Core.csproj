@@ -12,8 +12,4 @@
     <ProjectReference Include="..\Explorer.Tours.API\Explorer.Tours.API.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Domain\RepositoryInterfaces\" />
-  </ItemGroup>
-
 </Project>

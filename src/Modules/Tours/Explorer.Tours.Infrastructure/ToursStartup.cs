@@ -21,6 +21,7 @@ using Explorer.Tours.Core.Domain.TourSessions;
 using Explorer.Tours.Core.Domain.TourProblems;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.UseCases.Authoring;
+using Explorer.Tours.Core.Domain.PublishRequests;
 
 namespace Explorer.Tours.Infrastructure;
 
@@ -53,6 +54,7 @@ public static class ToursStartup
         services.AddScoped<ITourProblemRepository, TourProblemRepository>();
         services.AddScoped<ITourProblemService, TourProblemService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IPublishRequestService, PublishRequestService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -69,6 +71,7 @@ public static class ToursStartup
         services.AddScoped(typeof(ICrudRepository<ShoppingCart>), typeof(CrudDatabaseRepository<ShoppingCart, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Notification>), typeof(CrudDatabaseRepository<Notification, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<TourSession>), typeof(CrudDatabaseRepository<TourSession, ToursContext>));
+        services.AddScoped(typeof(ICrudRepository<PublishRequest>), typeof(CrudDatabaseRepository<PublishRequest, ToursContext>));
 
         services.AddDbContext<ToursContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
