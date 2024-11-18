@@ -1,6 +1,7 @@
 using Explorer.Blog.API.Dtos;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Infrastructure.Authentication;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
@@ -27,6 +28,21 @@ namespace Explorer.API.Controllers.Tourist.Execution
             _tourService = tourService;
         }
 
+        [HttpPost("create")]
+        public ActionResult<PagedResult<TourProblemDto>> Create([FromBody] TourProblemDto tourProblemDto)
+        {
+            var result = _tourProblemService.Create(tourProblemDto);
+            notifyCreatedReport(tourProblemDto);
+            return CreateResponse(result);
+        }
+        private void notifyCreatedReport(TourProblemDto tourProblemDto)
+        {
+            string tourName = _tourService.GetById(tourProblemDto.TourId).Value.Name;
+            int tourAuthorId = _tourService.GetById(tourProblemDto.TourId).Value.AuthorId;
+            string content = $"You have a new report for tour {tourName}!";
+            _notificationService.Create(new NotificationDto(content, NotificationType.TourProblemComment, tourProblemDto.Id, tourAuthorId, false));
+        }
+
         [HttpGet("getAll")]
         public ActionResult<PagedResult<TourProblemDto>> GetAll()
         {
@@ -48,22 +64,6 @@ namespace Explorer.API.Controllers.Tourist.Execution
 
             var result = _tourProblemService.GetByTouristId(userId);
             return CreateResponse(result);
-        }
-
-        [HttpPost("create")]
-        public ActionResult<PagedResult<TourProblemDto>> Create(TourProblemDto tourProblemDto)
-        {
-            var result = _tourProblemService.Create(tourProblemDto);
-            notifyCreatedReport(tourProblemDto);
-            return CreateResponse(result);
-        }
-
-        private void notifyCreatedReport(TourProblemDto tourProblemDto)
-        {
-            string tourName = _tourService.GetById(tourProblemDto.TourId).Value.Name;
-            int tourAuthorId = _tourService.GetById(tourProblemDto.TourId).Value.AuthorId;
-            string content = $"You have a new report for tour {tourName}!";
-            _notificationService.Create(new NotificationDto(content, NotificationType.TourProblemComment, tourProblemDto.Id, tourAuthorId, false));
         }
 
         [HttpPost("addComment")]
