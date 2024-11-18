@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Core.Domain.ShoppingCarts
+namespace Explorer.Payments.Core.Domain.ShoppingCarts
 {
     public class ShoppingCart : Entity
     {

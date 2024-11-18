@@ -5,7 +5,6 @@ using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
-using Explorer.Tours.API.Public.Shopping;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Core.Domain.TourSessions;
@@ -16,6 +15,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
+using Explorer.Payments.API.Public.Shopping;
+using Explorer.Payments.Core.Domain.RepositoryInterfaces;
 
 namespace Explorer.Tours.Core.UseCases.Execution
 {

@@ -1,4 +1,4 @@
-﻿namespace Explorer.Tours.API.Dtos.ShoppingDtos
+﻿namespace Explorer.Payments.API.Dtos.ShoppingDtos
 {
     public class TourPurchaseTokenDto
     {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Core.Domain.ShoppingCarts
+namespace Explorer.Payments.Core.Domain.ShoppingCarts
 {
     public class OrderItem : ValueObject<OrderItem>
     {

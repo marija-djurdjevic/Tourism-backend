@@ -1,16 +1,15 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.BuildingBlocks.Infrastructure.Database;
-using Explorer.Tours.Core.Domain.RepositoryInterfaces;
-using Explorer.Tours.Core.Domain.ShoppingCarts;
-using Explorer.Tours.Core.Domain.Tours;
+using Explorer.Payments.Core.Domain.RepositoryInterfaces;
+using Explorer.Payments.Core.Domain.ShoppingCarts;
 using Microsoft.EntityFrameworkCore;
 
-namespace Explorer.Tours.Infrastructure.Database.Repositories
+namespace Explorer.Payments.Infrastructure.Database.Repositories
 {
-    public class TourPurchaseTokenRepository : CrudDatabaseRepository<TourPurchaseToken, ToursContext>, ITourPurchaseTokenRepository
+    public class TourPurchaseTokenRepository : CrudDatabaseRepository<TourPurchaseToken, PaymentsContext>, ITourPurchaseTokenRepository
     {
-        private readonly ToursContext _dbContext;
-        public TourPurchaseTokenRepository(ToursContext dbContext) : base(dbContext) {
+        private readonly PaymentsContext _dbContext;
+        public TourPurchaseTokenRepository(PaymentsContext dbContext) : base(dbContext) {
             _dbContext = dbContext;
         }
 

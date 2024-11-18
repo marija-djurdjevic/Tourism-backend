@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.API.Dtos.ShoppingDtos
+namespace Explorer.Payments.API.Dtos.ShoppingDtos
 {
     public class ShoppingCartDto
     {

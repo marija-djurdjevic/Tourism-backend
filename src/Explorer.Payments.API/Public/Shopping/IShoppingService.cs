@@ -1,5 +1,4 @@
-﻿using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Dtos.ShoppingDtos;
+﻿using Explorer.Payments.API.Dtos.ShoppingDtos;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.API.Public.Shopping
+namespace Explorer.Payments.API.Public.Shopping
 {
     public interface IShoppingService
     {

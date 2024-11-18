@@ -1,12 +1,13 @@
 ﻿using Explorer.API.Controllers.Tourist;
-using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Dtos.ShoppingDtos;
+using Explorer.Payments.API.Dtos.ShoppingDtos;
+using Explorer.Payments.Core.Domain.ShoppingCarts;
+using Explorer.Payments.API.Public.Shopping;
+using Explorer.Payments.Infrastructure.Database;
+using Explorer.Payments.Tests;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.Authoring;
-using Explorer.Tours.API.Public.Shopping;
-using Explorer.Tours.Core.Domain.ShoppingCarts;
-using Explorer.Tours.Infrastructure.Database;
+using Explorer.Tours.API.Public.Execution;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,14 +19,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Explorer.Tours.API.Public.Execution;
 
-namespace Explorer.Tours.Tests.Integration
+
+namespace Explorer.Payments.Tests.Integration
 {
     [Collection("Sequential")]
-    public class ShoppingCartTests : BaseToursIntegrationTest
+    public class ShoppingCartTests : BasePaymentsIntegrationTest
     {
-        public ShoppingCartTests(ToursTestFactory factory) : base(factory) { }
+        public ShoppingCartTests(PaymentsTestFactory factory) : base(factory) { }
 
         [Theory]
         [InlineData("-1", true, 200.00, true)]
@@ -36,7 +37,7 @@ namespace Explorer.Tours.Tests.Integration
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
 
-            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
             dbContext.ShouldNotBeNull();
 
             // Set up user claims
@@ -87,7 +88,7 @@ namespace Explorer.Tours.Tests.Integration
             var controller = CreateController(scope);
             controller.ShouldNotBeNull();
 
-            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
 
             var claims = new List<Claim>
             {
