@@ -20,7 +20,7 @@ namespace Explorer.Encounters.API.Dtos
     }
     public class EncounterDto
     {
-        public int AuthorId { get; set; }
+        public int AdministratorId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int Xp { get; set; }

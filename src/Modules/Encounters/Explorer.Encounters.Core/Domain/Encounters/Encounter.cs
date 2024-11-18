@@ -21,7 +21,7 @@ namespace Explorer.Encounters.Core.Domain.Encounters
     }
     public class Encounter : Entity
     {
-        public int AuthorId { get; private set; }
+        public int AdministratorId { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }   
         public int Xp { get; private set; }
@@ -30,10 +30,10 @@ namespace Explorer.Encounters.Core.Domain.Encounters
         public EncounterType Type { get; private set; }
 
         public Encounter() { }
-        public Encounter(int authorId, string name, string description, int xp, Coordinates coordinates, EncounterStatus status, EncounterType type)
+        public Encounter(int administratorId, string name, string description, int xp, Coordinates coordinates, EncounterStatus status, EncounterType type)
         {
             
-            AuthorId = authorId;
+            AdministratorId = administratorId;
             Name = name;
             Description = description;
             Xp = xp;
