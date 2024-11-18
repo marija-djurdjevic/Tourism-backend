@@ -45,5 +45,29 @@ namespace Explorer.API.Controllers.Administrator
 
             return NoContent();
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] EncounterDto encounterDto)
+        {
+            if (encounterDto == null || encounterDto.Id != id)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            var result = _encounterService.Update(encounterDto);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+
+            if (result.Errors.Any(e => e.Message.Contains("not found")))
+            {
+                return NotFound("Encounter not found.");
+            }
+
+            return BadRequest("Invalid input data.");
+        }
+
     }
 }
