@@ -33,5 +33,17 @@ namespace Explorer.API.Controllers.Administrator
             var result = _encounterService.Create(encounter);
             return CreateResponse(result);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var result = _encounterService.Delete(id);
+            if (result.IsFailed)
+            {
+                return NotFound(result.Errors.First().Message);
+            }
+
+            return NoContent();
+        }
     }
 }
