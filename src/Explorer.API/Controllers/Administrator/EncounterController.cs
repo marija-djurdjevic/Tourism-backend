@@ -43,7 +43,7 @@ namespace Explorer.API.Controllers.Administrator
                 return NotFound(result.Errors.First().Message);
             }
 
-            return NoContent();
+            return CreateResponse(result);
         }
 
         [HttpPut("{id}")]

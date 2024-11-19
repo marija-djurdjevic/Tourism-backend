@@ -32,7 +32,7 @@ namespace Explorer.Encounters.Core.Domain.Encounters
         public Encounter() { }
         public Encounter(int administratorId, string name, string description, int xp, Coordinates coordinates, EncounterStatus status, EncounterType type)
         {
-            
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             AdministratorId = administratorId;
             Name = name;
             Description = description;
