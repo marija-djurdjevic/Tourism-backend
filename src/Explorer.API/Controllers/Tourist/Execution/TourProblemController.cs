@@ -1,5 +1,6 @@
 using Explorer.Blog.API.Dtos;
 using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Core.Domain.Users;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
@@ -31,10 +32,23 @@ namespace Explorer.API.Controllers.Tourist.Execution
         [HttpPost("create")]
         public ActionResult<PagedResult<TourProblemDto>> Create([FromBody] TourProblemDto tourProblemDto)
         {
+            int userId = User.PersonId();
+            tourProblemDto = setProblem(tourProblemDto, userId);
+
             var result = _tourProblemService.Create(tourProblemDto);
-            notifyCreatedReport(tourProblemDto);
+            notifyCreatedReport(result.Value);
             return CreateResponse(result);
         }
+
+        private TourProblemDto setProblem(TourProblemDto tourProblemDto, int userId)
+        {
+            tourProblemDto.TouristId = userId;
+            tourProblemDto.Status = ProblemStatus.Pending;
+            tourProblemDto.Comments = null;
+            tourProblemDto.Details.Time = DateTime.UtcNow;
+            return tourProblemDto;
+        }
+
         private void notifyCreatedReport(TourProblemDto tourProblemDto)
         {
             string tourName = _tourService.GetById(tourProblemDto.TourId).Value.Name;
