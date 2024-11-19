@@ -8,7 +8,7 @@ namespace Explorer.Encounters.API.Dtos
 {
     public class CoordinatesDto
     {
-        public int Longitude { get; set; }
-        public int Latitude { get; set; }
+        public Double Longitude { get; set; }
+        public Double Latitude { get; set; }
     }
 }
