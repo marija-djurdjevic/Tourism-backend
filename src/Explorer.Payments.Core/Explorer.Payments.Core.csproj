@@ -7,7 +7,6 @@
   </PropertyGroup>
 	<ItemGroup>
 		<Folder Include="Domain\" />
-		<Folder Include="UseCases\" />
 	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Explorer.Payments.API\Explorer.Payments.API.csproj" />

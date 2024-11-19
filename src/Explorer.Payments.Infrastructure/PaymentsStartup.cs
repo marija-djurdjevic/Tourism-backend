@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Explorer.Payments.Infrastructure.Database.Repositories;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
+using Explorer.Payments.API.Internal.Shopping;
 
 namespace Explorer.Payments.Infrastructure
 {
@@ -31,6 +32,7 @@ namespace Explorer.Payments.Infrastructure
         private static void SetupCore(IServiceCollection services)
         {
             services.AddScoped<IShoppingService, ShoppingService>();
+            services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
         }
 
         // Dependencies for repositories

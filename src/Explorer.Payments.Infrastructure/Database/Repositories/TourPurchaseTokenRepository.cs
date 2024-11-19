@@ -21,13 +21,6 @@ namespace Explorer.Payments.Infrastructure.Database.Repositories
                 .ToList();
         }
 
-        public TourPurchaseToken Create(TourPurchaseToken entity)
-        {
-            _dbContext.Add(entity);
-            DbContext.SaveChanges();
-            return entity;
-        }
-
 
     }
 

@@ -15,8 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
-using Explorer.Payments.API.Public.Shopping;
-using Explorer.Payments.Core.Domain.RepositoryInterfaces;
+using Explorer.Payments.API.Internal.Shopping;
 
 namespace Explorer.Tours.Core.UseCases.Execution
 {
@@ -26,16 +25,16 @@ namespace Explorer.Tours.Core.UseCases.Execution
         private readonly IMapper _mapper;
         private readonly ITourService _tourService;
         private readonly IKeyPointService _keyPointService;
-        private readonly ITourPurchaseTokenRepository _purchaseTokenRepository;
+        private readonly ITourPurchaseTokenService _purchaseTokenService;
 
 
-        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService, ITourPurchaseTokenRepository tourPurchaseTokenRepository) : base(mapper)
+        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService, ITourPurchaseTokenService tourPurchaseTokenService) : base(mapper)
         {
             _repository = repository;
             _mapper = mapper;
             _tourService = tourService;
             _keyPointService = keyPointService;
-            _purchaseTokenRepository = tourPurchaseTokenRepository;
+            _purchaseTokenService = tourPurchaseTokenService;
 
         }
         public Result<TourSessionDto> AbandonTour(int tourId,int userId)
@@ -86,7 +85,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
         public Result<TourSessionDto> StartTour(int tourId, int userId, LocationDto initialLocation)
         {
 
-            var purchasedTours = _purchaseTokenRepository.GetPurchasedTours(userId);
+            var purchasedTours = _purchaseTokenService.GetPurchasedTours(userId).Value;
 
             bool exist = purchasedTours.Any(item => item == tourId);
             if (!exist)
