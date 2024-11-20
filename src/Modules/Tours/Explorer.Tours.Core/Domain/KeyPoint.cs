@@ -41,29 +41,26 @@ namespace Explorer.Tours.Core.Domain
 
         public double GetDistance(Coordinates desiredCoordinates)
         {
-            const double EarthRadius = 6371.0; // Poluprečnik Zemlje u kilometrima
+            const double EarthRadius = 6371.0; 
 
-            // Konvertovanje koordinata iz stepeni u radijane
             double lat1 = ToRadians(Coordinates.Latitude);
             double lon1 = ToRadians(Coordinates.Longitude);
             double lat2 = ToRadians(desiredCoordinates.Latitude);
             double lon2 = ToRadians(desiredCoordinates.Longitude);
 
-            // Razlika između latituda i longitud
+           
             double latDifference = lat2 - lat1;
             double lonDifference = lon2 - lon1;
 
-            // Primena Haversinove formule
             double a = Math.Pow(Math.Sin(latDifference / 2), 2) +
                        Math.Cos(lat1) * Math.Cos(lat2) *
                        Math.Pow(Math.Sin(lonDifference / 2), 2);
 
             double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
-            // Vraćanje distance u kilometrima
+           
             double distance = EarthRadius * c;
 
-            // Vraćamo distancu
             return distance;
         }
 

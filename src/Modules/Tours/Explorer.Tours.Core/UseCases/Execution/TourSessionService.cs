@@ -1,7 +1,8 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Core.Domain.Users;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
@@ -85,57 +86,61 @@ namespace Explorer.Tours.Core.UseCases.Execution
         public Result<TourSessionDto> StartTour(int tourId, int userId, LocationDto initialLocation)
         {
 
-            var purchasedTours = _purchaseTokenService.GetPurchasedTours(userId).Value;
-
-            bool exist = purchasedTours.Any(item => item == tourId);
-            if (!exist)
+            // Proveri da li je tura kupljena
+            if (!IsTourPurchasedByUser(tourId, userId))
             {
                 return Result.Fail<TourSessionDto>("Tour not found.");
-
             }
 
+            // Dohvati turu i proveri njen status
             var tourResult = _tourService.Get(tourId);
-
-            var tour = tourResult.Value;
-
-            TourStatus tourStatus = (TourStatus)Enum.Parse(typeof(TourStatus), tour.Status.ToString());
-
-            if (tour == null)
-            {
-                return Result.Fail<TourSessionDto>("Tour not found.");
-            }
-
-
-            if (tourStatus != TourStatus.Published && tourStatus != TourStatus.Archived)
+            if (tourResult.Value == null || !IsTourInValidState(tourResult.Value))
             {
                 return Result.Fail<TourSessionDto>("Tour is not in a state that allows starting a session.");
             }
 
-
-            var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
-
-
-            var existingSession = allSessions.FirstOrDefault(session =>
-                session.TourId == tourId && session.UserId == userId);
-
-            if (existingSession != null)
+            // Proveri da li već postoji aktivna sesija
+            if (DoesSessionAlreadyExist(tourId, userId))
             {
                 return Result.Fail<TourSessionDto>("An active tour session already exists for this tour.");
             }
 
+            // Kreiraj novu sesiju
+            return CreateNewTourSession(tourId, userId, initialLocation);
+        }
+
+        private bool IsTourPurchasedByUser(int tourId, int userId)
+        {
+            var purchasedTours = _purchaseTokenRepository.GetPurchasedTours(userId);
+            return purchasedTours.Any(item => item == tourId);
+        }
+
+        private bool IsTourInValidState(TourDto tour)
+        {
+            TourStatus tourStatus = (TourStatus)Enum.Parse(typeof(TourStatus), tour.Status.ToString());
+            return tourStatus == TourStatus.Published || tourStatus == TourStatus.Archived;
+        }
+
+        private bool DoesSessionAlreadyExist(int tourId, int userId)
+        {
+            var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
+            return allSessions.Any(session => session.TourId == tourId && session.UserId == userId);
+        }
+
+        private Result<TourSessionDto> CreateNewTourSession(int tourId, int userId, LocationDto initialLocation)
+        {
             var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(initialLocation);
 
             var tourSession = new TourSession(tourId, location, userId);
-
             if (tourSession == null)
             {
                 return Result.Fail<TourSessionDto>("Tour session not found.");
             }
 
             _repository.Create(tourSession);
-
             return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
         }
+
 
 
 
@@ -173,7 +178,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
                 _repository.Update(existingSession);
             }
 
-            existingSession.UpdateCurrentLocation(location);
+             existingSession.UpdateCurrentLocation(location);
             _repository.Update(existingSession);
 
             return isNear;
