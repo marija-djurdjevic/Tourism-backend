@@ -6,7 +6,6 @@ using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
-using Explorer.Tours.API.Public.Shopping;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Core.Domain.TourSessions;
@@ -17,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
+using Explorer.Payments.API.Internal.Shopping;
 
 namespace Explorer.Tours.Core.UseCases.Execution
 {
@@ -26,16 +26,16 @@ namespace Explorer.Tours.Core.UseCases.Execution
         private readonly IMapper _mapper;
         private readonly ITourService _tourService;
         private readonly IKeyPointService _keyPointService;
-        private readonly ITourPurchaseTokenRepository _purchaseTokenRepository;
+        private readonly ITourPurchaseTokenService _purchaseTokenService;
 
 
-        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService, ITourPurchaseTokenRepository tourPurchaseTokenRepository) : base(mapper)
+        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService, ITourPurchaseTokenService tourPurchaseTokenService) : base(mapper)
         {
             _repository = repository;
             _mapper = mapper;
             _tourService = tourService;
             _keyPointService = keyPointService;
-            _purchaseTokenRepository = tourPurchaseTokenRepository;
+            _purchaseTokenService = tourPurchaseTokenService;
 
         }
         public Result<TourSessionDto> AbandonTour(int tourId,int userId)
@@ -85,6 +85,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
         public Result<TourSessionDto> StartTour(int tourId, int userId, LocationDto initialLocation)
         {
+
             // Proveri da li je tura kupljena
             if (!IsTourPurchasedByUser(tourId, userId))
             {
@@ -110,7 +111,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
         private bool IsTourPurchasedByUser(int tourId, int userId)
         {
-            var purchasedTours = _purchaseTokenRepository.GetPurchasedTours(userId);
+            var purchasedTours = _purchaseTokenService.GetPurchasedTours(userId).Value;
             return purchasedTours.Any(item => item == tourId);
         }
 

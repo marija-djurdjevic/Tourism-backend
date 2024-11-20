@@ -1,21 +1,17 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Tours.API.Dtos.ShoppingDtos;
-using Explorer.Tours.API.Dtos.TourSessionDtos;
-using Explorer.Tours.API.Public.Shopping;
-using Explorer.Tours.Core.Domain;
-using Explorer.Tours.Core.Domain.RepositoryInterfaces;
-using Explorer.Tours.Core.Domain.ShoppingCarts;
-using Explorer.Tours.Core.Domain.Tours;
-using Explorer.Tours.Core.Domain.TourSessions;
+using Explorer.Payments.API.Dtos.ShoppingDtos;
+using Explorer.Payments.API.Public.Shopping;
 using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Explorer.Payments.Core.Domain.ShoppingCarts;
+using Explorer.Payments.Core.Domain.RepositoryInterfaces;
 
-namespace Explorer.Tours.Core.UseCases.Shopping
+namespace Explorer.Payments.Core.UseCases.Shopping
 {
     public class ShoppingService : BaseService<ShoppingCartDto, ShoppingCart>, IShoppingService
     {

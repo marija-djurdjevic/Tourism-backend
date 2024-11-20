@@ -1,11 +1,11 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Core.Domain;
-using Explorer.Tours.API.Dtos.ShoppingDtos;
+using Explorer.Payments.API.Dtos.ShoppingDtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
-using Explorer.Tours.API.Public.Shopping;
-using Explorer.Tours.Core.Domain.ShoppingCarts;
+using Explorer.Payments.API.Public.Shopping;
+using Explorer.Payments.Core.Domain.ShoppingCarts;
 using Explorer.Tours.Core.Domain.Tours;
-using Explorer.Tours.Core.UseCases.Shopping;
+using Explorer.Payments.Core.UseCases.Shopping;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
