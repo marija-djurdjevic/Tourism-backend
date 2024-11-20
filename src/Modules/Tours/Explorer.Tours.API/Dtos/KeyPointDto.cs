@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Explorer.Tours.API.Public.Authoring;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,12 @@ namespace Explorer.Tours.API.Dtos
 {
     public class KeyPointDto
     {
+        public enum KeyPointStatus
+        {
+            Pending,
+            Published
+        }
+
         public int Id { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
@@ -15,5 +22,9 @@ namespace Explorer.Tours.API.Dtos
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public int TourId { get; set; }
+
+        public KeyPointStatus Status { get; set;}
+
     }
+
 }

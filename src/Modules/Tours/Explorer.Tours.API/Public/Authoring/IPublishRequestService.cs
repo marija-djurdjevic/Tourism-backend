@@ -16,5 +16,7 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<PagedResult<PublishRequestDto>> GetPaged(int page, int pageSize);
 
         Result<PublishRequestDto> Create(PublishRequestDto publishRequest);
+
+        Result<PublishRequestDto> Update(PublishRequestDto publishRequest);
     }
 }

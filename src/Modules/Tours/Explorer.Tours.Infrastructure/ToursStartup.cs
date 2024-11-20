@@ -55,6 +55,7 @@ public static class ToursStartup
         services.AddScoped<ITourProblemService, TourProblemService>();
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IPublishRequestService, PublishRequestService>();
+        services.AddScoped<IKeyPointRepository, KeyPointRepository>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -72,7 +73,7 @@ public static class ToursStartup
         services.AddScoped(typeof(ICrudRepository<Notification>), typeof(CrudDatabaseRepository<Notification, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<TourSession>), typeof(CrudDatabaseRepository<TourSession, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<PublishRequest>), typeof(CrudDatabaseRepository<PublishRequest, ToursContext>));
-
+    
         services.AddDbContext<ToursContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "tours")));
