@@ -111,7 +111,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
         private bool IsTourPurchasedByUser(int tourId, int userId)
         {
-            var purchasedTours = _purchaseTokenRepository.GetPurchasedTours(userId);
+            var purchasedTours = _purchaseTokenService.GetPurchasedTours(userId).Value;
             return purchasedTours.Any(item => item == tourId);
         }
 
