@@ -11,4 +11,7 @@ public interface IUserRepository
     Person? GetPersonByUserId(long userId);
     Location? GetLocationByUserId(long userId);
     User Update(User user);
+    List<User> GetAll();
+    List<User> GetAllTourists();
+
 }

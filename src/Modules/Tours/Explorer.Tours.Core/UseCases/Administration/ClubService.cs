@@ -39,5 +39,66 @@ namespace Explorer.Tours.Core.UseCases.Administration
                 return null; // or handle appropriately
             }
         }
+
+        public Result InviteUser(int clubId, int userId)
+        {
+            var club = _repository.Get(clubId);
+            if (club == null)
+                return Result.Fail("Club not found.");
+
+            club.InviteUser(userId);
+            _repository.Update(club);
+            return Result.Ok();
+        }
+
+        public Result AcceptInvitation(int clubId, int userId)
+        {
+            var club = _repository.Get(clubId);
+            if (club == null)
+                return Result.Fail("Club not found.");
+
+            club.AcceptInvitation(userId);
+            _repository.Update(club);
+            return Result.Ok();
+        }
+
+        public Result RejectInvitation(int clubId, int userId)
+        {
+            var club = _repository.Get(clubId);
+            if (club == null)
+                return Result.Fail("Club not found.");
+
+            club.RejectInvitation(userId);
+            _repository.Update(club);
+            return Result.Ok();
+        }
+
+        public Result RemoveMember(int clubId, int userId)
+        {
+            var club = _repository.Get(clubId);
+            if (club == null)
+                return Result.Fail("Club not found.");
+
+            club.RemoveMember(userId);
+            _repository.Update(club);
+            return Result.Ok();
+        }
+
+        public PagedResult<ClubDto> GetUserInvitations(int userId, int page, int pageSize)
+        {
+            // Fetch paged results from the repository
+            var pagedClubs = _repository.GetPaged(page, pageSize);
+
+            // Filter clubs where the invitationIds list contains the given userId
+            var invitedClubs = pagedClubs.Results
+                .Where(club => club.InvitationIds != null && club.InvitationIds.Contains(userId))
+                .ToList();
+
+            // Map the filtered entities to ClubDto
+            var clubDtos = invitedClubs.Select(club => _mapper.Map<ClubDto>(club)).ToList();
+
+            // Return the filtered results as a PagedResult
+            return new PagedResult<ClubDto>(clubDtos, pagedClubs.TotalCount);
+        }
     }
 }

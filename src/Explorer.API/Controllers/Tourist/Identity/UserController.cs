@@ -27,6 +27,20 @@ namespace Explorer.API.Controllers.Tourist.Identity
             return CreateResponse(result);
         }
 
+        [HttpGet("getUsers")]
+        public ActionResult<UserDto> GetAllUsers()
+        {
+            var result = _userService.GetAll();
+            return CreateResponse(result);
+        }
+
+        [HttpGet("getTourists")]
+        public ActionResult<UserDto> GetAllTourists()
+        {
+            var result = _userService.GetAllTourists();
+            return CreateResponse(result);
+        }
+
         [HttpPost("setLocation")]
         public ActionResult<LocationDto> SetTouristLocation([FromBody] LocationDto location)
         {

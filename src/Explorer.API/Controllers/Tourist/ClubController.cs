@@ -66,5 +66,54 @@ namespace Explorer.API.Controllers.Tourist
             var result = _clubService.Delete(id);
             return CreateResponse(result);
         }
+
+        [HttpPost("{clubId}/invite")]
+        public ActionResult InviteUser(int clubId, [FromBody] int userId)
+        {
+            var result = _clubService.InviteUser(clubId, userId);
+            if (result.IsSuccess)
+                return Ok();
+            return BadRequest(result);
+        }
+
+        [HttpPost("{clubId}/accept")]
+        public ActionResult AcceptInvitation(int clubId)
+        {
+            int userId = User.PersonId();
+            var result = _clubService.AcceptInvitation(clubId, userId);
+            if (result.IsSuccess)
+                return Ok();
+            return BadRequest(result);
+        }
+
+        [HttpPost("{clubId}/reject")]
+        public ActionResult RejectInvitation(int clubId)
+        {
+            int userId = User.PersonId();
+            var result = _clubService.RejectInvitation(clubId, userId);
+            if (result.IsSuccess)
+                return Ok();
+            return BadRequest(result);
+        }
+
+        [HttpPost("{clubId}/remove")]
+        public ActionResult RemoveMember(int clubId, [FromBody] int userId)
+        {
+            var result = _clubService.RemoveMember(clubId, userId);
+            if (result.IsSuccess)
+                return Ok();
+            return BadRequest(result);
+        }
+
+        [HttpGet("invitations")]
+        public ActionResult GetInvitations([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            int userId = User.PersonId();
+            var result = _clubService.GetUserInvitations(userId, page, pageSize);
+            if (result.Results.Any())
+                return Ok(result);
+
+            return NotFound("No invitations found for the user.");
+        }
     }
 }
