@@ -97,6 +97,26 @@ namespace Explorer.Stakeholders.Core.UseCases
             }
         }
 
+        public Result<UserDto> GetUserById(long userId)
+        {
+            try
+            {
+                var user = _userRepository.GetUserById(userId);
+
+                if (user == null)
+                {
+                    return Result.Fail(FailureCode.NotFound).WithError($"User with user ID '{userId}' not found.");
+                }
+
+                var userDTO = _mapper.Map<UserDto>(user);
+                return Result.Ok(userDTO);
+            }
+            catch (Exception e)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
+        }
+
     }
 }
 

@@ -7,4 +7,5 @@ public interface IUserRepository
     User Create(User user);
     long GetPersonId(long userId);
     Person? GetPersonByUserId(long userId);
+    User? GetUserById(long userId);
 }

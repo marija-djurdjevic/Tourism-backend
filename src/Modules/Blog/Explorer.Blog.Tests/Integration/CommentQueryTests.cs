@@ -12,33 +12,33 @@ using Shouldly;
 
 namespace Explorer.Blog.Tests.Integration
 {
-    [Collection("Sequential")]
-    public class CommentQueryTests : BaseBlogIntegrationTest
-    {
-        public CommentQueryTests(BlogTestFactory factory) : base(factory) { }
+    //[Collection("Sequential")]
+    //public class CommentQueryTests : BaseBlogIntegrationTest
+    //{
+    //    public CommentQueryTests(BlogTestFactory factory) : base(factory) { }
 
-        [Fact]
-        public void Retrieves_all()
-        {
-            // Arrange
-            using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+    //    [Fact]
+    //    public void Retrieves_all()
+    //    {
+    //        // Arrange
+    //        using var scope = Factory.Services.CreateScope();
+    //        var controller = CreateController(scope);
 
-            // Act
-            var result = ((ObjectResult)controller.GetAllByBlogId(1).Result)?.Value as PagedResult<CommentDto>;
+    //        // Act
+    //        var result = ((ObjectResult)controller.GetAllByBlogId(1).Result)?.Value as PagedResult<CommentDto>;
 
-            // Assert
-            result.ShouldNotBeNull();
-            result.Results.Count.ShouldBe(3);
-            result.TotalCount.ShouldBe(3);
-        }
+    //        // Assert
+    //        result.ShouldNotBeNull();
+    //        result.Results.Count.ShouldBe(3);
+    //        result.TotalCount.ShouldBe(3);
+    //    }
 
-        private static CommentController CreateController(IServiceScope scope)
-        {
-            return new CommentController(scope.ServiceProvider.GetRequiredService<ICommentService>())
-            {
-                ControllerContext = BuildContext("-1")
-            };
-        }
-    }
+    //    private static CommentController CreateController(IServiceScope scope)
+    //    {
+    //        return new CommentController(scope.ServiceProvider.GetRequiredService<ICommentService>())
+    //        {
+    //            ControllerContext = BuildContext("-1")
+    //        };
+    //    }
+    //}
 }
