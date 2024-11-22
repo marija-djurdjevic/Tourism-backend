@@ -35,6 +35,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
                 Longitude = 20,
                 Latitude = 25,
                 ImagePath = "path test",
+                Status = KeyPointDto.KeyPointStatus.Pending
                 
             };
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as KeyPointDto;
@@ -56,7 +57,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             var controller = CreateController(scope);
             var updatedEntity = new KeyPointDto
             {
-                Description = "Test"
+                Description = "Test",
             };
 
             // Act

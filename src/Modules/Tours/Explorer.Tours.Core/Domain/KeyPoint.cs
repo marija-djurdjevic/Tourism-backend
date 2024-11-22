@@ -24,6 +24,7 @@ namespace Explorer.Tours.Core.Domain
             ImagePath = imagePath;
             TourId = tourId;
             Coordinates = coordinates;
+            Status = KeyPointStatus.Pending;
 
         }
         public KeyPoint(int id, string name, string description, string imagePath, int tourId, double latitude, double longitude)
@@ -32,6 +33,7 @@ namespace Explorer.Tours.Core.Domain
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
             if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path.");
+           
 
             Id = id;
             Name = name;
@@ -39,6 +41,7 @@ namespace Explorer.Tours.Core.Domain
             ImagePath = imagePath;
             TourId = tourId;
             Coordinates = new Coordinates(latitude, longitude);
+            Status = KeyPointStatus.Pending;
         }
         //dodala sam ovaj kontruktor zbog sebe :D
         public KeyPoint(string name, string description, string imagePath, long tourId, Coordinates coordinates, KeyPointStatus status)

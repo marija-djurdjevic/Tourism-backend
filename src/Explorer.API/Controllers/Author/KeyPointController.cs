@@ -37,15 +37,17 @@ namespace Explorer.API.Controllers.Author
             var result = _keyPointService.Create(keyPoint);
 
             //kreiranje zahtjeva sa pablisovanje kljucne tacke
+
             var authorId = User.PersonId();
-            PublishRequestDto publishRequestDto = new PublishRequestDto();
-            publishRequestDto.AuthorId = authorId;
-            publishRequestDto.EntityId = result.Value.Id;
-            publishRequestDto.Type = PublishRequestDto.RegistrationRequestType.KeyPoint;
+            if(result.IsSuccess)
+            {
+                PublishRequestDto publishRequestDto = new PublishRequestDto();
+                publishRequestDto.AuthorId = authorId;
+                publishRequestDto.EntityId = result.Value.Id;
+                publishRequestDto.Type = PublishRequestDto.RegistrationRequestType.KeyPoint;
 
-            _publishRequestService.Create(publishRequestDto);
-
-
+                _publishRequestService.Create(publishRequestDto);
+            }
 
             return CreateResponse(result);
         }
