@@ -1,7 +1,9 @@
 ﻿using Explorer.API.Controllers.Administrator.Administration;
+using Explorer.API.Controllers.Author.Execution;
 using Explorer.API.Controllers.Tourist;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,11 +16,11 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Tests.Integration.Administration
 {
-    [Collection("Sequential")]
+   /* [Collection("Sequential")]
     public class TourProblemCommandTests : BaseToursIntegrationTest
     {
         public TourProblemCommandTests(ToursTestFactory factory) : base(factory) { }
-        /*
+
         [Fact]
         public void Creates()
         {
@@ -73,12 +75,11 @@ namespace Explorer.Tours.Tests.Integration.Administration
 
         private static TourProblemController CreateController(IServiceScope scope)
         {
-            return new TourProblemController(scope.ServiceProvider.GetRequiredService<ITourProblemService>(), scope.ServiceProvider.GetRequiredService<ITourService>())
+            return new TourProblemController(scope.ServiceProvider.GetRequiredService<ITourProblemService>(), scope.ServiceProvider.GetRequiredService<ITourService>(), scope.ServiceProvider.GetRequiredService<INotificationService>())
             {
                 ControllerContext = BuildContext("-1")
             };
         }
-        */
 
-    }
+    }*/
 }

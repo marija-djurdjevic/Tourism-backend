@@ -11,6 +11,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Explorer.Tours.API.Public.Authoring;
 
 namespace Explorer.Tours.Tests.Integration.Administration
 {
@@ -30,12 +34,29 @@ namespace Explorer.Tours.Tests.Integration.Administration
             {
                 Grade = 5,
                 Comment = "Nice",
-                TourId = -1,
-                UserId = -1,
+                TourId = -2,
+                UserId = -21,
                 Username = "Test",
-                Images = "slika1test",
+                Images = "slika",
                 TourVisitDate = DateTime.UtcNow,
-                TourReviewDate = DateTime.UtcNow
+                TourReviewDate = DateTime.UtcNow,
+                TourProgressPercentage = 50
+            };
+
+            var claims = new List<Claim>
+            {
+                new Claim("personId", $"-21"),
+                new Claim("username", $"turista1")
+            };
+
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var user = new ClaimsPrincipal(identity);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = user
+                }
             };
 
             // Act

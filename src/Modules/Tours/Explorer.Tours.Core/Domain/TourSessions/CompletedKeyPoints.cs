@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.Domain.TourSessions
 {
-    public class CompletedKeyPoints: ValueObject<CompletedKeyPoints>
+    public class CompletedKeyPoints : ValueObject<CompletedKeyPoints>
     {
         public int KeyPointId { get; private set; }
         public DateTime CompletedAt { get; private set; }
+
 
         [JsonConstructor]
         public CompletedKeyPoints(int keyPointId, DateTime completedAt)

@@ -15,6 +15,9 @@ namespace Explorer.Tours.Core.Domain.TourSessions
         public double Longitude { get; private set; }
         public double Latitude { get; private set; }
 
+
+
+
         [JsonConstructor]
         public Location(double longitude, double latitude)
         {
@@ -30,6 +33,14 @@ namespace Explorer.Tours.Core.Domain.TourSessions
         protected override int GetHashCodeCore()
         {
             return HashCode.Combine(Latitude, Longitude);
+        }
+
+
+        public static bool IsWithinSimpleDistance(Location location1, Location location2, double threshold = 0.003)
+        {
+            
+            return Math.Abs(location1.Latitude - location2.Latitude) <= threshold ||
+                   Math.Abs(location1.Longitude - location2.Longitude) <= threshold;
         }
     }
 }

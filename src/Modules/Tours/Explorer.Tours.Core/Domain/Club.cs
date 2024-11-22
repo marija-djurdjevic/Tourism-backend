@@ -12,16 +12,16 @@ namespace Explorer.Tours.Core.Domain
         public int OwnerId { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public string Image {  get; private set; }
+        public int ImageId {  get; private set; }
 
-        public Club(string name, string description, string image)
+        public Club(string name, string description, int imageId)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Desc.");
-            if (string.IsNullOrWhiteSpace(image)) throw new ArgumentException("Invalid Image.");
+            //if (string.IsNullOrWhiteSpace(imageId)) throw new ArgumentException("Invalid Image.");
             Name = name;
             Description = description;
-            Image = image;
+            ImageId = imageId;
         }
     }
 }

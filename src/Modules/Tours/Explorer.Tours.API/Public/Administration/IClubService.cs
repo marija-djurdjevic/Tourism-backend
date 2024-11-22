@@ -16,5 +16,6 @@ namespace Explorer.Tours.API.Public.Administration
         Result<ClubDto> Update(ClubDto club);
         Result Delete(int id);
         Result<List<ClubDto>> GetAll();
+        ClubDto GetById(int id);
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Explorer.Tours.API.Dtos.TourDto;
+using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
 
 namespace Explorer.Tours.API.Dtos
 {
@@ -12,7 +12,7 @@ namespace Explorer.Tours.API.Dtos
     {
         public int Id { get; set; }
         public int TouristId {get; set; }
-        public DifficultyStatus? Difficulty { get; set; }
+        public DifficultyStatus Difficulty { get; set; }
         public int WalkingRating { get; set; }
         public int CyclingRating { get; set; }
         public int DrivingRating { get; set; }
