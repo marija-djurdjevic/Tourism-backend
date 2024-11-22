@@ -3,6 +3,7 @@ using Explorer.Tours.Core.Domain.TourSessions;
 using Explorer.Tours.Core.Domain.TourProblems;
 using Microsoft.EntityFrameworkCore;
 using Explorer.Tours.Core.Domain.Tours;
+using Explorer.Tours.Core.Domain.PublishRequests;
 
 
 namespace Explorer.Tours.Infrastructure.Database;
@@ -22,6 +23,8 @@ public class ToursContext : DbContext
     public DbSet<TourSession> TourSessions { get; set; }
     public DbSet<Core.Domain.TourProblems.TourProblem> TourProblems { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+
+    public DbSet<PublishRequest> PublishRequests { get; set; }
 
     public ToursContext(DbContextOptions<ToursContext> options) : base(options) {}
 

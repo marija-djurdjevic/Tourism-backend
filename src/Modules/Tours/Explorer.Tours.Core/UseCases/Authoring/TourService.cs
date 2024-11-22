@@ -28,11 +28,13 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         private readonly ITourRepository _tourRepository;
         private readonly ICrudRepository<KeyPoint> _keyPointRepository;
         private readonly IMapper _mapper;
+        
         public TourService(ICrudRepository<Tour> repository, IMapper mapper, ITourRepository tourRepository, ICrudRepository<KeyPoint> keyPointRepository) : base(repository, mapper)
         {
             _mapper = mapper;
             _tourRepository = tourRepository;
             _keyPointRepository = keyPointRepository;
+         
         }
 
         public Result<List<TourDto>> GetAllPublished(int page, int pageSize)
