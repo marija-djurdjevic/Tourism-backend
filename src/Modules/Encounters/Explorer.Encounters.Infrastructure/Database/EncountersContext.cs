@@ -12,7 +12,7 @@ namespace Explorer.Encounters.Infrastructure.Database
     public class EncountersContext : DbContext
     {
         public DbSet<Encounter> Encounters { get; set; }
-        public DbSet<EncounterExecution> EncountersExecutin { get; set; }
+        public DbSet<EncounterExecution> EncountersExecutions { get; set; }
 
 
         public EncountersContext(DbContextOptions<EncountersContext> options) : base(options) { }

@@ -27,19 +27,19 @@ namespace Explorer.Encounters.API.Dtos.EncounterDtos
     }
     public class EncounterDto
     {
-        public int Id { get; private set; }
-        public int UserId { get; private set; }
-        public int KeyPointId { get; private set; }
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        public int Xp { get; private set; }
-        public CoordinatesDto Coordinates { get; private set; }
-        public EncounterStatus Status { get; private set; }
-        public EncounterType Type { get; private set; }
-        public EncounterCreator Creator { get; private set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int KeyPointId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Xp { get; set; }
+        public CoordinatesDto Coordinates { get; set; }
+        public EncounterStatus Status { get; set; }
+        public EncounterType Type { get; set; }
+        public EncounterCreator Creator { get; set; }
 
-        public int? Range { get; private set; }
-        public int? TouristNumber { get; private set; }
-        public string? ImagePath { get; private set; }
+        public int? Range { get; set; }
+        public int? TouristNumber { get; set; }
+        public string? ImagePath { get; set; }
     }
 }
