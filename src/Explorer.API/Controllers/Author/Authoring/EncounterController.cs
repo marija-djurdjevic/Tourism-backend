@@ -23,9 +23,9 @@ namespace Explorer.API.Controllers.Author.Authoring
         }
 
         [HttpGet]
-        public ActionResult<PagedResult<EncounterDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        public ActionResult<PagedResult<EncounterDto>> GetAll()
         {
-            var result = _encounterService.GetPaged(page, pageSize);
+            var result = _encounterService.GetPaged(0, 0);
             return CreateResponse(result);
         }
 
