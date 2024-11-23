@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Encounters.API.Dtos;
+using Explorer.Encounters.API.Dtos.EncounterDtos;
 using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.Domain.Encounters;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;

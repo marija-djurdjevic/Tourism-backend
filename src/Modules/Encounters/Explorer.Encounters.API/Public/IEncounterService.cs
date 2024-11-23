@@ -1,5 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Encounters.API.Dtos;
+using Explorer.Encounters.API.Dtos.EncounterDtos;
 using FluentResults;
 using System;
 using System.Collections.Generic;

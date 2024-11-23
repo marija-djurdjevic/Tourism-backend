@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Explorer.Encounters.API.Dtos;
+using Explorer.Encounters.API.Dtos.EncounterDtos;
 using Explorer.Encounters.Core.Domain.Encounters;
 using System;
 using System.Collections.Generic;

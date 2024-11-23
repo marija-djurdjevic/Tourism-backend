@@ -1,16 +1,13 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.API.Dtos.EncounterDtos;
 using Explorer.Encounters.API.Public;
-using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.Administration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-
-namespace Explorer.API.Controllers.Administrator
+namespace Explorer.API.Controllers.Author.Authoring
 {
-    [Authorize(Policy = "administratorPolicy")]
-    [Route("api/administrator/encounter")]
+    [Authorize(Policy = "authorPolicy")]
+    [Route("api/author/encounter")]
     public class EncounterController : BaseApiController
     {
         private readonly IEncounterService _encounterService;
@@ -68,6 +65,5 @@ namespace Explorer.API.Controllers.Administrator
 
             return BadRequest("Invalid input data.");
         }
-
     }
 }

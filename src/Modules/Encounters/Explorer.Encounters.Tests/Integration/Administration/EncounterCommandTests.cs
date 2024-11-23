@@ -1,6 +1,6 @@
 ﻿using Explorer.API.Controllers.Administrator;
 using Explorer.API.Controllers.Administrator.Administration;
-using Explorer.Encounters.API.Dtos;
+using Explorer.Encounters.API.Dtos.EncounterDtos;
 using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Infrastructure.Database;
 using Explorer.Tours.API.Dtos;
