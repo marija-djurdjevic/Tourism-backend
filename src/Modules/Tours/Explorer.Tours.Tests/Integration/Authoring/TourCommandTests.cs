@@ -175,6 +175,67 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             result.StatusCode.ShouldBe(400); 
         }
 
+        [Fact]
+        public void Updates()
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+            var updatedEntity = new TourDto
+            {
+                Id = -1,
+                AuthorId = 1,
+                Name = "uspjesna izmjena",
+                Description = "desc test",
+                Difficulty = 0,
+                Tags = "#hiking,#adventure,#test",
+                Price = 1000,
+                Status = 0,
+                AverageScore = 0,
+                ArchivedAt = DateTime.UtcNow,
+                PublishedAt = DateTime.UtcNow,
+                KeyPoints = new List<KeyPointDto>(),
+                TransportInfo = new TransportInfoDto()
+            };
+
+            // Act
+            var result = ((ObjectResult)controller.Update(updatedEntity.Id, updatedEntity))?.Value as TourDto;
+
+            // Assert - Response
+            result.ShouldNotBeNull();
+            result.Id.ShouldBe(-1);
+            result.Name.ShouldBe(updatedEntity.Name);
+            result.Description.ShouldBe(updatedEntity.Description);
+
+            // Assert - Database
+            var storedEntity = dbContext.Tour.FirstOrDefault(i => i.Name == "uspjesna izmjena");
+            storedEntity.ShouldNotBeNull();
+            storedEntity.Description.ShouldBe(updatedEntity.Description);
+            var oldEntity = dbContext.Tour.FirstOrDefault(i => i.Name == "Vertical race to the top of the mountain");
+            oldEntity.ShouldBeNull();
+        }
+
+        [Fact]
+        public void Update_fails_invalid_id()
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            var updatedEntity = new TourDto
+            {
+                Id = -1000,
+                Name = "Test"
+            };
+
+            // Act
+            var result = (ObjectResult)controller.Update(updatedEntity.Id, updatedEntity);
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.StatusCode.ShouldBe(404);
+        }
+
         private static TourController CreateController(IServiceScope scope)
         {
             return new TourController(scope.ServiceProvider.GetRequiredService<ITourService>())
