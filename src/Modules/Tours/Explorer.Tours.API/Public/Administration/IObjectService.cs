@@ -15,9 +15,10 @@ namespace Explorer.Tours.API.Public.Administration
 
         Result<ObjectDto> Create(ObjectDto objectDto);
 
-        Result<ObjectDto> Get(int id);
+        Result<ObjectDto> Get(int id); 
 
         Result<ObjectDto> Update( ObjectDto objectDto);
+        Result<ObjectDto> PublishObject(int id);
 
         Result Delete(int id);
     }
