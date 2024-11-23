@@ -56,7 +56,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             return Result.Ok(MapToDto(keyPoint));
         }
 
-        public Result<KeyPointDto> Update(int id)
+        public Result<KeyPointDto> PublishKeyPoint(int id)
         {
             var keyPointDto = GetById(id);
             if (keyPointDto == null)
@@ -67,6 +67,8 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             {
                 return Result.Fail("Key point not found");
             }
+
+
 
             keyPoint.UpdateKeyPointStatus(KeyPointStatus.Public);
             var updatedKeyPointDto = _mapper.Map<KeyPointDto>(keyPoint);

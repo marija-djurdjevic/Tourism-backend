@@ -34,6 +34,10 @@ namespace Explorer.API.Controllers.Author
         [HttpPost]
         public ActionResult<KeyPointDto> Create([FromBody] KeyPointDto keyPoint)
         {
+            if (string.IsNullOrWhiteSpace(keyPoint.Name))
+            {
+                return BadRequest("Name is required.");
+            }
             var result = _keyPointService.Create(keyPoint);
 
             //kreiranje zahtjeva sa pablisovanje kljucne tacke
