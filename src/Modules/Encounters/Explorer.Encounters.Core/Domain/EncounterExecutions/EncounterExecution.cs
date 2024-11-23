@@ -13,6 +13,8 @@ namespace Explorer.Encounters.Core.Domain.EncounterExecutions
         public int TouristId { get; private set; }
         public DateTime? CompletedTime { get; private set; }
 
+
+        public EncounterExecution() { }
         public EncounterExecution(int encounterId, int touristId, DateTime? completedTime)
         { 
             EncounterId = encounterId;
