@@ -37,7 +37,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
                 Name = "Test",
                 Description = "desc test",
                 Difficulty = 0,
-                Tags = "#hiking,#adventure,#test",
+                Tags = new List<string>(),
                 Price = 1000,
                 Status = 0,
                 AverageScore = 0,
@@ -48,6 +48,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
 
              };
 
+            newEntity.Tags.Add("neki tag");
             //Act
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as TourDto;
 
@@ -70,12 +71,14 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
 
-            var updatedTour = new TourDto { Id = -2, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 100, Tags = "sss", Name = "Publish Test Tour", Status = API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Archived };
+            var updatedTour = new TourDto { Id = -2, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 100, Tags = new List<string>(), Name = "Publish Test Tour", Status = API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Archived };
 
             updatedTour.KeyPoints = new List<KeyPointDto>();
             updatedTour.KeyPoints.Add(new KeyPointDto { Id = 100, Description = "kp1", ImagePath = "...", Latitude = 2.2, Longitude = 3.3, Name = "KP1", TourId = 200 });
             updatedTour.KeyPoints.Add(new KeyPointDto { Id = 200, Description = "kp2", ImagePath = "...", Latitude = 2.2, Longitude = 3.3, Name = "KP2", TourId = 200 });
-            updatedTour.TransportInfo = new TransportInfoDto() { Distance = 2.0, Time = 100, Transport = TransportInfoDto.TransportType.Car }; 
+            updatedTour.TransportInfo = new TransportInfoDto() { Distance = 2.0, Time = 100, Transport = TransportInfoDto.TransportType.Car };
+            updatedTour.Tags.Add("nature");
+            updatedTour.Tags.Add("tree");
             // Act
             var result = ((ObjectResult)controller.Publish(updatedTour).Result)?.Value as TourDto;
 
@@ -98,8 +101,9 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-            var updatedTour = new TourDto { Id = -2, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 0, Tags = "sss", Name = "Archive Test Tour", Status = API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Published };
-
+            var updatedTour = new TourDto { Id = -2, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 0, Tags = new List<string>(), Name = "Archive Test Tour", Status = API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Published };
+            updatedTour.Tags.Add("nature");
+            updatedTour.Tags.Add("tree");
             // Act
             var result = ((ObjectResult)controller.Archive(updatedTour).Result)?.Value as TourDto;
 
@@ -189,7 +193,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
                 Name = "uspjesna izmjena",
                 Description = "desc test",
                 Difficulty = 0,
-                Tags = "#hiking,#adventure,#test",
+                Tags = new List<string>(),
                 Price = 1000,
                 Status = 0,
                 AverageScore = 0,
@@ -199,6 +203,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
                 TransportInfo = new TransportInfoDto()
             };
 
+            updatedEntity.Tags.Add("neki tag");
             // Act
             var result = ((ObjectResult)controller.Update(updatedEntity.Id, updatedEntity))?.Value as TourDto;
 
