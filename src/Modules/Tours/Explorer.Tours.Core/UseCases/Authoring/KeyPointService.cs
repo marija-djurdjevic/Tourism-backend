@@ -40,7 +40,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             }
 
 
-            var keyPoints = pagedResult.Results.Where(kp => kp.TourId == tourId).ToList();
+            var keyPoints = pagedResult.Results.Where(kp => kp.TourIds.Contains(tourId)).ToList();
 
 
             var keyPointDtos = _mapper.Map<List<KeyPointDto>>(keyPoints);
@@ -68,7 +68,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
                 return Result.Fail("Key point not found");
             }
 
-            keyPoint.UpdateKeyPointStatus(KeyPointStatus.Published);
+            keyPoint.UpdateKeyPointStatus(KeyPointStatus.Public);
             var updatedKeyPointDto = _mapper.Map<KeyPointDto>(keyPoint);
             Update(updatedKeyPointDto);
          

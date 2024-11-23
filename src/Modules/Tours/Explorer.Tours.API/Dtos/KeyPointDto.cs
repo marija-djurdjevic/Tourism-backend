@@ -12,7 +12,8 @@ namespace Explorer.Tours.API.Dtos
         public enum KeyPointStatus
         {
             Pending,
-            Published
+            Private,
+            Public
         }
 
         public int Id { get; set; }
@@ -21,7 +22,7 @@ namespace Explorer.Tours.API.Dtos
         public String ImagePath { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
-        public int TourId { get; set; }
+        public List<int> TourIds { get; set; }
 
         public KeyPointStatus Status { get; set;}
 

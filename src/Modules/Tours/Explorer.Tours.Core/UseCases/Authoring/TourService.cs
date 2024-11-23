@@ -103,7 +103,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             {
                 var tour = _mapper.Map<Tour>(tourDto);
                 PagedResult<KeyPoint> pagedKeypoints = _keyPointRepository.GetPaged(1, 10);
-                var keypoints = pagedKeypoints.Results.FindAll(x => x.TourId == tour.Id).ToList();
+                var keypoints = pagedKeypoints.Results.FindAll(x => x.TourIds.Contains(tour.Id)).ToList();
                 foreach (var kp in keypoints)
                 {
                     _tourRepository.Detach(kp);

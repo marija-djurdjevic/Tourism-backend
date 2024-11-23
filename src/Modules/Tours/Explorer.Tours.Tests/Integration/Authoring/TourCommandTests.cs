@@ -73,8 +73,8 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             var updatedTour = new TourDto { Id = -2, AuthorId = 1, Description = "sdadsa", AverageScore = 0, Price = 100, Tags = "sss", Name = "Publish Test Tour", Status = API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Archived };
 
             updatedTour.KeyPoints = new List<KeyPointDto>();
-            updatedTour.KeyPoints.Add(new KeyPointDto { Id = 100, Description = "kp1", ImagePath = "...", Latitude = 2.2, Longitude = 3.3, Name = "KP1", TourId = 200 });
-            updatedTour.KeyPoints.Add(new KeyPointDto { Id = 200, Description = "kp2", ImagePath = "...", Latitude = 2.2, Longitude = 3.3, Name = "KP2", TourId = 200 });
+            updatedTour.KeyPoints.Add(new KeyPointDto { Id = 100, Description = "kp1", ImagePath = "...", Latitude = 2.2, Longitude = 3.3, Name = "KP1", TourIds = new List<int> { 200 } });
+            updatedTour.KeyPoints.Add(new KeyPointDto { Id = 200, Description = "kp2", ImagePath = "...", Latitude = 2.2, Longitude = 3.3, Name = "KP2", TourIds = new List<int> { 200 } });
             updatedTour.TransportInfo = new TransportInfoDto() { Distance = 2.0, Time = 100, Transport = TransportInfoDto.TransportType.Car }; 
             // Act
             var result = ((ObjectResult)controller.Publish(updatedTour).Result)?.Value as TourDto;
