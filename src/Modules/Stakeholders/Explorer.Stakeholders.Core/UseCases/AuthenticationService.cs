@@ -1,4 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Payments.API.Internal.Wallet;
+using Explorer.Payments.API.Dtos.WalletDtos;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
@@ -15,13 +17,16 @@ public class AuthenticationService : IAuthenticationService
     private readonly IUserRepository _userRepository;
     private readonly ICrudRepository<Person> _personRepository;
     private readonly ICrudRepository<UserProfile> _userProfileRepository;
+    private readonly IWalletInternalService _walletService;
 
-    public AuthenticationService(ICrudRepository<UserProfile> userProfileRepository,IUserRepository userRepository, ICrudRepository<Person> personRepository, ITokenGenerator tokenGenerator)
+
+    public AuthenticationService(ICrudRepository<UserProfile> userProfileRepository,IUserRepository userRepository, ICrudRepository<Person> personRepository, ITokenGenerator tokenGenerator, IWalletInternalService walletService)
     {
         _tokenGenerator = tokenGenerator;
         _userRepository = userRepository;
         _personRepository = personRepository;
         _userProfileRepository = userProfileRepository;
+        _walletService = walletService;
     }
 
     public Result<AuthenticationTokensDto> Login(CredentialsDto credentials)
@@ -50,6 +55,8 @@ public class AuthenticationService : IAuthenticationService
             var user = _userRepository.Create(new User(account.Username, account.Password, UserRole.Tourist, true));
             var person = _personRepository.Create(new Person(user.Id, account.Name, account.Surname, account.Email));
             var profile = _userProfileRepository.Create(new UserProfile(user.Id, account.Name, account.Surname, null, null, null));
+            var wallet = _walletService.Create(new WalletDto(Convert.ToInt32(user.Id)));
+
             return _tokenGenerator.GenerateAccessToken(user, person.Id);
         }
         catch (ArgumentException e)
