@@ -27,7 +27,7 @@ namespace Explorer.Tours.Core.Domain
             Category = category;
             this.Longitude = longitude;
             this.Latitude = latitude;
-            Status = ObjectStatus.Private;
+            Status = ObjectStatus.Pending;
         }
 
         public Object(string name, string description, int imageId, ObjectCategory category, float longitude, float latitude, ObjectStatus type)
