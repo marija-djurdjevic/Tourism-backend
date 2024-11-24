@@ -28,7 +28,8 @@ namespace Explorer.API.Controllers.Author
         {
             var result = _objectService.GetPaged(page, pageSize);
 
-            var filteredResults = result.Value.Results.Where(o => o.Status != ObjectDto.ObjectStatus.Pending).ToList();
+            var filteredResults = result.Value.Results.Where(o => o.Status != ObjectDto.ObjectStatus.Pending && o.Status != ObjectDto.ObjectStatus.Rejected)
+                .ToList();
 
            
             var filteredResult = new PagedResult<ObjectDto>(
