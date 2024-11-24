@@ -52,7 +52,8 @@ namespace Explorer.Tours.Core.Domain
     {
        Pending,
        Private,
-       Public
+       Public,
+       Rejected
     }
 
     public enum ObjectCategory

@@ -1,4 +1,4 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.PublishRequestDtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
@@ -49,7 +49,7 @@ namespace Explorer.API.Controllers.Administrator.Execution
             //ovdje dodaj za decline
             if (publishRequest.Status == PublishRequestDto.RegistrationRequestStatus.Rejected)
             {
-                _keyPointService.PublishKeyPoint(publishRequest.EntityId);
+                _keyPointService.PublishKeyPoint(publishRequest.EntityId, 1);
                 notifyAccepted(result.Value);
             }
 
@@ -59,7 +59,7 @@ namespace Explorer.API.Controllers.Administrator.Execution
 
     
 
-    private void notifyAccepted(PublishRequestDto req)
+    private void notifyRejected(PublishRequestDto req)
     {
         int tourAuthorId = req.AuthorId;
         string content = $"Your public keypoint request has been rejected";
