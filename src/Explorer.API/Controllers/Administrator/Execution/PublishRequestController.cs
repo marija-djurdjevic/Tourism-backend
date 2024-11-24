@@ -24,6 +24,14 @@ namespace Explorer.API.Controllers.Administrator.Execution
         }
 
 
+        [HttpPost]
+        public ActionResult<PagedResult<PublishRequestDto>> Create([FromBody] PublishRequestDto publishRequest)
+        {
+            var result = _publishService.Create(publishRequest);
+            return CreateResponse(result);
+        }
+
+
         [HttpGet("getAll")]
         public ActionResult<PagedResult<PublishRequestDto>> GetAll()
         {

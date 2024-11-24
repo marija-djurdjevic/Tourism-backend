@@ -44,7 +44,8 @@ namespace Explorer.API.Controllers.Administrator.Execution
             if (publishRequest.Status == PublishRequestDto.RegistrationRequestStatus.Accepted)
             {
                 _keyPointService.PublishKeyPoint(publishRequest.EntityId);
-                
+                notifyAccepted(result.Value);
+
             }
             //ovdje dodaj za decline
             if (publishRequest.Status == PublishRequestDto.RegistrationRequestStatus.Rejected)
@@ -62,8 +63,11 @@ namespace Explorer.API.Controllers.Administrator.Execution
     private void notifyRejected(PublishRequestDto req)
     {
         int tourAuthorId = req.AuthorId;
-        string content = $"Your public keypoint request has been rejected";
-        _notificationService.Create(new NotificationDto(content, NotificationType.PublicRequest, req.Id, tourAuthorId, false));
+            bool isRejected = req.Status == PublishRequestDto.RegistrationRequestStatus.Rejected;
+            string content = isRejected
+            ? "Your public keypoint request has been rejected"
+            : "Your public keypoint request has been accepted";
+            _notificationService.Create(new NotificationDto(content, NotificationType.PublicRequest, req.Id, tourAuthorId, false));
     }
 }
 }
