@@ -78,5 +78,41 @@ namespace Explorer.API.Controllers.Author
 
             return CreateResponse(result);
         }
+
+        [HttpPut("{id:int}/update")]
+        public ActionResult<KeyPointDto> UpdateKeyPoint(int id, [FromBody] KeyPointDto updatedDto)
+    {
+        if (updatedDto == null)
+        {
+            return BadRequest("Updated KeyPoint data is required.");
+        }
+
+        var result = _keyPointService.UpdateKeyPoint(id, updatedDto);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.Value);
+        }
+        else
+        {
+            return BadRequest(result.Errors);
+        }
+    }
+
+        [HttpDelete("{id:int}")]
+        public ActionResult DeleteKeyPoint(int id)
+        {
+            var result = _keyPointService.DeleteKeyPoint(id); 
+            if (result.IsSuccess)
+            {
+                return NoContent(); 
+            }
+            else
+            {
+                return BadRequest(result.Errors); 
+            }
+        }
+
+
     }
 }

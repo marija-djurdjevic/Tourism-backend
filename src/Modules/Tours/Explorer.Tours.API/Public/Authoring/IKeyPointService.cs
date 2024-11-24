@@ -21,5 +21,8 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<KeyPointDto> PublishKeyPoint(int keyPointId, int flag);
         Result<List<KeyPointDto>> GetPublic();
         Result<KeyPointDto> UpdateList(int id, List<long> ids);
+
+        public Result<KeyPointDto> UpdateKeyPoint(int id, KeyPointDto updatedDto);
+        public Result DeleteKeyPoint(int id); 
     }
 }
