@@ -46,7 +46,36 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             var keyPointDtos = _mapper.Map<List<KeyPointDto>>(keyPoints);
             return Result.Ok(keyPointDtos);
         }
+        public Result<List<KeyPointDto>> GetPublic()
+        {            
+            try
+                
+            {
+                var pagedResult = _repository.GetPaged(0, 0);
+                if (pagedResult == null || pagedResult.Results == null || !pagedResult.Results.Any())
+                {
+                    return Result.Fail<List<KeyPointDto>>("No key points found.");
+                }
 
+
+                var keyPoints = pagedResult.Results.Where(kp => kp.Status == KeyPointStatus.Public).ToList();
+                if (!keyPoints.Any())
+                {
+                    return Result.Fail<List<KeyPointDto>>("No public key points found.");
+                }
+
+
+                var keyPointDtos = _mapper.Map<List<KeyPointDto>>(keyPoints);
+
+
+                return Result.Ok(keyPointDtos);
+            }
+            catch (Exception ex)
+                {
+                return Result.Fail<List<KeyPointDto>>("An unexpected error occurred.");
+            }
+
+        }
         public Result<KeyPointDto> GetById(int id)
         {
             var keyPoint = _keyPointRepository.GetByIdAsync(id);
@@ -59,10 +88,10 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         public Result<KeyPointDto> PublishKeyPoint(int id, int flag)
         {
             var keyPointDto = GetById(id);
-           
+
             if (keyPointDto == null)
                 return Result.Fail("Publish request not found");
-          
+
             var keyPoint = MapToDomain(keyPointDto.Value);
             if (keyPoint == null)
             {
@@ -74,7 +103,27 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             var updatedKeyPointDto = _mapper.Map<KeyPointDto>(keyPoint);
             Update(updatedKeyPointDto);
-         
+
+            return Result.Ok(updatedKeyPointDto);
+
+
+        }
+        public Result<KeyPointDto> UpdateList(int id, List<long> ids)
+        {
+            var keyPointDto = GetById(id);
+
+            if (keyPointDto == null)
+                return Result.Fail("KeyPint not found");
+
+            var keyPoint = MapToDomain(keyPointDto.Value);
+            if (keyPoint == null)
+            {
+                return Result.Fail("Key point not found");
+            }
+            keyPoint.UpdateKeyPointTours(ids);
+            var updatedKeyPointDto = _mapper.Map<KeyPointDto>(keyPoint);
+            Update(updatedKeyPointDto);
+
             return Result.Ok(updatedKeyPointDto);
 
         }

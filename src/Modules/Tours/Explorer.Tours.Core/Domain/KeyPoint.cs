@@ -111,6 +111,11 @@ namespace Explorer.Tours.Core.Domain
         {
            Status = status;
         }
+
+        public void UpdateKeyPointTours(List<long> list)
+        {
+            TourIds = list;
+        }
     }
     //dodala sam enum
     public enum KeyPointStatus

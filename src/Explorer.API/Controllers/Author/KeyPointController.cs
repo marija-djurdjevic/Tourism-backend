@@ -26,12 +26,29 @@ namespace Explorer.API.Controllers.Author
             _publishRequestService = publishRequestService;
             _notificationService = notificationService;
         }
-
+        
         [HttpGet]
         public ActionResult<PagedResult<KeyPointDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _keyPointService.GetPaged(page, pageSize);
             return CreateResponse(result);
+        }
+
+        [HttpPut("{id:int}")]
+        public ActionResult<PublishRequestDto> AddTourToKeyPoint([FromBody] KeyPointDto kp, [FromQuery] long id)
+        {
+            List<long> longIds = kp.TourIds.Select(i => (long)i).ToList();
+            longIds.Add(id);
+            var result = _keyPointService.UpdateList(kp.Id, longIds);
+            return CreateResponse(result);
+        }
+
+
+        [HttpGet("public")]
+        public ActionResult<PagedResult<KeyPointDto>> GetPublic()
+        {
+            var results = _keyPointService.GetPublic();
+            return CreateResponse(results);
         }
 
         [HttpPost]
