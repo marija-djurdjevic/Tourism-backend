@@ -27,7 +27,18 @@ namespace Explorer.API.Controllers.Author
         public ActionResult<PagedResult<ObjectDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _objectService.GetPaged(page, pageSize);
-            return CreateResponse(result);
+
+            var filteredResults = result.Value.Results.Where(o => o.Status != ObjectDto.ObjectStatus.Pending).ToList();
+
+           
+            var filteredResult = new PagedResult<ObjectDto>(
+                filteredResults,
+                result.Value.TotalCount - result.Value.Results.Count(o => o.Status == ObjectDto.ObjectStatus.Pending)
+            );
+
+            var response = FluentResults.Result.Ok(filteredResult);
+
+            return CreateResponse(response);
         }
 
         [HttpPost]
