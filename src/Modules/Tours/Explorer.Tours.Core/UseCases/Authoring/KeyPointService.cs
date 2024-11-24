@@ -56,21 +56,22 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             return Result.Ok(MapToDto(keyPoint));
         }
 
-        public Result<KeyPointDto> PublishKeyPoint(int id)
+        public Result<KeyPointDto> PublishKeyPoint(int id, int flag)
         {
             var keyPointDto = GetById(id);
+           
             if (keyPointDto == null)
                 return Result.Fail("Publish request not found");
-
+          
             var keyPoint = MapToDomain(keyPointDto.Value);
             if (keyPoint == null)
             {
                 return Result.Fail("Key point not found");
             }
 
+            if (flag == 0) keyPoint.UpdateKeyPointStatus(KeyPointStatus.Public);
+            else keyPoint.UpdateKeyPointStatus(KeyPointStatus.Rejected);
 
-
-            keyPoint.UpdateKeyPointStatus(KeyPointStatus.Public);
             var updatedKeyPointDto = _mapper.Map<KeyPointDto>(keyPoint);
             Update(updatedKeyPointDto);
          

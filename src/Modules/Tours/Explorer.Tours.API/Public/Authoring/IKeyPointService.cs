@@ -18,6 +18,6 @@ namespace Explorer.Tours.API.Public.Authoring
 
         Result<KeyPointDto> GetById(int keyPointId);
 
-        Result<KeyPointDto> PublishKeyPoint(int keyPointId);
+        Result<KeyPointDto> PublishKeyPoint(int keyPointId, int flag);
     }
 }

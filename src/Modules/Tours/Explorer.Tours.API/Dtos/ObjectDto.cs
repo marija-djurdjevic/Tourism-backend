@@ -22,7 +22,8 @@ namespace Explorer.Tours.API.Dtos
         {
             Pending,
             Private,
-            Public
+            Public,
+            Rejected
         }
 
         public enum ObjectCategory

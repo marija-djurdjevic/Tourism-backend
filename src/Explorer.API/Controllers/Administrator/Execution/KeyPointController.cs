@@ -1,4 +1,4 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.PublishRequestDtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
@@ -43,14 +43,14 @@ namespace Explorer.API.Controllers.Administrator.Execution
 
             if (publishRequest.Status == PublishRequestDto.RegistrationRequestStatus.Accepted)
             {
-                _keyPointService.PublishKeyPoint(publishRequest.EntityId);
+                _keyPointService.PublishKeyPoint(publishRequest.EntityId, 0);
                 notifyAccepted(result.Value);
 
             }
             //ovdje dodaj za decline
             if (publishRequest.Status == PublishRequestDto.RegistrationRequestStatus.Rejected)
             {
-                _keyPointService.PublishKeyPoint(publishRequest.EntityId);
+                _keyPointService.PublishKeyPoint(publishRequest.EntityId, 1);
                 notifyAccepted(result.Value);
             }
 
