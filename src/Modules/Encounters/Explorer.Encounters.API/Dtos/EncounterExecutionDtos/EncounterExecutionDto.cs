@@ -8,9 +8,9 @@ namespace Explorer.Encounters.API.Dtos.EncounterExecutionDtos
 {
     public class EncounterExecutionDto
     {
-        public int Id { get; private set; }
-        public int EncounterId { get; private set; }
-        public int TouristId { get; private set; }
-        public DateTime? CompletedTime { get; private set; }
+        public int Id { get; set; }
+        public int EncounterId { get; set; }
+        public int TouristId { get; set; }
+        public DateTime? CompletedTime { get; set; }
     }
 }
