@@ -35,6 +35,13 @@ namespace Explorer.API.Controllers.Administrator.Execution
             return CreateResponse(results);
         }
 
+        [HttpGet("public")]
+        public ActionResult<PagedResult<KeyPointDto>> GetPublic()
+        {
+            var results = _keyPointService.GetPublic();
+            return CreateResponse(results);
+        }
+
         [HttpPut("{id:int}")]
         public ActionResult<PublishRequestDto> ChangeKeyPointStatus([FromBody] PublishRequestDto publishRequest)
         {
