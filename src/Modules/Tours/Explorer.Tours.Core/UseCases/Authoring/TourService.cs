@@ -159,6 +159,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         {
 
             var tours = _tourRepository.GetAllToursWithKeyPoints();
+          
 
             if (tours == null || !tours.Any())
             {
@@ -237,6 +238,18 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         public Result<List<TourDto>> SearchTours(SearchByDistanceDto searchByDistance)
         {
             var tours = _tourRepository.GetAllToursWithKeyPoints();
+
+            var keyPoints = _keyPointRepository.GetPaged(0, 0);
+            foreach (Tour tour in tours)
+            {
+                foreach (KeyPoint kp in keyPoints.Results)
+                {
+                    if (kp.TourIds.Contains(tour.Id))
+                    {
+                        tour.KeyPoints.Add(kp);
+                    }
+                }
+            }
             List<TourDto> matchingTours = new List<TourDto>();
             var coordinate = new Coordinates(searchByDistance.Latitude, searchByDistance.Longitude);
             foreach (var t in tours)
