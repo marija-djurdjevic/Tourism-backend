@@ -43,7 +43,7 @@ namespace Explorer.API.Controllers.Administrator.Execution
 
             if (publishRequest.Status == PublishRequestDto.RegistrationRequestStatus.Accepted)
             {
-                _keyPointService.PublishKeyPoint(publishRequest.EntityId);
+                _keyPointService.PublishKeyPoint(publishRequest.EntityId, 0);
                 notifyAccepted(result.Value);
 
             }
@@ -60,7 +60,7 @@ namespace Explorer.API.Controllers.Administrator.Execution
 
     
 
-    private void notifyRejected(PublishRequestDto req)
+    private void notifyAccepted(PublishRequestDto req)
     {
         int tourAuthorId = req.AuthorId;
             bool isRejected = req.Status == PublishRequestDto.RegistrationRequestStatus.Rejected;
