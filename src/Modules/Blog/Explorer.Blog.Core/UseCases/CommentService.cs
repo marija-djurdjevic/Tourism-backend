@@ -16,13 +16,32 @@ namespace Explorer.Blog.Core.UseCases
     public class CommentService : CrudService<CommentDto, Comment>, ICommentService
     {
         private readonly ICommentRepository commentRepository;
-        public CommentService(ICommentRepository commentRepository, IMapper mapper) : base(commentRepository, mapper) {
+        public CommentService(ICommentRepository commentRepository, IMapper mapper) : base(commentRepository, mapper)
+        {
             this.commentRepository = commentRepository;
         }
 
         public Result<List<CommentDto>> GetByBlogId(int blogId)
         {
             return MapToDto(commentRepository.GetByBlogId(blogId));
+        }
+
+        public Result DeleteByBlogId(int blogId)
+        {
+            try
+            {
+                List<CommentDto> comments = GetByBlogId(blogId).Value;
+                foreach (CommentDto comment in comments)
+                {
+                    commentRepository.Delete(comment.Id);
+                }
+
+                return Result.Ok();
+            }
+            catch (KeyNotFoundException e)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
         }
 
     }
