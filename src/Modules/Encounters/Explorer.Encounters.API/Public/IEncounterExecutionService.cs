@@ -14,5 +14,6 @@ namespace Explorer.Encounters.API.Public
         Result<PagedResult<EncounterExecutionDto>> GetPaged(int page, int pageSize);
         Result<EncounterExecutionDto> Create(EncounterExecutionDto encounterExecutionDto);
         Result<EncounterExecutionDto> Update(EncounterExecutionDto encounterExecutionDto);
+        EncounterExecutionDto GetByTouristIdAndEncounterId(int touristId, long encounterId);
     }
 }

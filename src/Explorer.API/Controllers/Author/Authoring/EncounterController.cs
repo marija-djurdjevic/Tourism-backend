@@ -15,7 +15,7 @@ namespace Explorer.API.Controllers.Author.Authoring
     {
         private readonly IEncounterService _encounterService;
         private readonly IKeyPointService _keyPointService;
-
+        
         public EncounterController(IEncounterService encounterService, IKeyPointService keyPointService)
         {
             _encounterService = encounterService;

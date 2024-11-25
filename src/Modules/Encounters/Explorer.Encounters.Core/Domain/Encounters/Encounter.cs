@@ -39,7 +39,7 @@ namespace Explorer.Encounters.Core.Domain.Encounters
 
         public int? Range { get; private set; }
         public int? TouristNumber { get; private set; }
-        public string? ImagePath { get; private set; }
+        public int? ImagePath { get; private set; }
 
         public Encounter() { }
         public Encounter(int userId, int keyPointId, string name, string description, int xp, Coordinates coordinates, EncounterStatus status, EncounterType type, EncounterCreator creator)
@@ -72,7 +72,7 @@ namespace Explorer.Encounters.Core.Domain.Encounters
             TouristNumber = touristNumber;
         }
 
-        public Encounter(int userId, int keyPointId, string name, string description, int xp, Coordinates coordinates, EncounterStatus status, EncounterType type, EncounterCreator creator, int range, string imagePath)
+        public Encounter(int userId, int keyPointId, string name, string description, int xp, Coordinates coordinates, EncounterStatus status, EncounterType type, EncounterCreator creator, int range,int touristNumber, int imagePath)
         {
             UserId = userId;
             KeyPointId = keyPointId;
@@ -84,6 +84,7 @@ namespace Explorer.Encounters.Core.Domain.Encounters
             Type = type;
             Creator = creator;
             Range = range;
+            TouristNumber = touristNumber;
             ImagePath = imagePath;
         }
     }

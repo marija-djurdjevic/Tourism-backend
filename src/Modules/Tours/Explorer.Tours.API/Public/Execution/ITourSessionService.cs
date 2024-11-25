@@ -16,6 +16,8 @@ namespace Explorer.Tours.API.Public.Execution
     {
         public Result<TourSessionDto> StartTour(int tourId,int userId, LocationDto initialLocation);
 
+        public Result<int> GetMostRecentlyCompletedKeyPointId(int tourId, int userId);
+
         public Result<TourSessionDto> CompleteTour(int tourSessionId, int userId);
 
         public Result<TourSessionDto> AbandonTour(int tourSessionId, int userId);

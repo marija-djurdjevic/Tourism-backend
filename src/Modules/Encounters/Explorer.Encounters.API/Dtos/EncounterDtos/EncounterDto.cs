@@ -38,8 +38,9 @@ namespace Explorer.Encounters.API.Dtos.EncounterDtos
         public EncounterType Type { get; set; }
         public EncounterCreator Creator { get; set; }
 
+        public bool? IsCompletedByMe { get; set; }
         public int? Range { get; set; }
         public int? TouristNumber { get; set; }
-        public string? ImagePath { get; set; }
+        public int? ImagePath { get; set; }
     }
 }
