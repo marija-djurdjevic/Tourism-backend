@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.API.Dtos.EncounterDtos;
 using Explorer.Encounters.API.Public;
+using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.UseCases.Execution;
@@ -16,10 +17,12 @@ namespace Explorer.API.Controllers.Tourist
     {
         private readonly IEncounterService _encounterService;
         private readonly ITourSessionService tourSessionService;
-        public EncounterController(IEncounterService encounterService,ITourSessionService tourSessionService)
+        private readonly IUserService userService;
+        public EncounterController(IEncounterService encounterService,ITourSessionService tourSessionServic,IUserService userService)
         {
             _encounterService = encounterService;
-            this.tourSessionService = tourSessionService;
+            this.tourSessionService = tourSessionServic;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -41,6 +44,23 @@ namespace Explorer.API.Controllers.Tourist
 
             var result = _encounterService.GetPagedForUserAndTour(userId, keyPointId.Value);
 
+            return CreateResponse(result);
+        }
+
+        [HttpPost]
+        public ActionResult<EncounterDto> Create([FromBody] EncounterDto encounter)
+        {
+            int userId = User.PersonId();
+            encounter.UserId = userId;
+            //encounter.Coordinates.Latitude = _keyPointService.Get(encounter.KeyPointId).Value.Latitude;
+            //encounter.Coordinates.Longitude = _keyPointService.Get(encounter.KeyPointId).Value.Longitude;
+            encounter.Status = EncounterStatus.Draft;
+            encounter.Creator = EncounterCreator.Tourist;
+            if (userService.GetLevelById(userId).Value<10)
+            {
+                return CreateResponse(Result.Fail("User level is too low"));
+            }
+            var result = _encounterService.Create(encounter);
             return CreateResponse(result);
         }
     }
