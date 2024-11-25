@@ -1,6 +1,7 @@
 ﻿using Explorer.API.Controllers.Author;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
@@ -132,7 +133,7 @@ namespace Explorer.Tours.Tests.Integration
 
         private static ObjectController CreateController(IServiceScope scope)
         {
-            return new ObjectController(scope.ServiceProvider.GetRequiredService<IObjectService>())
+            return new ObjectController(scope.ServiceProvider.GetRequiredService<IObjectService>(), scope.ServiceProvider.GetRequiredService<IPublishRequestService>())
             {
                 ControllerContext = BuildContext("-1")
             };

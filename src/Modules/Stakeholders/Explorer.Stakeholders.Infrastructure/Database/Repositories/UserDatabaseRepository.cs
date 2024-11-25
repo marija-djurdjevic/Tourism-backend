@@ -58,4 +58,9 @@ public class UserDatabaseRepository : CrudDatabaseRepository<User, StakeholdersC
     {
         return _dbContext.Users.FirstOrDefault(i => i.Id == userId && i.IsActive && i.Role == UserRole.Tourist)?.Location;
     }
+
+    public User? GetUserById(long userId)
+    {
+        return _dbContext.Users.FirstOrDefault(i => i.Id == userId);
+    }
 }

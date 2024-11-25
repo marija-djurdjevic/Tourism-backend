@@ -3,6 +3,7 @@ using Explorer.API.Controllers.Author;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,7 +43,7 @@ namespace Explorer.Tours.Tests.Integration
 
         private static ObjectController CreateController(IServiceScope scope)
         {
-            return new ObjectController(scope.ServiceProvider.GetRequiredService<IObjectService>())
+            return new ObjectController(scope.ServiceProvider.GetRequiredService<IObjectService>(), scope.ServiceProvider.GetRequiredService<IPublishRequestService>())
             {
                 ControllerContext = BuildContext("-1")
             };

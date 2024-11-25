@@ -1,4 +1,5 @@
 ﻿using Explorer.Payments.Core.Domain.ShoppingCarts;
+using Explorer.Payments.Core.Domain.Wallets;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Explorer.Payments.Infrastructure.Database
     {
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<TourPurchaseToken> TourPurchaseTokens { get; set; }
+        public DbSet<Wallet> Wallets { get; set; }
 
         public PaymentsContext(DbContextOptions<PaymentsContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

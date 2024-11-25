@@ -11,4 +11,5 @@ public interface IUserRepository
     Person? GetPersonByUserId(long userId);
     Location? GetLocationByUserId(long userId);
     User Update(User user);
+    User? GetUserById(long userId);
 }

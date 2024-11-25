@@ -15,6 +15,9 @@ using Explorer.Payments.Infrastructure.Database.Repositories;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Explorer.Payments.API.Internal.Shopping;
+using Explorer.Payments.Core.UseCases.Wallet;
+using Explorer.Payments.API.Internal.Wallet;
+using Explorer.Payments.API.Public.Wallet;
 
 namespace Explorer.Payments.Infrastructure
 {
@@ -33,6 +36,8 @@ namespace Explorer.Payments.Infrastructure
         {
             services.AddScoped<IShoppingService, ShoppingService>();
             services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
+            services.AddScoped<IWalletInternalService, WalletService>();
+            services.AddScoped<IWalletService, WalletService>();
         }
 
         // Dependencies for repositories
@@ -40,6 +45,7 @@ namespace Explorer.Payments.Infrastructure
         {
             services.AddScoped(typeof(ICrudRepository<ShoppingCart>), typeof(CrudDatabaseRepository<ShoppingCart, PaymentsContext>));
             services.AddScoped<ITourPurchaseTokenRepository, TourPurchaseTokenRepository>();
+            services.AddScoped<IWalletRepository, WalletRepository>();
 
             services.AddDbContext<PaymentsContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("payments"),

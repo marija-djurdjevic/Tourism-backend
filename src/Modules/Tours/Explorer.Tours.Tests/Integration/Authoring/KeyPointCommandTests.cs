@@ -1,6 +1,7 @@
 ﻿using Explorer.API.Controllers.Author;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
@@ -29,12 +30,13 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             var newEntity = new KeyPointDto
             {
                 Id = 11,
-                TourId = -2,
+                TourIds = new List<int> { -2 },
                 Name = "Test",
                 Description = "desc test",
                 Longitude = 20,
                 Latitude = 25,
                 ImagePath = "path test",
+                Status = KeyPointDto.KeyPointStatus.Pending
                 
             };
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as KeyPointDto;
@@ -56,7 +58,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             var controller = CreateController(scope);
             var updatedEntity = new KeyPointDto
             {
-                Description = "Test"
+                Description = "Test",
             };
 
             // Act
@@ -69,7 +71,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
 
         private static KeyPointController CreateController(IServiceScope scope)
         {
-            return new KeyPointController(scope.ServiceProvider.GetRequiredService<IKeyPointService>())
+            return new KeyPointController(scope.ServiceProvider.GetRequiredService<IKeyPointService>(), scope.ServiceProvider.GetRequiredService<IPublishRequestService>(), scope.ServiceProvider.GetRequiredService<INotificationService>())
             {
                 ControllerContext = BuildContext("-1")
             };

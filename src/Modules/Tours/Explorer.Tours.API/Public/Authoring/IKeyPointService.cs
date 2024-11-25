@@ -15,5 +15,11 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<KeyPointDto> Create(KeyPointDto keyPoint);
 
         Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId);
+
+        Result<KeyPointDto> GetById(int keyPointId);
+
+        Result<KeyPointDto> PublishKeyPoint(int keyPointId, int flag);
+        Result<List<KeyPointDto>> GetPublic();
+        Result<KeyPointDto> UpdateList(int id, List<long> ids);
     }
 }
