@@ -34,7 +34,7 @@ namespace Explorer.Encounters.Core.UseCases
             {
                 encounter.IsCompletedByMe = false;
                 var execution = executionService.GetByTouristIdAndEncounterId(userId, encounter.Id);
-                if (execution != null)
+                if (execution != null && execution.CompletedTime != null)
                 {
                     encounter.IsCompletedByMe = true;
                 }

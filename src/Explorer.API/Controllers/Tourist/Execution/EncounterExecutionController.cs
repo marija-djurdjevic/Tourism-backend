@@ -3,6 +3,7 @@ using Explorer.Encounters.API.Dtos.EncounterDtos;
 using Explorer.Encounters.API.Dtos.EncounterExecutionDtos;
 using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.Domain.Encounters;
+using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
@@ -17,11 +18,13 @@ namespace Explorer.API.Controllers.Tourist.Execution
     {
         private readonly IEncounterExecutionService _encounterExecutionService;
         private readonly IEncounterService _encounterService;
+        private readonly IUserService userService;
 
-        public EncounterExecutionController(IEncounterExecutionService encounterExecutionService, IEncounterService encounterService)
+        public EncounterExecutionController(IEncounterExecutionService encounterExecutionService, IEncounterService encounterService, IUserService userService)
         {
             _encounterExecutionService = encounterExecutionService;
             _encounterService = encounterService;
+            this.userService = userService;
         }
 
         [HttpPost("create")]
@@ -29,6 +32,11 @@ namespace Explorer.API.Controllers.Tourist.Execution
         {
             var userId = User.PersonId();
             encounterExecutionDto.TouristId = userId;
+            var encounter = _encounterService.Get(encounterExecutionDto.EncounterId);
+            if (encounter.IsFailed)
+            {
+                return CreateResponse(encounter);
+            }
 
             // Check if the encounter execution already exists
             var encounterExecutions = _encounterExecutionService.GetPaged(0, 0);
@@ -41,6 +49,10 @@ namespace Explorer.API.Controllers.Tourist.Execution
             if (encounterExecution == null)
             {
                 var result = _encounterExecutionService.Create(encounterExecutionDto);
+                if (result.IsSuccess)
+                {
+                    userService.UpdateXPs(userId, encounter.Value.Xp);
+                }
                 return CreateResponse(result);
             }
 

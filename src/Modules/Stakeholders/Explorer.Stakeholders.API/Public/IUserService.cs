@@ -18,5 +18,7 @@ namespace Explorer.Stakeholders.API.Public
         Result<LocationDto> SetUserLocation(long userId, float longitude, float latitude);
         Result<LocationDto> GetUserLocation(long userId);
         Result<string> GetUsernameById(long userId);
+        Result<UserDto> UpdateXPs(int userId, int xp);
+        Result<int> GetLevelById(int userId);
     }
 }

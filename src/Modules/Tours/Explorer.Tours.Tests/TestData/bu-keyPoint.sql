@@ -10,4 +10,4 @@ INSERT INTO tours."KeyPoints"(
 VALUES (4, 'Sofija Centar', 'Centar glavnog grada Bugarske', 'neki putic', -3, '{{"Latitude": 42.698334, "Longitude": 23.319941}}');
 INSERT INTO tours."KeyPoints"(
 	"Id", "Name", "Description", "ImagePath", "TourId", "Coordinates")
-VALUES (5, 'Hotel Bugarska', 'Neki hotel u Bugarskoj', 'neki putic', -3, '{{"Latitude": 42.702883, "Longitude": 23.329504}}');
+VALUES (-5, 'Hotel Bugarska', 'Neki hotel u Bugarskoj', 'neki putic', -3, '{{"Latitude": 42.702883, "Longitude": 23.329504}}');
