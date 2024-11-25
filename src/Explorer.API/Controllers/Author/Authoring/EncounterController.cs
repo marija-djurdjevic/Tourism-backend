@@ -34,8 +34,8 @@ namespace Explorer.API.Controllers.Author.Authoring
         {
             int userId = User.PersonId();
             encounter.UserId = userId;
-            encounter.Coordinates.Latitude = _keyPointService.Get(encounter.KeyPointId).Value.Latitude;
-            encounter.Coordinates.Longitude = _keyPointService.Get(encounter.KeyPointId).Value.Longitude;
+            //encounter.Coordinates.Latitude = _keyPointService.Get(encounter.KeyPointId).Value.Latitude;
+            //encounter.Coordinates.Longitude = _keyPointService.Get(encounter.KeyPointId).Value.Longitude;
             encounter.Status = EncounterStatus.Active;
 
             var result = _encounterService.Create(encounter);
