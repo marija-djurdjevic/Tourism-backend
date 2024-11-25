@@ -17,13 +17,15 @@ namespace Explorer.Encounters.Core.UseCases
     {
         private readonly ICrudRepository<Encounter> _repository;
         private IEncounterExecutionService executionService;
+        private IEncounterRepository encounterRepository;
         private readonly IMapper _mapper;
 
-        public EncounterService(ICrudRepository<Encounter> repository, IMapper mapper,IEncounterExecutionService encounterExecutionService) : base(repository, mapper)
+        public EncounterService(ICrudRepository<Encounter> repository,IEncounterRepository encounterRepository, IMapper mapper,IEncounterExecutionService encounterExecutionService) : base(repository, mapper)
         {
             _mapper = mapper;
             _repository = repository;
             executionService = encounterExecutionService;
+            this.encounterRepository = encounterRepository;
         }
 
         public Result<List<EncounterDto>> GetPagedForUserAndTour(int userId,int keyPointId)
@@ -41,6 +43,11 @@ namespace Explorer.Encounters.Core.UseCases
             }
 
             return Result.Ok(encounters);
+        }
+
+        public void Activate(long EncounterId)
+        {
+            encounterRepository.Update(EncounterId);
         }
     }
 }

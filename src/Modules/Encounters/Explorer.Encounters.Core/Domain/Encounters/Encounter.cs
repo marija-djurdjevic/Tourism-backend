@@ -72,6 +72,10 @@ namespace Explorer.Encounters.Core.Domain.Encounters
             TouristNumber = touristNumber;
         }
 
+        public void setStatus(EncounterStatus status)
+        {
+            this.Status = status;
+        }
         public Encounter(int userId, int keyPointId, string name, string description, int xp, Coordinates coordinates, EncounterStatus status, EncounterType type, EncounterCreator creator, int range,int touristNumber, int imagePath)
         {
             UserId = userId;

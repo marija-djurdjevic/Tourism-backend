@@ -17,5 +17,6 @@ namespace Explorer.Encounters.API.Public
         Result Delete(int id);
         Result<EncounterDto> Update(EncounterDto encounter);
         Result<List<EncounterDto>> GetPagedForUserAndTour(int userId, int keyPointId);
+        public void Activate(long EncounterId);
     }
 }
