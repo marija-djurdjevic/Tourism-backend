@@ -32,6 +32,7 @@ namespace Explorer.Encounters.Core.UseCases
             var encounters = _mapper.Map < List < EncounterDto >> (allEncounters.Where(e => e.KeyPointId == keyPointId && e.Status==Domain.Encounters.EncounterStatus.Active).ToList());
             foreach(var encounter in encounters)
             {
+                encounter.IsCompletedByMe = false;
                 var execution = executionService.GetByTouristIdAndEncounterId(userId, encounter.Id);
                 if (execution != null)
                 {
