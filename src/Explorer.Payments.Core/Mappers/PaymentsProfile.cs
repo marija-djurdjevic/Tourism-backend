@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Explorer.Payments.API.Dtos.ShoppingDtos;
 using Explorer.Payments.API.Dtos.WalletDtos;
+using Explorer.Payments.Core.Domain.Shopping;
 using Explorer.Payments.Core.Domain.ShoppingCarts;
 using Explorer.Payments.Core.Domain.Wallets;
 using System;
@@ -20,6 +21,7 @@ namespace Explorer.Payments.Core.Mappers
             CreateMap<OrderItemDto, OrderItem>().ReverseMap();
             CreateMap<TourPurchaseTokenDto, TourPurchaseToken>().ReverseMap();
             CreateMap<WalletDto, Wallet>().ReverseMap();
+            CreateMap<SaleDto, Sale>().ReverseMap();
 
         }
     }
