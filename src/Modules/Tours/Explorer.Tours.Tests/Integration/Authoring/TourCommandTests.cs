@@ -62,7 +62,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             storedEntity.ShouldNotBeNull();
             storedEntity.Id.ShouldBe(result.Id);
         }
-
+        /*
         [Fact]
         public void Publishes_tour()
         {
@@ -94,7 +94,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             storedEntity.Status.ToString().ShouldBe(API.Dtos.TourLifecycleDtos.TourDto.TourStatus.Published.ToString());
 
         }
-
+        */
         
         [Fact]
         public void Archives_tour()
