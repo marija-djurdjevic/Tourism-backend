@@ -38,6 +38,7 @@ namespace Explorer.Payments.Infrastructure
             services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
             services.AddScoped<IWalletInternalService, WalletService>();
             services.AddScoped<IWalletService, WalletService>();
+            services.AddScoped<ISaleService, SaleService>();
         }
 
         // Dependencies for repositories
@@ -46,6 +47,7 @@ namespace Explorer.Payments.Infrastructure
             services.AddScoped(typeof(ICrudRepository<ShoppingCart>), typeof(CrudDatabaseRepository<ShoppingCart, PaymentsContext>));
             services.AddScoped<ITourPurchaseTokenRepository, TourPurchaseTokenRepository>();
             services.AddScoped<IWalletRepository, WalletRepository>();
+            services.AddScoped<ISaleRepository, SaleRepository>();
 
             services.AddDbContext<PaymentsContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("payments"),
