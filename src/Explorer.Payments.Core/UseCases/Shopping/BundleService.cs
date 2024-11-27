@@ -32,5 +32,15 @@ namespace Explorer.Payments.Core.UseCases.Shopping
             }
             return MapToDto(bundles);
         }
+
+        public Result<BundleDto> GetById(int bundleId)
+        {
+            Bundle? bundle = bundleRepository.Get(bundleId);
+            if (bundle == null)
+            {
+                return Result.Fail<BundleDto>("No bundle found for the specified ID.");
+            }
+            return MapToDto(bundle);
+        }
     }
 }

@@ -7,6 +7,8 @@ using Explorer.Stakeholders.API.Public;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Explorer.Payments.API.Dtos.ShoppingDtos;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
+using Explorer.Tours.API.Public.Authoring;
 
 namespace Explorer.API.Controllers.Author
 {
@@ -15,10 +17,12 @@ namespace Explorer.API.Controllers.Author
     public class BundleController : BaseApiController
     {
         private readonly IBundleService bundleService;
+        private readonly ITourService tourService;
 
-        public BundleController(IBundleService bundleService)
+        public BundleController(IBundleService bundleService, ITourService tourService)
         {
             this.bundleService = bundleService;
+            this.tourService = tourService;
         }
 
         [HttpGet]
@@ -29,10 +33,23 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpGet("{authorId}")]
-        public ActionResult<BundleDto> GetByAuthorId(int authorId)
+        public ActionResult<List<BundleDto>> GetByAuthorId(int authorId)
         {
             var result = bundleService.GetByAuthorId(authorId);
             return CreateResponse(result);
+        }
+
+        [HttpGet("{authorId}/{bundleId}")]
+        public ActionResult<List<TourDto>> GetToursByBundleId(int authorId, int bundleId)
+        {
+            var pagedResult = tourService.GetByAuthorId(1, 100, authorId);
+            var allTours = pagedResult.Value.Results;
+            
+            var bundle = bundleService.GetById(bundleId);
+
+            var filteredTours = allTours.Where(tour => bundle.Value.TourIds.Contains(tour.Id)).ToList();
+
+            return Ok(filteredTours);
         }
 
         [HttpPost]

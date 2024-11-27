@@ -15,5 +15,6 @@ namespace Explorer.Payments.API.Public.Shopping
         Result<List<BundleDto>> GetByAuthorId(int auhtorId);
         Result<BundleDto> Create(BundleDto bundle);
         Result<BundleDto> Update(BundleDto bundle);
+        Result<BundleDto> GetById(int id);
     }
 }
