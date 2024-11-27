@@ -1,4 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Encounters.API.Dtos;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;
@@ -101,6 +102,30 @@ namespace Explorer.API.Controllers.Author
             {
                 return BadRequest(result);
             }
+        }
+
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] TourDto tourDto)
+        {
+            if (tourDto == null || tourDto.Id != id)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            var result = _tourService.Update(tourDto);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+
+            if (result.Errors.Any(e => e.Message.Contains("not found")))
+            {
+                return NotFound("Encounter not found.");
+            }
+
+            return BadRequest("Invalid input data.");
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Shouldly;
 using Explorer.API.Controllers.Author;
 using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.API.Public.Execution;
 
 namespace Explorer.Tours.Tests.Integration.Authoring
 {
@@ -32,7 +33,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
         }
         public static KeyPointController CreateController(IServiceScope scope)
         {
-            return new KeyPointController(scope.ServiceProvider.GetRequiredService<IKeyPointService>())
+            return new KeyPointController(scope.ServiceProvider.GetRequiredService<IKeyPointService>(), scope.ServiceProvider.GetRequiredService<IPublishRequestService>(), scope.ServiceProvider.GetRequiredService<INotificationService>())
             {
                 ControllerContext = BuildContext("-1")
             };

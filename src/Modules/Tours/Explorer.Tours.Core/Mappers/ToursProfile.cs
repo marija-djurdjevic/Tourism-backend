@@ -1,11 +1,15 @@
 using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.PublishRequestDtos;
+
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.PublishRequests;
+
 using Explorer.Tours.Core.Domain.TourProblems;
 using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Core.Domain.TourSessions;
@@ -57,5 +61,13 @@ public class ToursProfile : Profile
         CreateMap<NotificationDto, Notification>().IncludeAllDerived().ReverseMap();
         CreateMap<ProblemDetailsDto, ProblemDetails>().IncludeAllDerived().ReverseMap();
         CreateMap<ProblemCommentDto, ProblemComment>().IncludeAllDerived().ReverseMap();
+        CreateMap<PublishRequestDto, PublishRequest>()
+        .ForMember(dest => dest.Comment, opt => opt.MapFrom(src => src.Comment ?? string.Empty))
+        .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.AuthorId))
+        .ForMember(dest => dest.AdminId, opt => opt.MapFrom(src => src.AdminId))
+        .ForMember(dest => dest.EntityId, opt => opt.MapFrom(src => src.EntityId))
+        .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+        .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+        .ReverseMap();
     }
 }

@@ -8,20 +8,29 @@ namespace Explorer.Tours.Core.Domain
         public string Name { get; private set; }
         public string Description { get; private set; }
         public string ImagePath { get; private set; }
-        public long TourId { get; private set; }
+        //public long TourId { get; private set; }
+        public List<long> TourIds { get; private set; } = new List<long>();
         public Coordinates Coordinates { get; private set; }
-        private KeyPoint() { }
+
+        public KeyPointStatus Status { get; private set; }
+        private KeyPoint()
+        {
+            TourIds = new List<long>();
+        }
         public KeyPoint(string name, string description, string imagePath, long tourId, Coordinates coordinates)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
-            if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path."); ;
+            if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path.");
+            if (TourIds == null) TourIds = new List<long>();
 
             Name = name;
             Description = description;
             ImagePath = imagePath;
-            TourId = tourId;
+            //TourId = tourId;
+            TourIds.Add(tourId);
             Coordinates = coordinates;
+            Status = KeyPointStatus.Private;
 
         }
         public KeyPoint(int id, string name, string description, string imagePath, int tourId, double latitude, double longitude)
@@ -30,13 +39,36 @@ namespace Explorer.Tours.Core.Domain
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
             if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path.");
+            if (TourIds == null) TourIds = new List<long>();
+
 
             Id = id;
             Name = name;
             Description = description;
             ImagePath = imagePath;
-            TourId = tourId;
+            //TourId = tourId;
+            TourIds.Add(tourId);
             Coordinates = new Coordinates(latitude, longitude);
+            Status = KeyPointStatus.Private;
+        }
+        //dodala sam ovaj kontruktor zbog sebe :D
+        public KeyPoint(string name, string description, string imagePath, long tourId, Coordinates coordinates, KeyPointStatus status)
+        {
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
+            if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
+            if (string.IsNullOrWhiteSpace(imagePath)) throw new ArgumentException("Invalid Image Path."); ;
+            if ((int)status < 0 || (int)status>2) throw new ArgumentException("Invalid status.");
+            if (TourIds == null) TourIds = new List<long>();
+           
+
+            Name = name;
+            Description = description;
+            ImagePath = imagePath;
+            //TourId = tourId;
+            TourIds.Add(tourId);
+            Coordinates = coordinates;
+            Status = status;
+
         }
 
         public double GetDistance(Coordinates desiredCoordinates)
@@ -74,5 +106,23 @@ namespace Explorer.Tours.Core.Domain
             var actualDistance = GetDistance(desiredCoordinates);
             return actualDistance < distance;
         }
+
+        public void UpdateKeyPointStatus(KeyPointStatus status)
+        {
+           Status = status;
+        }
+
+        public void UpdateKeyPointTours(List<long> list)
+        {
+            TourIds = list;
+        }
+    }
+    //dodala sam enum
+    public enum KeyPointStatus
+    {
+        Pending,
+        Private,
+        Public,
+        Rejected
     }
 }

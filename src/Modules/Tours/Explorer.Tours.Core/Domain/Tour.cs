@@ -28,7 +28,7 @@ namespace Explorer.Tours.Core.Domain
         public string Description { get; private set; }
         public DifficultyStatus Difficulty { get; private set; }
 
-        public string Tags { get; private set; }
+        public List<string>? Tags { get; private set; }
         public double Price { get; private set; }
         public TourStatus Status { get; private set; }
         public TransportInfo TransportInfo { get; private set; }
@@ -37,7 +37,7 @@ namespace Explorer.Tours.Core.Domain
         public DateTime ArchivedAt { get; private set; }
         public double AverageScore { get; private set; }
         public List<TourReview> Reviews { get; private set; }
-        public Tour(string name, string description, DifficultyStatus difficulty, string tags, double price)
+        public Tour(string name, string description, DifficultyStatus difficulty, List<string> tags, double price)
         {
             Name = name;
             Description = description;
@@ -55,7 +55,7 @@ namespace Explorer.Tours.Core.Domain
 
         public Tour() { }
 
-        public Tour(string name, string description, DifficultyStatus difficulty, TourStatus status, string tags, double price, int authorId, double averageScore, DateTime publishedAt)
+        public Tour(string name, string description, DifficultyStatus difficulty, TourStatus status, List<string> tags, double price, int authorId, double averageScore, DateTime publishedAt)
         {
             Name = name;
             Description = description;
@@ -68,7 +68,7 @@ namespace Explorer.Tours.Core.Domain
             PublishedAt = publishedAt;
             Reviews = new List<TourReview>();
         }
-        public Tour(string name, string description, DifficultyStatus difficulty, string tags, double price, int authorId, TransportInfo transportInfo)
+        public Tour(string name, string description, DifficultyStatus difficulty, List<string> tags, double price, int authorId, TransportInfo transportInfo)
         {
             Name = name;
             Description = description;
@@ -131,7 +131,7 @@ namespace Explorer.Tours.Core.Domain
         {
             return !string.IsNullOrWhiteSpace(Name) &&
            !string.IsNullOrWhiteSpace(Description) &&
-           !string.IsNullOrWhiteSpace(Tags) &&
+           Tags.Count != 0 &&
            Price > 0;
         }
 

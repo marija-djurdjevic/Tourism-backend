@@ -28,11 +28,13 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         private readonly ITourRepository _tourRepository;
         private readonly ICrudRepository<KeyPoint> _keyPointRepository;
         private readonly IMapper _mapper;
+        
         public TourService(ICrudRepository<Tour> repository, IMapper mapper, ITourRepository tourRepository, ICrudRepository<KeyPoint> keyPointRepository) : base(repository, mapper)
         {
             _mapper = mapper;
             _tourRepository = tourRepository;
             _keyPointRepository = keyPointRepository;
+         
         }
 
         public Result<List<TourDto>> GetAllPublished(int page, int pageSize)
@@ -101,7 +103,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             {
                 var tour = _mapper.Map<Tour>(tourDto);
                 PagedResult<KeyPoint> pagedKeypoints = _keyPointRepository.GetPaged(1, 10);
-                var keypoints = pagedKeypoints.Results.FindAll(x => x.TourId == tour.Id).ToList();
+                var keypoints = pagedKeypoints.Results.FindAll(x => x.TourIds.Contains(tour.Id)).ToList();
                 foreach (var kp in keypoints)
                 {
                     _tourRepository.Detach(kp);
@@ -157,6 +159,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         {
 
             var tours = _tourRepository.GetAllToursWithKeyPoints();
+          
 
             if (tours == null || !tours.Any())
             {
@@ -235,6 +238,18 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         public Result<List<TourDto>> SearchTours(SearchByDistanceDto searchByDistance)
         {
             var tours = _tourRepository.GetAllToursWithKeyPoints();
+
+            var keyPoints = _keyPointRepository.GetPaged(0, 0);
+            foreach (Tour tour in tours)
+            {
+                foreach (KeyPoint kp in keyPoints.Results)
+                {
+                    if (kp.TourIds.Contains(tour.Id))
+                    {
+                        tour.KeyPoints.Add(kp);
+                    }
+                }
+            }
             List<TourDto> matchingTours = new List<TourDto>();
             var coordinate = new Coordinates(searchByDistance.Latitude, searchByDistance.Longitude);
             foreach (var t in tours)
