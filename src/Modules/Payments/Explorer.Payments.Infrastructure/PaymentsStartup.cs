@@ -15,6 +15,7 @@ using Explorer.Payments.Infrastructure.Database.Repositories;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Explorer.Payments.API.Internal.Shopping;
+using Explorer.Payments.API.Public.Shopping;
 using Explorer.Payments.Core.UseCases.Wallet;
 using Explorer.Payments.API.Internal.Wallet;
 using Explorer.Payments.API.Public.Wallet;
@@ -35,6 +36,7 @@ namespace Explorer.Payments.Infrastructure
         private static void SetupCore(IServiceCollection services)
         {
             services.AddScoped<IShoppingService, ShoppingService>();
+            services.AddScoped<ITourPurchaseTokenServiceInternal, TourPurchaseTokenService>();
             services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
             services.AddScoped<IWalletInternalService, WalletService>();
             services.AddScoped<IWalletService, WalletService>();

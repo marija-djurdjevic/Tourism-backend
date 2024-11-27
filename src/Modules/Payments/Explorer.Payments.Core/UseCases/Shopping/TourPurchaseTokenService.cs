@@ -2,6 +2,7 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Payments.API.Dtos.ShoppingDtos;
 using Explorer.Payments.API.Internal.Shopping;
+using Explorer.Payments.API.Public.Shopping;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;
 using Explorer.Payments.Core.Domain.ShoppingCarts;
 using FluentResults;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Explorer.Payments.Core.UseCases.Shopping
 {
-    public class TourPurchaseTokenService: CrudService<TourPurchaseTokenDto, TourPurchaseToken>, ITourPurchaseTokenService
+    public class TourPurchaseTokenService: CrudService<TourPurchaseTokenDto, TourPurchaseToken>, ITourPurchaseTokenServiceInternal, ITourPurchaseTokenService
     {
         private readonly ITourPurchaseTokenRepository _repository;
         private readonly IMapper _mapper;

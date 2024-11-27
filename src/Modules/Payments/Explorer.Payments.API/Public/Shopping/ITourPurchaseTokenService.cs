@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Explorer.BuildingBlocks.Core.UseCases;
+﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Payments.API.Dtos.ShoppingDtos;
 using FluentResults;
 using System;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Payments.API.Internal.Shopping
+namespace Explorer.Payments.API.Public.Shopping
 {
     public interface ITourPurchaseTokenService
     {
