@@ -26,10 +26,10 @@ namespace Explorer.Tours.Core.UseCases.Execution
         private readonly IMapper _mapper;
         private readonly ITourService _tourService;
         private readonly IKeyPointService _keyPointService;
-        private readonly ITourPurchaseTokenService _purchaseTokenService;
+        private readonly ITourPurchaseTokenServiceInternal _purchaseTokenService;
 
 
-        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService, ITourPurchaseTokenService tourPurchaseTokenService) : base(mapper)
+        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService, ITourPurchaseTokenServiceInternal tourPurchaseTokenService) : base(mapper)
         {
             _repository = repository;
             _mapper = mapper;
