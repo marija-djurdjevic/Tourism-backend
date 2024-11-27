@@ -13,7 +13,8 @@ namespace Explorer.Payments.API.Public.Shopping
     {
         Result<PagedResult<CouponDto>> GetPaged(int page, int pageSize);
         Result<List<CouponDto>> GetByAuthorId(int auhtorId);
-        Result<CouponDto> Create(CouponDto bundle);
-        Result<CouponDto> Update(CouponDto bundle);
+        Result<CouponDto> Create(CouponDto coupon);
+        Result<CouponDto> Update(CouponDto coupon);
+        Result Delete(int id);
     }
 }

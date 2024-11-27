@@ -7,6 +7,7 @@ using Explorer.Stakeholders.API.Public;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Explorer.Payments.API.Dtos.ShoppingDtos;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 
 namespace Explorer.API.Controllers.Author
 {
@@ -39,16 +40,24 @@ namespace Explorer.API.Controllers.Author
         public ActionResult<CouponDto> Create([FromBody] CouponDto coupon)
         {
             coupon.ExpiryDate ??= new DateOnly(2199, 12, 31);
+            coupon.AuthorId = User.PersonId();
+            coupon.Code = Guid.NewGuid().ToString("N").Substring(0, 8);
             var result = couponService.Create(coupon);
             return CreateResponse(result);
         }
 
-        [HttpPut]
+        [HttpPut("{id:int}")]
         public ActionResult<CouponDto> Update([FromBody] CouponDto coupon)
         {
             var result = couponService.Update(coupon);
             return CreateResponse(result);
         }
 
+        [HttpDelete("{id:int}")]
+        public ActionResult<CouponDto> Delete(int id)
+        {
+            var result = couponService.Delete(id);
+            return CreateResponse(result);
+        }
     }
 }
