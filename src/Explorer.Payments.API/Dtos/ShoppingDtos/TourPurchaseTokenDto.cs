@@ -6,5 +6,7 @@
         public int TouristId { get; set; }
         public int TourId { get; set; }
 
+        public bool Refunded {  get; set; }
+
     }
 }

@@ -13,12 +13,15 @@ namespace Explorer.Payments.Core.Domain.ShoppingCarts
         public int TouristId { get; set; }
         public int TourId {  get; set; }
 
+        public bool Refunded { get; set; }
 
-        public TourPurchaseToken(int touristId,int tourId) {
+        public TourPurchaseToken(int touristId, int tourId, bool refunded)
+        {
             TourId = tourId;
             TouristId = touristId;
+            Refunded = refunded;
         }
-        
+
 
     }
 }

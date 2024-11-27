@@ -16,8 +16,10 @@ namespace Explorer.Payments.Core.UseCases.Shopping
     public class TourPurchaseTokenService: CrudService<TourPurchaseTokenDto, TourPurchaseToken>, ITourPurchaseTokenService
     {
         private readonly ITourPurchaseTokenRepository _repository;
+        private readonly IMapper _mapper;
         public TourPurchaseTokenService(ITourPurchaseTokenRepository repository, IMapper mapper) : base(repository, mapper) { 
             _repository = repository;
+            _mapper = mapper;
         }
 
 
@@ -27,5 +29,20 @@ namespace Explorer.Payments.Core.UseCases.Shopping
             return _repository.GetPurchasedTours(touristId);
         }
 
+        public Result<int> RefundPurchasedTour(int tourId, int touristId)
+        {
+            return _repository.RefundPurchasedTour(tourId, touristId);
+        }
+
+        public Result<int> getTourByPurchaseId(int purchaseId)
+        {
+            return _repository.Get(purchaseId).TourId;
+        }
+
+        public TourPurchaseTokenDto FindByTourAndTourist(int tourId, int touristId)
+        {
+            var token = _repository.FindByTourAndTourist(tourId, touristId);
+            return _mapper.Map<TourPurchaseTokenDto>(token);
+        }
     }
 }

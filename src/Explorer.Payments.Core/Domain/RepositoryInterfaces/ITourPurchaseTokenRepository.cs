@@ -12,5 +12,11 @@ namespace Explorer.Payments.Core.Domain.RepositoryInterfaces
     {
         public List<int> GetPurchasedTours(int touristId);
 
+        public int RefundPurchasedTour(int tourId, int touristId);
+
+        TourPurchaseToken FindByTourAndTourist(int tourId, int touristId);
+
     }
+
 }
+

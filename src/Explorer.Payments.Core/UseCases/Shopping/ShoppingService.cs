@@ -27,32 +27,47 @@ namespace Explorer.Payments.Core.UseCases.Shopping
             
         }
 
-        public Result<ShoppingCartDto> Checkout(List<OrderItemDto> items,int touristId)
+        public Result<ShoppingCartDto> Checkout(List<OrderItemDto> items, int touristId)
         {
             var orderItems = items.Select(dto => _mapper.Map<OrderItemDto, OrderItem>(dto)).ToList();
             var tokens = new List<TourPurchaseToken>();
 
             var purchasedToursIds = _tourPurchaseTokenRepository.GetPurchasedTours(touristId);
 
+            // Identify tours already purchased and currently active
             var duplicateTours = orderItems
-            .Where(item => purchasedToursIds.Contains(item.TourId))
-            .Select(item => item.TourId)
-            .ToList();
+                .Where(item => purchasedToursIds.Contains(item.TourId))
+                .Select(item => item.TourId)
+                .ToList();
 
             if (duplicateTours.Any())
             {
-                return Result.Fail<ShoppingCartDto>($"The following tours have already been purchased: {string.Join(", ", duplicateTours)}.");
+                return Result.Fail<ShoppingCartDto>(
+                    $"The following tours have already been purchased: {string.Join(", ", duplicateTours)}."
+                );
             }
+
             foreach (var item in orderItems)
             {
-                var token = new TourPurchaseToken(touristId, item.TourId);
-                _tourPurchaseTokenRepository.Create(token);
+                var existingToken = _tourPurchaseTokenRepository
+                    .FindByTourAndTourist(item.TourId, touristId);
 
+                if (existingToken != null && existingToken.Refunded)
+                {
+                    existingToken.Refunded = false;
+                    _tourPurchaseTokenRepository.Update(existingToken);
+                }
+                else
+                {
+                    var token = new TourPurchaseToken(touristId, item.TourId, false);
+                    _tourPurchaseTokenRepository.Create(token);
+                }
             }
 
             ShoppingCart cart = new ShoppingCart(touristId, orderItems, tokens);
             cart.CalculatePrice();
-            var res = _shoppingRepository.Create(cart);
+            _shoppingRepository.Create(cart);
+
             return Result.Ok(_mapper.Map<ShoppingCart, ShoppingCartDto>(cart));
         }
 

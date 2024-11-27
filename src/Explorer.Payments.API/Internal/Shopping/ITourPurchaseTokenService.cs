@@ -17,5 +17,10 @@ namespace Explorer.Payments.API.Internal.Shopping
         Result<TourPurchaseTokenDto> Update(TourPurchaseTokenDto blog);
         Result Delete(int id);
         Result<List<int>> GetPurchasedTours(int touristId);
+
+        public Result<int> RefundPurchasedTour(int tourId, int touristId);
+        public TourPurchaseTokenDto FindByTourAndTourist(int tourId, int touristId);
+
+        public Result<int> getTourByPurchaseId(int purchaseId);
     }
 }

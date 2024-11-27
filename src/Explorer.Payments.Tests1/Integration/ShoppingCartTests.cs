@@ -19,6 +19,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Explorer.Payments.API.Internal.Shopping;
 
 
 namespace Explorer.Payments.Tests.Integration
@@ -114,9 +115,38 @@ namespace Explorer.Payments.Tests.Integration
             result2.Count.ShouldBe(2);
         }
 
+        [Fact]
+        public void Successfully_refunds_tour()
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            controller.ShouldNotBeNull();
+
+            var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
+
+            var claims = new List<Claim>
+            {
+                new Claim("id", "-2")
+            };
+
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var user = new ClaimsPrincipal(identity);
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = user
+            };
+
+            // Act
+            var result = ((ObjectResult)controller.Refund(-2).Result)?.Value as TourDto;
+
+            var storedEntity = dbContext.TourPurchaseTokens.FirstOrDefault(i => i.TourId == result.Id && i.TouristId == -2);
+            storedEntity.Refunded.ShouldBe(true);
+
+        }
         private static ShoppingController CreateController(IServiceScope scope)
         {
-            return new ShoppingController(scope.ServiceProvider.GetRequiredService<IShoppingService>(), scope.ServiceProvider.GetRequiredService<ITourService>(), scope.ServiceProvider.GetRequiredService<ITourSessionService>(), scope.ServiceProvider.GetRequiredService<ITourReviewService>());
+            return new ShoppingController(scope.ServiceProvider.GetRequiredService<IShoppingService>(), scope.ServiceProvider.GetRequiredService<ITourService>(), scope.ServiceProvider.GetRequiredService<ITourSessionService>(), scope.ServiceProvider.GetRequiredService<ITourReviewService>(), scope.ServiceProvider.GetRequiredService<ITourPurchaseTokenService>(), scope.ServiceProvider.GetRequiredService<INotificationService>());
 
         }
     }
