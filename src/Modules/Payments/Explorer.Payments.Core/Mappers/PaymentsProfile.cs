@@ -23,6 +23,7 @@ namespace Explorer.Payments.Core.Mappers
             CreateMap<WalletDto, Wallet>().ReverseMap();
             CreateMap<SaleDto, Sale>().ReverseMap();
 
+            CreateMap<BundleDto, Bundle>().ReverseMap();
         }
     }
 }
