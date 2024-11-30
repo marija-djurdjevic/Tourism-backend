@@ -4,11 +4,15 @@ VALUES (-1, 'admin@gmail.com', 'admin', 0, true,'{{"longitude": 0, "latitude": 0
 
 INSERT INTO stakeholders."Users"(
     "Id", "Username", "Password", "Role", "IsActive", "Location","XP")
-VALUES (-2, 'turistaa@gmail.com', 'admin', 2, true,'{{"longitude": 0, "latitude": 0}}',0);
+VALUES (-2, 'turistaa@gmail.com', 'admin', 2, true,'{{"longitude": 0, "latitude": 0}}',920);
 
 INSERT INTO stakeholders."Users"(
     "Id", "Username", "Password", "Role", "IsActive", "Location","XP")
 VALUES (-3, 'turists@gmail.com', 'admin', 2, false,'{{"longitude": 0, "latitude": 0}}',0);
+
+INSERT INTO stakeholders."Users"(
+    "Id", "Username", "Password", "Role", "IsActive", "Location","XP")
+VALUES (-4, 'turists55@gmail.com', 'admin', 2, true,'{{"longitude": 0, "latitude": 0}}',899);
 
 INSERT INTO stakeholders."Users"(
     "Id", "Username", "Password", "Role", "IsActive", "Location","XP")

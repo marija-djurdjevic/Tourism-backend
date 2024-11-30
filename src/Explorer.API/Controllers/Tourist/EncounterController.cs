@@ -58,7 +58,13 @@ namespace Explorer.API.Controllers.Tourist
             encounter.Creator = EncounterCreator.Tourist;
             if (userService.GetLevelById(userId).Value<10)
             {
-                return CreateResponse(Result.Fail("User level is too low"));
+                var badResult = Result.Fail("User level is too low");
+
+                // Vraćanje 400 sa porukom
+                return BadRequest(new
+                {
+                    error = badResult // Prosljeđuješ poruku iz rezultata
+                });
             }
             var result = _encounterService.Create(encounter);
             return CreateResponse(result);
