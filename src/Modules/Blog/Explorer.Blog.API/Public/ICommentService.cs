@@ -16,5 +16,6 @@ namespace Explorer.Blog.API.Public
         Result<CommentDto> Create(CommentDto comment);
         Result<CommentDto> Update(CommentDto comment);
         Result Delete(int id);
+        Result DeleteByBlogId(int blogId);
     }
 }

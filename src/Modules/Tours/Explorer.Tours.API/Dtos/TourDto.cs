@@ -35,7 +35,7 @@ namespace Explorer.Tours.API.Dtos.TourLifecycleDtos
         public TourReviewStatus? ReviewStatus { get; set; }
         public DifficultyStatus Difficulty { get; set; }
 
-        public string Tags { get; set; }
+        public List<string>? Tags { get; set; }
         public double Price { get; set; }
         public DateTime PublishedAt {  get; set; }
         public DateTime ArchivedAt { get; set; }
