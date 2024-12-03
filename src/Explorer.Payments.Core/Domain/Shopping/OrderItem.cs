@@ -22,6 +22,11 @@ namespace Explorer.Payments.Core.Domain.ShoppingCarts
             TourName = tourName;
         }
 
+        public void UpdatePrice(double newPrice)
+        {
+            Price = newPrice;
+        }
+
         protected override bool EqualsCore(OrderItem other)
         {
             return other.TourId == TourId &&
