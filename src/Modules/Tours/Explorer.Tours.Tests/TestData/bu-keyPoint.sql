@@ -1,4 +1,4 @@
-﻿INSERT INTO tours."KeyPoints"(
+INSERT INTO tours."KeyPoints"(
 	"Id", "Name", "Description", "ImagePath",  "TourIds", "Coordinates", "Status")
 VALUES (2, 'Centar', 'Centar Novog Sada, Spomenik Svetozara Miletica', 'neki putic','{{-2}}', '{{"Latitude": 19.833549, "Longitude": 19.833549}}', 0);
 INSERT INTO tours."KeyPoints"(

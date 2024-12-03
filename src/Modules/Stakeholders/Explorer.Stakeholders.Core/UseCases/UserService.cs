@@ -33,6 +33,29 @@ namespace Explorer.Stakeholders.Core.UseCases
             return Result.Ok(_mapper.Map<LocationDto>(user.Location));
         }
 
+        public Result<UserDto> UpdateXPs(int userId, int xp)
+        {
+            var user = _userRepository.Get(userId);
+
+            if (user == null)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError($"User with id '{userId}' not found.");
+            }
+            user.UpdateXPs(xp);
+
+            return Result.Ok(_mapper.Map<UserDto>(_userRepository.Update(user)));
+        }
+        public Result<int> GetLevelById(int userId)
+        {
+            var user = _userRepository.Get(userId);
+
+            if (user == null)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError($"User with id '{userId}' not found.");
+            }
+
+            return Result.Ok(user.getUserLevel());
+        }
         public Result<bool> Exists(string username)
         {
             

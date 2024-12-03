@@ -1,35 +1,46 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.API.Dtos.EncounterDtos;
 using Explorer.Encounters.API.Public;
-using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.Administration;
+using Explorer.Stakeholders.Infrastructure.Authentication;
+using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.Core.UseCases.Authoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-
-namespace Explorer.API.Controllers.Administrator
+namespace Explorer.API.Controllers.Author.Authoring
 {
-    [Authorize(Policy = "administratorPolicy")]
-    [Route("api/administrator/encounter")]
+    [Authorize(Policy = "authorPolicy")]
+    [Route("api/author/encounter")]
     public class EncounterController : BaseApiController
     {
         private readonly IEncounterService _encounterService;
-
-        public EncounterController(IEncounterService encounterService)
+        private readonly IKeyPointService _keyPointService;
+        
+        public EncounterController(IEncounterService encounterService, IKeyPointService keyPointService)
         {
             _encounterService = encounterService;
+            _keyPointService = keyPointService;
         }
 
         [HttpGet]
-        public ActionResult<PagedResult<EncounterDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        public ActionResult<PagedResult<EncounterDto>> GetAll()
         {
-            var result = _encounterService.GetPaged(page, pageSize);
+            var result = _encounterService.GetPaged(0, 0);
             return CreateResponse(result);
         }
 
         [HttpPost]
         public ActionResult<EncounterDto> Create([FromBody] EncounterDto encounter)
         {
+            int userId = User.PersonId();
+            encounter.UserId = userId;
+            if (encounter.Type != EncounterType.Location)
+            {
+                encounter.Coordinates.Latitude = _keyPointService.Get(encounter.KeyPointId).Value.Latitude;
+                encounter.Coordinates.Longitude = _keyPointService.Get(encounter.KeyPointId).Value.Longitude;
+            }
+            encounter.Status = EncounterStatus.Active;
+
             var result = _encounterService.Create(encounter);
             return CreateResponse(result);
         }
@@ -68,6 +79,5 @@ namespace Explorer.API.Controllers.Administrator
 
             return BadRequest("Invalid input data.");
         }
-
     }
 }

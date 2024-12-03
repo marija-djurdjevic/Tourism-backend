@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
 using Explorer.Payments.API.Internal.Shopping;
+using Microsoft.EntityFrameworkCore;
 
 namespace Explorer.Tours.Core.UseCases.Execution
 {
@@ -61,7 +62,27 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
         }
 
+        public Result<int> GetMostRecentlyCompletedKeyPointId(int tourId, int userId)
+        {
+            var tourSession = _repository.GetByTourId(tourId, userId);
 
+            if (tourSession == null)
+            {
+                return Result.Fail<int>("Tour session not found.");
+            }
+
+            var completedKeyPoints = _mapper.Map<List<CompletedKeyPointDto>>(tourSession.CompletedKeyPoints);
+            if(completedKeyPoints == null || !completedKeyPoints.Any())
+            {
+                return Result.Fail<int>("No completed key points found.");
+            }
+            int lastCompletedKeyPointId = completedKeyPoints
+                .OrderByDescending(kp => kp.CompletedAt)
+                .FirstOrDefault().KeyPointId;
+
+            // Return the result as a successful operation
+            return Result.Ok(lastCompletedKeyPointId);
+        }
 
         public Result<TourSessionDto> CompleteTour(int tourId,int userId)
         {
