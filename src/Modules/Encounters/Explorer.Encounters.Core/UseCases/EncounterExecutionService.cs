@@ -50,6 +50,10 @@ namespace Explorer.Encounters.Core.UseCases
             var encounterExecution = _encounterExecutionRepository.Update(MapToDomain(encounterExecutionDto));
             return Result.Ok(MapToDto(encounterExecution));
         }
+        public void Update(int id)
+        {
+            _encounterExecutionRepository.Update(id);
+        }
         public EncounterExecutionDto? GetByTouristIdAndEncounterId(int touristId, long encounterId)
         {
             return MapToDto(_encounterExecutionRepository.GetPaged(0,0).Results

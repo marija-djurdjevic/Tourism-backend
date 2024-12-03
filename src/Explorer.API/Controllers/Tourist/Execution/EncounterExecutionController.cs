@@ -53,6 +53,7 @@ namespace Explorer.API.Controllers.Tourist.Execution
                 {
                     userService.UpdateXPs(userId, encounter.Value.Xp);
                 }
+
                 return CreateResponse(result);
             }
 
@@ -77,10 +78,10 @@ namespace Explorer.API.Controllers.Tourist.Execution
                     foreach (var socialEncounterExecution in socialEncounterExecutions)
                     {
                         // Update the CompletedTime and save the changes
-                        socialEncounterExecution.CompletedTime = DateTime.UtcNow;
-                        var result = _encounterExecutionService.Update(socialEncounterExecution);
-                        return CreateResponse(result);
+                        _encounterExecutionService.Update(socialEncounterExecution.Id);       
                     }
+
+                    return Ok("Operation successful");
                 }
             }
 

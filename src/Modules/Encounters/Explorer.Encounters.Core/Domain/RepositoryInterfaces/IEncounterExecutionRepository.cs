@@ -14,6 +14,7 @@ namespace Explorer.Encounters.Core.Domain.RepositoryInterfaces
         public EncounterExecution Get(long id);
         public EncounterExecution Create(EncounterExecution entity);
         public EncounterExecution Update(EncounterExecution entity);
+        public void Update(int id);
         public void Delete(long id);
     }
 }

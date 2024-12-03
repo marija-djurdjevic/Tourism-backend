@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Stakeholders.API.Public;
+using Explorer.Tours.API.Public.Authoring;
 
 namespace Explorer.Encounters.Tests.Integration.Administration
 {
@@ -179,7 +180,7 @@ namespace Explorer.Encounters.Tests.Integration.Administration
 
         private static EncounterController CreateController(IServiceScope scope,string userId)
         {
-            return new EncounterController(scope.ServiceProvider.GetRequiredService<IEncounterService>(), scope.ServiceProvider.GetRequiredService<ITourSessionService>(), scope.ServiceProvider.GetRequiredService<IUserService>())
+            return new EncounterController(scope.ServiceProvider.GetRequiredService<IEncounterService>(), scope.ServiceProvider.GetRequiredService<ITourSessionService>(), scope.ServiceProvider.GetRequiredService<IUserService>(), scope.ServiceProvider.GetRequiredService<IKeyPointService>())
             {
                 ControllerContext = BuildContext(userId)
             };

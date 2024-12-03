@@ -21,5 +21,10 @@ namespace Explorer.Encounters.Core.Domain.EncounterExecutions
             TouristId = touristId;
             CompletedTime = completedTime;
         }
+
+        public void setCompletedTime(DateTime completedTime)
+        {
+            CompletedTime = completedTime;
+        }
     }
 }

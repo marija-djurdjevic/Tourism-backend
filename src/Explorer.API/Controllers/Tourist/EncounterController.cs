@@ -3,6 +3,7 @@ using Explorer.Encounters.API.Dtos.EncounterDtos;
 using Explorer.Encounters.API.Public;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Infrastructure.Authentication;
+using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.UseCases.Execution;
 using FluentResults;
@@ -18,11 +19,13 @@ namespace Explorer.API.Controllers.Tourist
         private readonly IEncounterService _encounterService;
         private readonly ITourSessionService tourSessionService;
         private readonly IUserService userService;
-        public EncounterController(IEncounterService encounterService,ITourSessionService tourSessionServic,IUserService userService)
+        private readonly IKeyPointService _keyPointService;
+        public EncounterController(IEncounterService encounterService,ITourSessionService tourSessionServic,IUserService userService,IKeyPointService keyPointService)
         {
             _encounterService = encounterService;
             this.tourSessionService = tourSessionServic;
             this.userService = userService;
+            _keyPointService = keyPointService;
         }
 
         [HttpGet]
@@ -52,8 +55,13 @@ namespace Explorer.API.Controllers.Tourist
         {
             int userId = User.PersonId();
             encounter.UserId = userId;
-            //encounter.Coordinates.Latitude = _keyPointService.Get(encounter.KeyPointId).Value.Latitude;
-            //encounter.Coordinates.Longitude = _keyPointService.Get(encounter.KeyPointId).Value.Longitude;
+
+            if(encounter.Type != EncounterType.Location)
+            {
+                encounter.Coordinates.Latitude = _keyPointService.Get(encounter.KeyPointId).Value.Latitude;
+                encounter.Coordinates.Longitude = _keyPointService.Get(encounter.KeyPointId).Value.Longitude;
+            }
+            
             encounter.Status = EncounterStatus.Draft;
             encounter.Creator = EncounterCreator.Tourist;
             if (userService.GetLevelById(userId).Value<10)
