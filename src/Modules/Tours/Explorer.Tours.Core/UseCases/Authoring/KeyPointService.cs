@@ -27,7 +27,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             _keyPointRepository = keyRepository;
         }
 
-
         public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
         {
 
