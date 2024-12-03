@@ -42,6 +42,8 @@ namespace Explorer.Payments.Infrastructure
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<ISaleService, SaleService>();
             services.AddScoped<IBundleService, BundleService>();
+            services.AddScoped<IPaymentRecordService, PaymentRecordService>();
+
         }
 
         // Dependencies for repositories
@@ -52,6 +54,7 @@ namespace Explorer.Payments.Infrastructure
             services.AddScoped<IWalletRepository, WalletRepository>();
             services.AddScoped<ISaleRepository, SaleRepository>();
             services.AddScoped<IBundleRepository, BundleRepository>();
+            services.AddScoped<IPaymentRecordRepository, PaymentRecordRepository>();
 
             services.AddDbContext<PaymentsContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("payments"),

@@ -28,8 +28,9 @@ namespace Explorer.API.Controllers.Tourist
         private readonly ITourReviewService _reviewService;
         private readonly ITourPurchaseTokenService _purchaseTokenService;
         private readonly INotificationService _notificationService;
+        private readonly IPaymentRecordService _paymentRecordService;
 
-        public ShoppingController(IShoppingService shoppingService, ITourService tourService, ITourSessionService tourSessionService, ITourReviewService tourReviewService, ITourPurchaseTokenService purchaseTokenService, INotificationService notificationService)
+        public ShoppingController(IShoppingService shoppingService, ITourService tourService, ITourSessionService tourSessionService, ITourReviewService tourReviewService, ITourPurchaseTokenService purchaseTokenService, INotificationService notificationService, IPaymentRecordService paymentRecordService)
         {
             _shoppingService = shoppingService;
             _tourService = tourService;
@@ -37,6 +38,7 @@ namespace Explorer.API.Controllers.Tourist
             _reviewService = tourReviewService;
             _purchaseTokenService = purchaseTokenService;
             _notificationService = notificationService;
+            _paymentRecordService = paymentRecordService;
 
         }
 
@@ -130,6 +132,11 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(Result.Ok(tours));
         }
 
-
+        [HttpPost("bundle/{touristId:long}")]
+        public ActionResult<PaymentRecordDto> Purchase([FromBody] BundleDto bundle, int toutistId)
+        {
+            var payment = _paymentRecordService.Purchase(bundle, toutistId);
+            return CreateResponse(Result.Ok(payment));
+        }
     }
 }
