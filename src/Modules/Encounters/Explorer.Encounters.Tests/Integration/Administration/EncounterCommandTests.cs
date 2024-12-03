@@ -38,7 +38,7 @@ namespace Explorer.Encounters.Tests.Integration.Administration
                 Name = "Pronalazenje macaka po dunavskom parku",
                 Description = "Potrebno je pronaci sve zadate macke u odredjenom vremenskom roku.",
                 Coordinates = new CoordinatesDto(),
-                Type = EncounterType.Misc,
+                Type = EncounterType.Location,
                 Status = EncounterStatus.Active,
                 Creator = EncounterCreator.Tourist,
                 Xp = 10
@@ -71,7 +71,7 @@ namespace Explorer.Encounters.Tests.Integration.Administration
                 Name = "Pronalazenje macaka po dunavskom parku",
                 Description = "Potrebno je pronaci sve zadate macke u odredjenom vremenskom roku.",
                 Coordinates = new CoordinatesDto(),
-                Type = EncounterType.Misc,
+                Type = EncounterType.Location,
                 Status = EncounterStatus.Active,
                 Creator = EncounterCreator.Tourist,
                 Xp = 10
