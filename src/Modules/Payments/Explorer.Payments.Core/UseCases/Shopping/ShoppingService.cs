@@ -20,12 +20,12 @@ namespace Explorer.Payments.Core.UseCases.Shopping
         ISaleRepository _saleRepository;
         private readonly IMapper _mapper;
 
-        public ShoppingService(ICrudRepository<ShoppingCart> shoppingRepository, ITourPurchaseTokenRepository tokenRepository, IMapper mapper) : base(mapper)
+        public ShoppingService(ICrudRepository<ShoppingCart> shoppingRepository, ITourPurchaseTokenRepository tokenRepository, ISaleRepository saleRepository, IMapper mapper) : base(mapper)
         {
             _shoppingRepository = shoppingRepository;
             _tourPurchaseTokenRepository = tokenRepository;
+            _saleRepository = saleRepository;
             _mapper = mapper;
-            
         }
 
         public Result<ShoppingCartDto> Checkout(List<OrderItemDto> items, int touristId)
