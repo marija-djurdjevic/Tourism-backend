@@ -21,6 +21,20 @@ namespace Explorer.Stakeholders.Core.UseCases
             _mapper = mapper;
         }
 
+        public Result<List<UserDto>> GetAll()
+        {
+            var result = _userRepository.GetAll();
+
+            return MapToDto(result);
+        }
+
+        public Result<List<UserDto>> GetAllTourists()
+        {
+            var result = _userRepository.GetAllTourists();
+
+            return MapToDto(result);
+        }
+
         public Result<LocationDto> GetUserLocation(long userId)
         {
             var user = _userRepository.Get(userId);
