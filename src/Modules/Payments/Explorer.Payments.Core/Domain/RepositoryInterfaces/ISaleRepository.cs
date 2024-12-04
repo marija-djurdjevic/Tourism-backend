@@ -11,5 +11,6 @@ namespace Explorer.Payments.Core.Domain.RepositoryInterfaces
     public interface ISaleRepository : ICrudRepository<Sale>
     {
         Sale GetSaleById(int id);
+        double GetLowestDiscountedPrice(int tourId, double tourPrice);
     }
 }

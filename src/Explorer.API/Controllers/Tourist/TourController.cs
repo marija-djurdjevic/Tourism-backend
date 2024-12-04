@@ -25,6 +25,7 @@ namespace Explorer.API.Controllers.Tourist
             _keyPointService = keyPointService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<PagedResult<TourDto>> GetAllPublished([FromQuery] int page, [FromQuery] int pageSize)
         {
