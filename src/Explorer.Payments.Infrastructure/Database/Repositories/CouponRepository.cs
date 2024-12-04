@@ -24,5 +24,11 @@ namespace Explorer.Payments.Infrastructure.Database.Repositories
                 .Where(b => b.AuthorId.Equals(authorId))
                 .ToList();
         }
+
+        public Coupon? GetByCode(string code)
+        {
+            return _dbContext.Coupons
+                .Where(b => b.Code.Equals(code)).FirstOrDefault();
+        }
     }
 }

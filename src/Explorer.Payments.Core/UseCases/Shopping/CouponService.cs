@@ -31,5 +31,15 @@ namespace Explorer.Payments.Core.UseCases.Shopping
             }
             return MapToDto(coupons);
         }
+
+        public Result<CouponDto> GetByCode(string code)
+        {
+            Coupon? foundCoupon = couponRepository.GetByCode(code);
+            if (foundCoupon == null)
+            {
+                return Result.Fail<CouponDto>("Invalid code - no coupon found");
+            }
+            return MapToDto(foundCoupon);
+        }
     }
 }

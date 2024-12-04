@@ -16,5 +16,6 @@ namespace Explorer.Payments.API.Public.Shopping
         Result<CouponDto> Create(CouponDto coupon);
         Result<CouponDto> Update(CouponDto coupon);
         Result Delete(int id);
+        Result<CouponDto> GetByCode(string code);
     }
 }

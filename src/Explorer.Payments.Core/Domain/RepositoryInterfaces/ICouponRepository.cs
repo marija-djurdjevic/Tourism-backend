@@ -12,5 +12,6 @@ namespace Explorer.Payments.Core.Domain.RepositoryInterfaces
     public interface ICouponRepository : ICrudRepository<Coupon>
     {
         List<Coupon>? GetByAuthorId(int authorId);
+        Coupon? GetByCode(string code);
     }
 }
