@@ -248,7 +248,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
             var tourProgressPercentage = (int)((double)existingSession.CompletedKeyPoints.Count / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
 
             if (DateTime.UtcNow < existingSession.LastActivity.AddDays(7) &&
-                DateTime.UtcNow > existingSession.LastActivity && tourProgressPercentage > 35)
+                /*DateTime.UtcNow > existingSession.LastActivity &&*/ tourProgressPercentage > 35)
             {
                 return true;
             }
@@ -269,7 +269,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
             }
 
             int keyPointsCount = _keyPointService.GetKeyPointsByTourId(tourId).Value.Count;
-            var tourProgressPercentage = (int)((double)1 /*existingSession.CompletedKeyPoints.Count*/ / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
+            var tourProgressPercentage = (int)((double)existingSession.CompletedKeyPoints.Count / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
 
             return (tourProgressPercentage, existingSession.LastActivity);
         }
