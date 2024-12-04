@@ -60,5 +60,12 @@ namespace Explorer.API.Controllers.Tourist
             var result = _tourService.GetAllToursWithKeyPoints();
             return CreateResponse(result);
         }
+
+        [HttpGet("by-author")]
+        public ActionResult<PagedResult<TourDto>> GetByAuthorId([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] int id)
+        {
+            var result = _tourService.GetByAuthorId(page, pageSize, id);
+            return CreateResponse(result);
+        }
     }
 }

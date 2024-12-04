@@ -1,4 +1,4 @@
-﻿using Explorer.Payments.Core.Domain.Shopping;
+using Explorer.Payments.Core.Domain.Shopping;
 using Explorer.Payments.Core.Domain.ShoppingCarts;
 using Explorer.Payments.Core.Domain.Wallets;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +15,7 @@ namespace Explorer.Payments.Infrastructure.Database
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<TourPurchaseToken> TourPurchaseTokens { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Sale> Sales {  get; set; }
         public DbSet<Bundle> Bundles { get; set; }
 
