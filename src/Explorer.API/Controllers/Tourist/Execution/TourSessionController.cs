@@ -1,4 +1,6 @@
-﻿using Explorer.Stakeholders.Core.Domain.Users;
+﻿using Explorer.Encounters.API.Public;
+using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.Core.Domain.Users;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
@@ -7,19 +9,23 @@ using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain.TourSessions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace Explorer.API.Controllers.Tourist.Execution
 {
     [Authorize(Policy = "touristPolicy")]
     [Route("api/administration/tourSession")]
-    public class TourSessionController:BaseApiController
+    public class TourSessionController : BaseApiController
     {
 
         private readonly ITourSessionService _tourSessionService;
-
-        public TourSessionController(ITourSessionService tourSessionService)
+        private readonly IEncounterExecutionService encounterExecutionService;
+        private readonly IEncounterService encounterService;
+        public TourSessionController(ITourSessionService tourSessionService, IEncounterService encounterService, IEncounterExecutionService encounterExecutionService)
         {
             _tourSessionService = tourSessionService;
+            this.encounterService = encounterService;
+            this.encounterExecutionService = encounterExecutionService;
         }
 
 
@@ -59,8 +65,8 @@ namespace Explorer.API.Controllers.Tourist.Execution
         [HttpPost("abandon/{id}")]
         public ActionResult<bool> AbandonTour(int id)
         {
-            var userId= User.PersonId();
-            var result = _tourSessionService.AbandonTour(id,userId);
+            var userId = User.PersonId();
+            var result = _tourSessionService.AbandonTour(id, userId);
 
             if (result.IsSuccess)
             {
@@ -75,9 +81,9 @@ namespace Explorer.API.Controllers.Tourist.Execution
         [HttpPost("update-location")]
         public ActionResult<bool> UpdateLocation([FromQuery] int tourId, [FromQuery] double latitude, [FromQuery] double longitude)
         {
-            var location = new LocationDto(latitude,longitude);
+            var location = new LocationDto(latitude, longitude);
             var userId = User.PersonId();
-            bool isNear=_tourSessionService.UpdateLocation(tourId, location,userId);
+            bool isNear = _tourSessionService.UpdateLocation(tourId, location, userId);
 
             return Ok(isNear);
         }
@@ -124,6 +130,19 @@ namespace Explorer.API.Controllers.Tourist.Execution
         public ActionResult<bool> CompleteKeyPoint(long tourId, long keyPointId)
         {
             int userId = User.PersonId();
+            var previousKeyPoint = _tourSessionService.GetMostRecentlyCompletedKeyPointId((int)tourId, userId);
+
+            if (previousKeyPoint.IsSuccess)
+            {
+                var requiredEncounters = encounterService.GetPagedForUserAndTour(userId, (int)previousKeyPoint.Value).Value.FindAll(t => t.Creator == 0);
+                foreach (var encounter in requiredEncounters)
+                {
+                    if (encounterExecutionService.GetByTouristIdAndEncounterId(userId, encounter.Id) == null)
+                    {
+                        return BadRequest("Niste završili sve potrebne izazove.");
+                    }
+                }
+            }
             var result = _tourSessionService.AddCompletedKeyPoint(tourId, keyPointId, userId);
 
             if (result.IsSuccess)

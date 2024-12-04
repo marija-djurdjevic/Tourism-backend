@@ -27,7 +27,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             _keyPointRepository = keyRepository;
         }
 
-
         public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId)
         {
 
@@ -127,6 +126,53 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             return Result.Ok(updatedKeyPointDto);
 
         }
+
+        public Result<KeyPointDto> UpdateKeyPoint(int id, KeyPointDto updatedDto)
+        {
+            var keyPointDto = GetById(id);
+            if (keyPointDto == null || keyPointDto.Value == null)
+            {
+                return Result.Fail("Key point not found");
+            }
+
+            var keyPoint = MapToDomain(keyPointDto.Value);
+            if (keyPoint == null)
+            {
+                return Result.Fail("Key point not found in the domain");
+            }
+
+            keyPoint.UpdateDetails(
+            updatedDto.Name,
+            updatedDto.Description,
+            updatedDto.ImagePath,
+            updatedDto.Longitude,
+            updatedDto.Latitude
+            );
+
+            var updatedKeyPointDto = _mapper.Map<KeyPointDto>(keyPoint);
+            Update(updatedKeyPointDto);
+
+            return Result.Ok(updatedKeyPointDto);
+        }
+        public Result DeleteKeyPoint(int id)
+        {
+            var keyPoint = _keyPointRepository.GetByIdAsync(id); 
+            if (keyPoint == null)
+            {
+                return Result.Fail("Key point not found"); 
+            }
+
+            try
+            {
+                _repository.Delete(id); 
+                return Result.Ok(); 
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail($"An error occurred while deleting the key point: {ex.Message}");
+            }
+        }
+
 
     }
 }
