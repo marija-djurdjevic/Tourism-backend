@@ -28,6 +28,8 @@ namespace Explorer.Tours.API.Dtos.TourProblemDtos
 
 public enum NotificationType
 {
-    TourProblemComment
+    TourProblemComment,
+    PublicRequest,
+    TourRefundComment
     //Ko bude koristio notifikacije neka sebi doda tip koji mu treba
 }

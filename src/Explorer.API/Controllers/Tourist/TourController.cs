@@ -1,8 +1,8 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Payments.API.Public.Shopping;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;
-using Explorer.Tours.API.Public.Shopping;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +25,7 @@ namespace Explorer.API.Controllers.Tourist
             _keyPointService = keyPointService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<PagedResult<TourDto>> GetAllPublished([FromQuery] int page, [FromQuery] int pageSize)
         {
@@ -57,6 +58,13 @@ namespace Explorer.API.Controllers.Tourist
         public ActionResult<List<TourDto>> GetTours()
         {
             var result = _tourService.GetAllToursWithKeyPoints();
+            return CreateResponse(result);
+        }
+
+        [HttpGet("by-author")]
+        public ActionResult<PagedResult<TourDto>> GetByAuthorId([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] int id)
+        {
+            var result = _tourService.GetByAuthorId(page, pageSize, id);
             return CreateResponse(result);
         }
     }

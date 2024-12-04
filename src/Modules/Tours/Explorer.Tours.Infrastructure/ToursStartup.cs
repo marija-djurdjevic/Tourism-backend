@@ -2,9 +2,6 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Tours.API.Public;
 using Explorer.Tours.API.Public.Administration;
-using Explorer.Tours.API.Public.Shopping;
-using Explorer.Tours.Core.Domain.ShoppingCarts;
-using Explorer.Tours.Core.UseCases.Shopping;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Mappers;
@@ -21,6 +18,7 @@ using Explorer.Tours.Core.Domain.TourSessions;
 using Explorer.Tours.Core.Domain.TourProblems;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.UseCases.Authoring;
+using Explorer.Tours.Core.Domain.PublishRequests;
 
 namespace Explorer.Tours.Infrastructure;
 
@@ -45,14 +43,14 @@ public static class ToursStartup
         services.AddScoped<IKeyPointService, KeyPointService>();
         services.AddScoped<IObjectService, ObjectService>();
         services.AddScoped<ITourPreferencesService, TourPreferencesService>();
-        services.AddScoped<IShoppingService, ShoppingService>();
         services.AddScoped<ITourSessionRepository, TourSessionRepository>();
         services.AddScoped<ITourSessionService, TourSessionService>();
         services.AddScoped<ITourRepository, TourRepository>();
-        services.AddScoped<ITourPurchaseTokenRepository, TourPurchaseTokenRepository>();
         services.AddScoped<ITourProblemRepository, TourProblemRepository>();
         services.AddScoped<ITourProblemService, TourProblemService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IPublishRequestService, PublishRequestService>();
+        services.AddScoped<IKeyPointRepository, KeyPointRepository>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -66,10 +64,10 @@ public static class ToursStartup
         services.AddScoped(typeof(ICrudRepository<Tour>), typeof(CrudDatabaseRepository<Tour, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<KeyPoint>), typeof(CrudDatabaseRepository<KeyPoint, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Core.Domain.TourProblems.TourProblem>), typeof(CrudDatabaseRepository<Core.Domain.TourProblems.TourProblem, ToursContext>));
-        services.AddScoped(typeof(ICrudRepository<ShoppingCart>), typeof(CrudDatabaseRepository<ShoppingCart, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Notification>), typeof(CrudDatabaseRepository<Notification, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<TourSession>), typeof(CrudDatabaseRepository<TourSession, ToursContext>));
-
+        services.AddScoped(typeof(ICrudRepository<PublishRequest>), typeof(CrudDatabaseRepository<PublishRequest, ToursContext>));
+    
         services.AddDbContext<ToursContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "tours")));

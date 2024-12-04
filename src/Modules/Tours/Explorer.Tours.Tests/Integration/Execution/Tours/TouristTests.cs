@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Explorer.API.Controllers.Tourist;
-using Explorer.Tours.API.Public.Shopping;
+using Explorer.Payments.API.Public.Shopping;
 using FluentResults;
 
 namespace Explorer.Tours.Tests.Integration.Execution.Tours

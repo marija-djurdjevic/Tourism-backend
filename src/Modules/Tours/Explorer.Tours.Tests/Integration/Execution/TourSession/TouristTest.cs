@@ -1,5 +1,6 @@
 ﻿using Explorer.API.Controllers.Tourist;
 using Explorer.API.Controllers.Tourist.Execution;
+using Explorer.Encounters.API.Public;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Administration;
@@ -269,7 +270,7 @@ namespace Explorer.Tours.Tests.Integration.Execution.TourSession
 
         private static TourSessionController CreateController(IServiceScope scope)
         {
-            return new TourSessionController(scope.ServiceProvider.GetRequiredService<ITourSessionService>())
+            return new TourSessionController(scope.ServiceProvider.GetRequiredService<ITourSessionService>(), scope.ServiceProvider.GetRequiredService<IEncounterService>(), scope.ServiceProvider.GetRequiredService<IEncounterExecutionService>())
             {
                 ControllerContext = BuildContext("-1")
             };

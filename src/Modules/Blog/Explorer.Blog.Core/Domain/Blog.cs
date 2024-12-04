@@ -18,20 +18,24 @@ namespace Explorer.Blog.Core.Domain
         Draft,
         Published,
         Closed,
+        Active,
+        Famous
     }
 
     //[Table("Blogs", Schema = "blog")] 
 
-    public class Blogs: Entity
+    public class Blogs : Entity
     {
         //[ForeignKey("User")]
         public long AuthorId { get; private set; }
+        //public List<Comment>? Comments { get; private set; }
+        public List<Vote>? Votes { get; private set; }
         //public User User { get; set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
         public DateTime CreationDate { get; private set; }
         public string? Image { get; private set; }
-        public BlogStatus Status { get; private set; }
+        public BlogStatus Status { get; set; }
 
         public Blogs(long authorId, string title, string description, DateTime creationDate, BlogStatus status, string? image = null)
         {
@@ -43,6 +47,52 @@ namespace Explorer.Blog.Core.Domain
             CreationDate = creationDate;
             Image = image;
             Status = status;
+        }
+        public Blogs(long authorId, List<Vote>? votes, string title, string description, DateTime creationDate, BlogStatus status, string? image = null)
+        {
+            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Invalid title.");
+            if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid description.");
+            AuthorId = authorId;
+            Votes = votes;
+            Title = title;
+            Description = description;
+            CreationDate = creationDate;
+            Image = image;
+            Status = status;
+        }
+
+        public void AddVote(Vote newVote)
+        {
+            if (Votes == null)
+                Votes = new List<Vote>();
+
+            var vote = Votes.FirstOrDefault(v => v?.AuthorId == newVote.AuthorId);
+
+            if (vote == null)
+                Votes.Add(newVote);
+            else
+            {
+                vote.CreationDate = newVote.CreationDate;
+                vote.Value = newVote.Value;
+            }
+        }
+
+        public void RemoveVote(long authorId)
+        {
+            if (Votes == null || !Votes.Any())
+                throw new InvalidOperationException("No votes available to remove.");
+
+            var vote = Votes.FirstOrDefault(v => v?.AuthorId == authorId);
+
+            if (vote == null)
+                throw new ArgumentException($"Vote by author with ID {authorId} does not exist.");
+
+            Votes.Remove(vote);
+        }
+
+        public List<Vote> GetAllVotes()
+        {
+            return Votes ?? new List<Vote>();
         }
     }
 }

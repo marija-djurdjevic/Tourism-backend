@@ -54,5 +54,13 @@ namespace Explorer.API.Controllers.Tourist.Identity
             var result = _userService.GetUsernameById(userId);
             return CreateResponse(result);
         }
+
+        [HttpGet("level")]
+        public ActionResult<int> getUserLevel()
+        {
+            var userId = User.PersonId();
+            var result = _userService.GetLevelById(userId);
+            return CreateResponse(result);
+        }
     }
 }

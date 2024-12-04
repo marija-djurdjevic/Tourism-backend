@@ -1,4 +1,4 @@
-﻿using Explorer.BuildingBlocks.Infrastructure.Database;
+using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using Explorer.Stakeholders.Core.Domain.Users;
@@ -59,6 +59,7 @@ public class UserDatabaseRepository : CrudDatabaseRepository<User, StakeholdersC
         return _dbContext.Users.FirstOrDefault(i => i.Id == userId && i.IsActive && i.Role == UserRole.Tourist)?.Location;
     }
 
+
     public List<User> GetAll()
     {
         return _dbContext.Users.ToList();
@@ -67,5 +68,9 @@ public class UserDatabaseRepository : CrudDatabaseRepository<User, StakeholdersC
     public List<User> GetAllTourists()
     {
         return _dbContext.Users.Where(u => u.Role == UserRole.Tourist).ToList();
+    }
+    public User? GetUserById(long userId)
+    {
+        return _dbContext.Users.FirstOrDefault(i => i.Id == userId);
     }
 }

@@ -17,6 +17,14 @@ namespace Explorer.Tours.API.Dtos
         public float Longitude { get; set; }
         public float Latitude { get; set; }
 
+        public ObjectStatus Status { get; set; }
+        public enum ObjectStatus
+        {
+            Pending,
+            Private,
+            Public,
+            Rejected
+        }
 
         public enum ObjectCategory
         {
