@@ -1,4 +1,4 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Payments.API.Public.Shopping;
 using Explorer.Payments.Core.Domain.ShoppingCarts;
@@ -43,7 +43,7 @@ namespace Explorer.Payments.Infrastructure
             services.AddScoped<ISaleService, SaleService>();
             services.AddScoped<IBundleService, BundleService>();
             services.AddScoped<IPaymentRecordService, PaymentRecordService>();
-
+            services.AddScoped<ICouponService, CouponService>();
         }
 
         // Dependencies for repositories
@@ -52,6 +52,7 @@ namespace Explorer.Payments.Infrastructure
             services.AddScoped(typeof(ICrudRepository<ShoppingCart>), typeof(CrudDatabaseRepository<ShoppingCart, PaymentsContext>));
             services.AddScoped<ITourPurchaseTokenRepository, TourPurchaseTokenRepository>();
             services.AddScoped<IWalletRepository, WalletRepository>();
+            services.AddScoped<ICouponRepository, CouponRepository>();
             services.AddScoped<ISaleRepository, SaleRepository>();
             services.AddScoped<IBundleRepository, BundleRepository>();
             services.AddScoped<IPaymentRecordRepository, PaymentRecordRepository>();

@@ -8,5 +8,6 @@ namespace Explorer.Encounters.Core.Domain.RepositoryInterfaces
 {
     public interface IEncounterRepository
     {
+        public void Update(long id);
     }
 }

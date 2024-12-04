@@ -17,14 +17,15 @@ namespace Explorer.Payments.Core.UseCases.Shopping
     {
         ICrudRepository<ShoppingCart> _shoppingRepository;
         ITourPurchaseTokenRepository _tourPurchaseTokenRepository;
+        ISaleRepository _saleRepository;
         private readonly IMapper _mapper;
 
-        public ShoppingService(ICrudRepository<ShoppingCart> shoppingRepository, ITourPurchaseTokenRepository tokenRepository, IMapper mapper) : base(mapper)
+        public ShoppingService(ICrudRepository<ShoppingCart> shoppingRepository, ITourPurchaseTokenRepository tokenRepository, ISaleRepository saleRepository, IMapper mapper) : base(mapper)
         {
             _shoppingRepository = shoppingRepository;
             _tourPurchaseTokenRepository = tokenRepository;
+            _saleRepository = saleRepository;
             _mapper = mapper;
-            
         }
 
         public Result<ShoppingCartDto> Checkout(List<OrderItemDto> items, int touristId)
@@ -61,6 +62,18 @@ namespace Explorer.Payments.Core.UseCases.Shopping
                 {
                     var token = new TourPurchaseToken(touristId, item.TourId, false);
                     _tourPurchaseTokenRepository.Create(token);
+                }
+            }
+
+            //check for tours that are on sales
+
+            foreach (var orderItem in orderItems)
+            {
+                var discountedPrice = _saleRepository.GetLowestDiscountedPrice(orderItem.TourId, orderItem.Price);
+
+                if (discountedPrice < orderItem.Price)
+                {
+                    orderItem.UpdatePrice(discountedPrice);
                 }
             }
 

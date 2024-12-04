@@ -1,4 +1,5 @@
-﻿using Explorer.BuildingBlocks.Core.Domain;
+﻿using AutoMapper.Execution;
+using Explorer.BuildingBlocks.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace Explorer.Tours.Core.Domain
         public string Name { get; private set; }
         public string Description { get; private set; }
         public int ImageId {  get; private set; }
+        public List<int> MemberIds { get; private set;}
+        public List<int> InvitationIds { get; private set;}
 
         public Club(string name, string description, int imageId)
         {
@@ -22,6 +25,43 @@ namespace Explorer.Tours.Core.Domain
             Name = name;
             Description = description;
             ImageId = imageId;
+            MemberIds = new List<int>();
+            InvitationIds = new List<int>();
+        }
+
+        // Add a new member
+        public void AddMember(int userId)
+        {
+            if (!MemberIds.Contains(userId))
+                MemberIds.Add(userId);
+        }
+
+        // Remove a member
+        public void RemoveMember(int userId)
+        {
+            MemberIds.Remove(userId);
+        }
+
+        // Invite a user
+        public void InviteUser(int userId)
+        {
+                InvitationIds.Add(userId);
+        }
+
+        // Accept an invitation
+        public void AcceptInvitation(int userId)
+        {
+            if (InvitationIds.Contains(userId))
+            {
+                InvitationIds.Remove(userId);
+                AddMember(userId);
+            }
+        }
+
+        // Reject an invitation
+        public void RejectInvitation(int userId)
+        {
+            InvitationIds.Remove(userId);
         }
     }
 }

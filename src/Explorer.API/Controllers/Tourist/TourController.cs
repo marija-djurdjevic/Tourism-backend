@@ -25,6 +25,7 @@ namespace Explorer.API.Controllers.Tourist
             _keyPointService = keyPointService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<PagedResult<TourDto>> GetAllPublished([FromQuery] int page, [FromQuery] int pageSize)
         {
@@ -57,6 +58,13 @@ namespace Explorer.API.Controllers.Tourist
         public ActionResult<List<TourDto>> GetTours()
         {
             var result = _tourService.GetAllToursWithKeyPoints();
+            return CreateResponse(result);
+        }
+
+        [HttpGet("by-author")]
+        public ActionResult<PagedResult<TourDto>> GetByAuthorId([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] int id)
+        {
+            var result = _tourService.GetByAuthorId(page, pageSize, id);
             return CreateResponse(result);
         }
     }
