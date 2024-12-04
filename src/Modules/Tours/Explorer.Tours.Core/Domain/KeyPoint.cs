@@ -116,6 +116,15 @@ namespace Explorer.Tours.Core.Domain
         {
             TourIds = list;
         }
+
+        public void UpdateDetails(string name, string description, string imagePath, double longitude, double latitude)
+        {
+
+            Name = name;
+            Description = description;
+            ImagePath = imagePath;
+            Coordinates.UpdateCoordinates(longitude, latitude);
+        }
     }
     //dodala sam enum
     public enum KeyPointStatus

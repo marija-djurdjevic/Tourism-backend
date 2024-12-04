@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Explorer.Encounters.Core.Domain.Encounters
 {
@@ -30,5 +31,6 @@ namespace Explorer.Encounters.Core.Domain.Encounters
         {
             throw new NotImplementedException();
         }
+       
     }
 }
