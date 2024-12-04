@@ -26,6 +26,15 @@ namespace Explorer.Payments.Core.UseCases.Shopping
             this.mapper = mapper;
         }
 
+        public Result<List<PaymentRecordDto>> GetByTouristId(int touristId)
+        {
+            List<PaymentRecord>? payments = _paymentRecordRepository.GetByTouristId(touristId);
+            if (payments == null)
+            {
+                return Result.Fail<List<PaymentRecordDto>>("No payment record found for the specified tourist ID.");
+            }
+            return MapToDto(payments);
+        }
 
         public Result<PaymentRecordDto> Purchase(BundleDto bundleDto, int touristId)
         {

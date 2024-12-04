@@ -16,5 +16,12 @@ namespace Explorer.Payments.Infrastructure.Database.Repositories
         {
             _dbContext = dbContext;
         }
+
+        public List<PaymentRecord>? GetByTouristId(int touristId)
+        {
+            return _dbContext.PaymentRecords
+                .Where(pr => pr.TouristId.Equals(touristId))
+                .ToList();
+        }
     }
 }

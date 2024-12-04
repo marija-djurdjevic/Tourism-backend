@@ -10,7 +10,7 @@ namespace Explorer.Payments.API.Dtos.ShoppingDtos
     {
         public int Id { get; set; }
         public int TouristId { get; set; }
-        public int BudnleId { get; set; }
+        public int BundleId { get; set; }
         public double Price { get; set; }
         public DateTime PurchaseTime { get; set; }
     }

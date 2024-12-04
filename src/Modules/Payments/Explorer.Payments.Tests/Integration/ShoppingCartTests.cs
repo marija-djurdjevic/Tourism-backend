@@ -20,6 +20,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Explorer.Payments.API.Internal.Shopping;
+using static Explorer.Payments.API.Dtos.ShoppingDtos.BundleDto;
 
 
 namespace Explorer.Payments.Tests.Integration
@@ -144,9 +145,53 @@ namespace Explorer.Payments.Tests.Integration
             storedEntity.Refunded.ShouldBe(true);
 
         }
+
+        //[Theory]
+        //[InlineData(-2, -21, BundleStatus.Published)]
+        //public void PusrchaseBundle(int bundleId, int touristId, BundleStatus expectedStatus)
+        //{
+        //    // Arrange
+        //    using var scope = Factory.Services.CreateScope();
+        //    var controller = CreateController(scope);
+        //    var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
+
+        //    var bundle = dbContext.Bundles.FirstOrDefault(b => b.Id == bundleId);
+        //    bundle.ShouldNotBeNull();
+        //    var newBundle = new BundleDto
+        //    {
+        //        AuthorId = bundle.AuthorId,
+        //        TourIds = bundle.TourIds.ToList(),
+        //        Price = bundle.Price,
+        //        Status = expectedStatus // Initial status should be Draft
+        //    };
+
+        //    // Act
+        //    var result = ((ObjectResult)controller.Purchase(newBundle, touristId).Result)?.Value as PaymentRecordDto;
+
+        //    // Assert - Response
+        //    result.ShouldNotBeNull();
+        //    result.Id.ShouldNotBe(0);
+        //    result.TouristId.ShouldBe(touristId);
+        //    result.BundleId.ShouldBeEquivalentTo(newBundle.Id);
+        //    result.Price.ShouldBe(newBundle.Price);
+        //    result.PurchaseTime.ShouldBe(DateTime.UtcNow);
+
+        //    // Assert - Database
+        //    var storedEntity = dbContext.PaymentRecords.FirstOrDefault(pr => pr.Id == result.Id);
+        //    storedEntity.ShouldNotBeNull();
+        //    storedEntity.TouristId.ShouldBe(touristId);
+        //    storedEntity.BundleId.ShouldBeEquivalentTo(newBundle.Id);
+        //    storedEntity.Price.ShouldBe(newBundle.Price);
+        //    storedEntity.PurchaseTime.ShouldBe(DateTime.UtcNow);
+        //    var tokensEntities = dbContext.TourPurchaseTokens
+        //     .Where(i => i.TouristId == -1 && (i.TourId == 1 || i.TourId == 2))
+        //     .ToList();
+        //    tokensEntities.Count.ShouldBe(4);
+        //}
+
         private static ShoppingController CreateController(IServiceScope scope)
         {
-            return new ShoppingController(scope.ServiceProvider.GetRequiredService<IShoppingService>(), scope.ServiceProvider.GetRequiredService<ITourService>(), scope.ServiceProvider.GetRequiredService<ITourSessionService>(), scope.ServiceProvider.GetRequiredService<ITourReviewService>(), scope.ServiceProvider.GetRequiredService<ITourPurchaseTokenService>(), scope.ServiceProvider.GetRequiredService<INotificationService>());
+            return new ShoppingController(scope.ServiceProvider.GetRequiredService<IShoppingService>(), scope.ServiceProvider.GetRequiredService<ITourService>(), scope.ServiceProvider.GetRequiredService<ITourSessionService>(), scope.ServiceProvider.GetRequiredService<ITourReviewService>(), scope.ServiceProvider.GetRequiredService<ITourPurchaseTokenService>(), scope.ServiceProvider.GetRequiredService<INotificationService>(), scope.ServiceProvider.GetRequiredService<IPaymentRecordService>(), scope.ServiceProvider.GetRequiredService<IBundleService>());
 
         }
     }

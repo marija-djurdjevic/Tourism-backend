@@ -10,5 +10,6 @@ namespace Explorer.Payments.Core.Domain.RepositoryInterfaces
 {
     public interface IPaymentRecordRepository : ICrudRepository<PaymentRecord>
     {
+        List<PaymentRecord>? GetByTouristId(int touristId);
     }
 }

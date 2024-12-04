@@ -29,8 +29,9 @@ namespace Explorer.API.Controllers.Tourist
         private readonly ITourPurchaseTokenService _purchaseTokenService;
         private readonly INotificationService _notificationService;
         private readonly IPaymentRecordService _paymentRecordService;
+        private readonly IBundleService _bundleService;
 
-        public ShoppingController(IShoppingService shoppingService, ITourService tourService, ITourSessionService tourSessionService, ITourReviewService tourReviewService, ITourPurchaseTokenService purchaseTokenService, INotificationService notificationService, IPaymentRecordService paymentRecordService)
+        public ShoppingController(IShoppingService shoppingService, ITourService tourService, ITourSessionService tourSessionService, ITourReviewService tourReviewService, ITourPurchaseTokenService purchaseTokenService, INotificationService notificationService, IPaymentRecordService paymentRecordService, IBundleService bundleService)
         {
             _shoppingService = shoppingService;
             _tourService = tourService;
@@ -39,7 +40,7 @@ namespace Explorer.API.Controllers.Tourist
             _purchaseTokenService = purchaseTokenService;
             _notificationService = notificationService;
             _paymentRecordService = paymentRecordService;
-
+            _bundleService = bundleService;
         }
 
         [HttpPost("checkout")]
@@ -132,11 +133,32 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(Result.Ok(tours));
         }
 
-        [HttpPost("bundle/{touristId:long}")]
-        public ActionResult<PaymentRecordDto> Purchase([FromBody] BundleDto bundle, int toutistId)
+        [HttpPost("bundle/purchase")]
+        public ActionResult<PaymentRecordDto> Purchase([FromBody] BundleDto bundle, [FromQuery] int touristId)
         {
-            var payment = _paymentRecordService.Purchase(bundle, toutistId);
+            var payment = _paymentRecordService.Purchase(bundle, touristId);
             return CreateResponse(Result.Ok(payment));
+        }
+
+        [HttpGet("payments")]
+        public ActionResult<List<PaymentRecordDto>> GetTouristPayments([FromQuery]int touristId)
+        {
+            var payments = _paymentRecordService.GetByTouristId(touristId);
+            return CreateResponse(Result.Ok(payments));
+        }
+
+        [HttpGet]
+        public ActionResult<PagedResult<BundleDto>> GetAllBundles([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var result = _bundleService.GetPaged(page, pageSize);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("bundle/purchased/{touristId:long}")]
+        public ActionResult<List<BundleDto>> GetPurchasedBundles([FromRoute]int touristId)
+        {
+            var payments = _bundleService.GetPurchusedBundles(touristId);
+            return CreateResponse(Result.Ok(payments));
         }
     }
 }

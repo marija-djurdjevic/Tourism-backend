@@ -14,5 +14,6 @@ namespace Explorer.Payments.API.Public.Shopping
         Result<PagedResult<PaymentRecordDto>> GetPaged(int page, int pageSize);
         Result<PaymentRecordDto> Create(PaymentRecordDto paymentRecord);
         Result<PaymentRecordDto> Purchase(BundleDto bundle, int touristId);
+        Result<List<PaymentRecordDto>> GetByTouristId(int touristId);
     }
 }
