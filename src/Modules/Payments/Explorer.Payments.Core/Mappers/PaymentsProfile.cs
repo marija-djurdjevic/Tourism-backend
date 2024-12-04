@@ -25,6 +25,7 @@ namespace Explorer.Payments.Core.Mappers
             CreateMap<CouponDto, Coupon>().ReverseMap();
 
             CreateMap<BundleDto, Bundle>().ReverseMap();
+            CreateMap<PaymentRecordDto, PaymentRecord>().ReverseMap();
         }
     }
 }

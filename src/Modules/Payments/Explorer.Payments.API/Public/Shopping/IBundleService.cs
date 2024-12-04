@@ -16,5 +16,6 @@ namespace Explorer.Payments.API.Public.Shopping
         Result<BundleDto> Create(BundleDto bundle);
         Result<BundleDto> Update(BundleDto bundle);
         Result<BundleDto> GetById(int id);
+        Result<List<BundleDto>> GetPurchusedBundles(int touristId);
     }
 }

@@ -42,6 +42,7 @@ namespace Explorer.Payments.Infrastructure
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<ISaleService, SaleService>();
             services.AddScoped<IBundleService, BundleService>();
+            services.AddScoped<IPaymentRecordService, PaymentRecordService>();
             services.AddScoped<ICouponService, CouponService>();
         }
 
@@ -54,6 +55,7 @@ namespace Explorer.Payments.Infrastructure
             services.AddScoped<ICouponRepository, CouponRepository>();
             services.AddScoped<ISaleRepository, SaleRepository>();
             services.AddScoped<IBundleRepository, BundleRepository>();
+            services.AddScoped<IPaymentRecordRepository, PaymentRecordRepository>();
 
             services.AddDbContext<PaymentsContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("payments"),

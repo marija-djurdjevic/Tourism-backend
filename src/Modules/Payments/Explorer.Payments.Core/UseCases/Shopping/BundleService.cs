@@ -18,9 +18,11 @@ namespace Explorer.Payments.Core.UseCases.Shopping
     public class BundleService : CrudService<BundleDto, Bundle>, IBundleService
     {
         private readonly IBundleRepository bundleRepository;
-        public BundleService(IBundleRepository bundleRepository, IMapper mapper) : base(bundleRepository, mapper)
+        private readonly IPaymentRecordRepository paymentRecordRepository;
+        public BundleService(IBundleRepository bundleRepository, IPaymentRecordRepository paymentRecordRepository, IMapper mapper) : base(bundleRepository, mapper)
         {
             this.bundleRepository = bundleRepository;
+            this.paymentRecordRepository = paymentRecordRepository;
         }
 
         public Result<List<BundleDto>> GetByAuthorId(int auhtorId)
@@ -41,6 +43,24 @@ namespace Explorer.Payments.Core.UseCases.Shopping
                 return Result.Fail<BundleDto>("No bundle found for the specified ID.");
             }
             return MapToDto(bundle);
+        }
+
+        public Result<List<BundleDto>> GetPurchusedBundles(int touristId)
+        {
+            List<PaymentRecord>? payments = paymentRecordRepository.GetByTouristId(touristId);
+            if (payments == null)
+            {
+                return Result.Fail<List<BundleDto>>("No bundles found for the specified tourist ID.");
+            }
+
+            List<Bundle> bundles = new List<Bundle>();
+            foreach (PaymentRecord payment in payments)
+            {
+                Bundle bundle = bundleRepository.Get(payment.BundleId);
+                bundles.Add(bundle);
+            }
+
+            return MapToDto(bundles);
         }
     }
 }

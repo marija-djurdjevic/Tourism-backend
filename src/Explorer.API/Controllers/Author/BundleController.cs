@@ -24,8 +24,9 @@ namespace Explorer.API.Controllers.Author
             this.bundleService = bundleService;
             this.tourService = tourService;
         }
-
+        
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<PagedResult<BundleDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = bundleService.GetPaged(page, pageSize);
