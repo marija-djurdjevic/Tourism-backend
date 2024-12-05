@@ -30,5 +30,11 @@ namespace Explorer.Tours.Core.Domain.Tours
         {
             throw new NotImplementedException();
         }
+        public void UpdateCoordinates(double longitude, double latitude)
+        {
+
+            Longitude = longitude;
+            Latitude = latitude;
+        }
     }
 }

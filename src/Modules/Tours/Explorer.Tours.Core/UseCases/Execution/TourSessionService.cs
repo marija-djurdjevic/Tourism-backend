@@ -1,11 +1,11 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Core.Domain.Users;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
-using Explorer.Tours.API.Public.Shopping;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Core.Domain.TourSessions;
@@ -16,6 +16,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
+using Explorer.Payments.API.Internal.Shopping;
+using Microsoft.EntityFrameworkCore;
 
 namespace Explorer.Tours.Core.UseCases.Execution
 {
@@ -25,16 +27,16 @@ namespace Explorer.Tours.Core.UseCases.Execution
         private readonly IMapper _mapper;
         private readonly ITourService _tourService;
         private readonly IKeyPointService _keyPointService;
-        private readonly ITourPurchaseTokenRepository _purchaseTokenRepository;
+        private readonly ITourPurchaseTokenServiceInternal _purchaseTokenService;
 
 
-        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService, ITourPurchaseTokenRepository tourPurchaseTokenRepository) : base(mapper)
+        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService, ITourPurchaseTokenServiceInternal tourPurchaseTokenService) : base(mapper)
         {
             _repository = repository;
             _mapper = mapper;
             _tourService = tourService;
             _keyPointService = keyPointService;
-            _purchaseTokenRepository = tourPurchaseTokenRepository;
+            _purchaseTokenService = tourPurchaseTokenService;
 
         }
         public Result<TourSessionDto> AbandonTour(int tourId,int userId)
@@ -60,7 +62,27 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
         }
 
+        public Result<int> GetMostRecentlyCompletedKeyPointId(int tourId, int userId)
+        {
+            var tourSession = _repository.GetByTourId(tourId, userId);
 
+            if (tourSession == null)
+            {
+                return Result.Fail<int>("Tour session not found.");
+            }
+
+            var completedKeyPoints = _mapper.Map<List<CompletedKeyPointDto>>(tourSession.CompletedKeyPoints);
+            if(completedKeyPoints == null || !completedKeyPoints.Any())
+            {
+                return Result.Fail<int>("No completed key points found.");
+            }
+            int lastCompletedKeyPointId = completedKeyPoints
+                .OrderByDescending(kp => kp.CompletedAt)
+                .FirstOrDefault().KeyPointId;
+
+            // Return the result as a successful operation
+            return Result.Ok(lastCompletedKeyPointId);
+        }
 
         public Result<TourSessionDto> CompleteTour(int tourId,int userId)
         {
@@ -85,57 +107,61 @@ namespace Explorer.Tours.Core.UseCases.Execution
         public Result<TourSessionDto> StartTour(int tourId, int userId, LocationDto initialLocation)
         {
 
-            var purchasedTours = _purchaseTokenRepository.GetPurchasedTours(userId);
-
-            bool exist = purchasedTours.Any(item => item == tourId);
-            if (!exist)
+            // Proveri da li je tura kupljena
+            if (!IsTourPurchasedByUser(tourId, userId))
             {
                 return Result.Fail<TourSessionDto>("Tour not found.");
-
             }
 
+            // Dohvati turu i proveri njen status
             var tourResult = _tourService.Get(tourId);
-
-            var tour = tourResult.Value;
-
-            TourStatus tourStatus = (TourStatus)Enum.Parse(typeof(TourStatus), tour.Status.ToString());
-
-            if (tour == null)
-            {
-                return Result.Fail<TourSessionDto>("Tour not found.");
-            }
-
-
-            if (tourStatus != TourStatus.Published && tourStatus != TourStatus.Archived)
+            if (tourResult.Value == null || !IsTourInValidState(tourResult.Value))
             {
                 return Result.Fail<TourSessionDto>("Tour is not in a state that allows starting a session.");
             }
 
-
-            var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
-
-
-            var existingSession = allSessions.FirstOrDefault(session =>
-                session.TourId == tourId && session.UserId == userId);
-
-            if (existingSession != null)
+            // Proveri da li već postoji aktivna sesija
+            if (DoesSessionAlreadyExist(tourId, userId))
             {
                 return Result.Fail<TourSessionDto>("An active tour session already exists for this tour.");
             }
 
+            // Kreiraj novu sesiju
+            return CreateNewTourSession(tourId, userId, initialLocation);
+        }
+
+        private bool IsTourPurchasedByUser(int tourId, int userId)
+        {
+            var purchasedTours = _purchaseTokenService.GetPurchasedTours(userId).Value;
+            return purchasedTours.Any(item => item == tourId);
+        }
+
+        private bool IsTourInValidState(TourDto tour)
+        {
+            TourStatus tourStatus = (TourStatus)Enum.Parse(typeof(TourStatus), tour.Status.ToString());
+            return tourStatus == TourStatus.Published || tourStatus == TourStatus.Archived;
+        }
+
+        private bool DoesSessionAlreadyExist(int tourId, int userId)
+        {
+            var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
+            return allSessions.Any(session => session.TourId == tourId && session.UserId == userId);
+        }
+
+        private Result<TourSessionDto> CreateNewTourSession(int tourId, int userId, LocationDto initialLocation)
+        {
             var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(initialLocation);
 
             var tourSession = new TourSession(tourId, location, userId);
-
             if (tourSession == null)
             {
                 return Result.Fail<TourSessionDto>("Tour session not found.");
             }
 
             _repository.Create(tourSession);
-
             return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
         }
+
 
 
 
@@ -173,7 +199,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
                 _repository.Update(existingSession);
             }
 
-            existingSession.UpdateCurrentLocation(location);
+             existingSession.UpdateCurrentLocation(location);
             _repository.Update(existingSession);
 
             return isNear;
@@ -222,7 +248,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
             var tourProgressPercentage = (int)((double)existingSession.CompletedKeyPoints.Count / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
 
             if (DateTime.UtcNow < existingSession.LastActivity.AddDays(7) &&
-                DateTime.UtcNow > existingSession.LastActivity && tourProgressPercentage > 35)
+                /*DateTime.UtcNow > existingSession.LastActivity &&*/ tourProgressPercentage > 35)
             {
                 return true;
             }
@@ -243,7 +269,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
             }
 
             int keyPointsCount = _keyPointService.GetKeyPointsByTourId(tourId).Value.Count;
-            var tourProgressPercentage = (int)((double)1 /*existingSession.CompletedKeyPoints.Count*/ / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
+            var tourProgressPercentage = (int)((double)existingSession.CompletedKeyPoints.Count / (keyPointsCount <= 0 ? 1 : keyPointsCount) * 100);
 
             return (tourProgressPercentage, existingSession.LastActivity);
         }

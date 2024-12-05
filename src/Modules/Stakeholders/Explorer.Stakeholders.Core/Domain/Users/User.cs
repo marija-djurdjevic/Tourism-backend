@@ -10,6 +10,7 @@ public class User : Entity
     public UserRole Role { get; private set; }
     public bool IsActive { get; set; }
     public Location Location { get; set; }
+    public int XP { get; set; }
 
     public User(string username, string password, UserRole role, bool isActive)
     {
@@ -18,6 +19,7 @@ public class User : Entity
         Role = role;
         IsActive = isActive;
         Location = new Location(0, 0);
+        XP = 0;
         Validate();
     }
 
@@ -30,6 +32,23 @@ public class User : Entity
             return true;
         }
         throw new ArgumentException("Unauthorized attempt to set location.");
+    }
+
+    public int getUserLevel()
+    {
+        return XP / 100+1;
+    }
+
+    public void UpdateXPs(int xp)
+    {
+        if (Role == UserRole.Tourist && IsActive)
+        {
+            XP += xp;
+        }
+        else
+        {
+            throw new ArgumentException("Unauthorized attempt to update XP.");
+        }
     }
 
     private void Validate()

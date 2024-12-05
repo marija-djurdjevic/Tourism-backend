@@ -21,6 +21,20 @@ namespace Explorer.Stakeholders.Core.UseCases
             _mapper = mapper;
         }
 
+        public Result<List<UserDto>> GetAll()
+        {
+            var result = _userRepository.GetAll();
+
+            return MapToDto(result);
+        }
+
+        public Result<List<UserDto>> GetAllTourists()
+        {
+            var result = _userRepository.GetAllTourists();
+
+            return MapToDto(result);
+        }
+
         public Result<LocationDto> GetUserLocation(long userId)
         {
             var user = _userRepository.Get(userId);
@@ -33,6 +47,29 @@ namespace Explorer.Stakeholders.Core.UseCases
             return Result.Ok(_mapper.Map<LocationDto>(user.Location));
         }
 
+        public Result<UserDto> UpdateXPs(int userId, int xp)
+        {
+            var user = _userRepository.Get(userId);
+
+            if (user == null)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError($"User with id '{userId}' not found.");
+            }
+            user.UpdateXPs(xp);
+
+            return Result.Ok(_mapper.Map<UserDto>(_userRepository.Update(user)));
+        }
+        public Result<int> GetLevelById(int userId)
+        {
+            var user = _userRepository.Get(userId);
+
+            if (user == null)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError($"User with id '{userId}' not found.");
+            }
+
+            return Result.Ok(user.getUserLevel());
+        }
         public Result<bool> Exists(string username)
         {
             
@@ -136,6 +173,26 @@ namespace Explorer.Stakeholders.Core.UseCases
 
             return Result.Ok(user.Username);
         }   
+        public Result<UserDto> GetUserById(long userId)
+        {
+            try
+            {
+                var user = _userRepository.GetUserById(userId);
+
+                if (user == null)
+                {
+                    return Result.Fail(FailureCode.NotFound).WithError($"User with user ID '{userId}' not found.");
+                }
+
+                var userDTO = _mapper.Map<UserDto>(user);
+                return Result.Ok(userDTO);
+            }
+            catch (Exception e)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
+        }
+
     }
 }
 

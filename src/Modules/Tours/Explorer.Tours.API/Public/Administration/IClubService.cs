@@ -17,5 +17,10 @@ namespace Explorer.Tours.API.Public.Administration
         Result Delete(int id);
         Result<List<ClubDto>> GetAll();
         ClubDto GetById(int id);
+        Result InviteUser(int clubId, int userId);
+        Result AcceptInvitation(int clubId, int userId);
+        Result RejectInvitation(int clubId, int userId);
+        Result RemoveMember(int clubId, int userId);
+        PagedResult<ClubDto> GetUserInvitations(int userId, int page, int pageSize);
     }
 }
