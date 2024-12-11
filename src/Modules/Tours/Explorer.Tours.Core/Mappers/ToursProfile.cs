@@ -1,6 +1,7 @@
 using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.GroupTourDtos;
 using Explorer.Tours.API.Dtos.PublishRequestDtos;
 
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
@@ -8,6 +9,7 @@ using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Dtos.TourSessionDtos;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.GroupTours;
 using Explorer.Tours.Core.Domain.PublishRequests;
 
 using Explorer.Tours.Core.Domain.TourProblems;
@@ -69,5 +71,14 @@ public class ToursProfile : Profile
         .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
         .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
         .ReverseMap();
+
+        CreateMap<GroupTourDto, GroupTour>()
+        .IncludeBase<TourDto, Tour>() 
+        .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime))
+        .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
+        .ForMember(dest => dest.TouristNumber, opt => opt.MapFrom(src => src.TouristNumber))
+        .ReverseMap();
+
+        CreateMap<GroupTourExecutionDto, GroupTourExecution>().ReverseMap();
     }
 }

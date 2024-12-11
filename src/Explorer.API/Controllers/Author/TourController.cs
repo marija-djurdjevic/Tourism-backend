@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.API.Dtos;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.GroupTourDtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +21,8 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpGet]
-        public ActionResult<PagedResult<TourDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize) {
+        public ActionResult<PagedResult<TourDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        {
             var result = _tourService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
@@ -40,7 +42,7 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpPost]
-        public ActionResult <TourDto> Create([FromBody] TourDto tourDto)
+        public ActionResult<TourDto> Create([FromBody] TourDto tourDto)
         {
             var result = _tourService.Create(tourDto);
             return CreateResponse(result);
@@ -127,5 +129,13 @@ namespace Explorer.API.Controllers.Author
 
             return BadRequest("Invalid input data.");
         }
+
+        [HttpPost("group-tour")]
+        public ActionResult<TourDto> CreateGroupTour([FromBody] GroupTourDto groupTourDto)
+        {
+            var result = _tourService.Create(groupTourDto);
+            return CreateResponse(result);
+        }
     }
-}
+
+    }

@@ -1,6 +1,7 @@
 using Explorer.API.Controllers.Administrator.Administration;
 using Explorer.API.Controllers.Author;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.GroupTourDtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.Domain.Tours;
@@ -241,6 +242,49 @@ namespace Explorer.Tours.Tests.Integration.Authoring
             // Assert
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(404);
+        }
+
+        [Fact]
+        public void CreatesGroupTour()
+        {
+            //Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+            var newEntity = new GroupTourDto
+            {
+                Id = 2,
+                AuthorId = 1,
+                Name = "Test grupna",
+                Description = "desc test",
+                Difficulty = 0,
+                Tags = new List<string>(),
+                Price = 1000,
+                Status = 0,
+                AverageScore = 0,
+                ArchivedAt = DateTime.UtcNow,
+                PublishedAt = DateTime.UtcNow,
+                KeyPoints = new List<KeyPointDto>(),
+                TransportInfo = new TransportInfoDto(),
+                StartTime = DateTime.UtcNow,
+                TouristNumber = 0,
+                Duration = 20,
+                Progress = ProgressStatus.Scheduled
+            };
+
+            newEntity.Tags.Add("neki tag");
+            //Act
+            var result = ((ObjectResult)controller.CreateGroupTour(newEntity).Result)?.Value as GroupTourDto;
+
+            //Assert response 
+            result.ShouldNotBeNull();
+            result.Id.ShouldNotBe(0);
+            result.Name.ShouldBe(newEntity.Name);
+
+            //Assert database
+            var storedEntity = dbContext.Tour.FirstOrDefault(i => i.Name == newEntity.Name);
+            storedEntity.ShouldNotBeNull();
+            storedEntity.Id.ShouldBe(result.Id);
         }
 
         private static TourController CreateController(IServiceScope scope)
