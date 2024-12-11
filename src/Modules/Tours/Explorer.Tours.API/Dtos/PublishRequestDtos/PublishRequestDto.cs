@@ -40,7 +40,8 @@ namespace Explorer.Tours.API.Dtos.PublishRequestDtos
         public enum RegistrationRequestType
         {
             Object,
-            KeyPoint
+            KeyPoint,
+            Story
         }
     }
 }
