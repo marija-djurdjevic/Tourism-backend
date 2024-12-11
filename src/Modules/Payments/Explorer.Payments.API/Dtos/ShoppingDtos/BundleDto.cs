@@ -20,13 +20,6 @@ namespace Explorer.Payments.API.Dtos.ShoppingDtos
         public double Price { get; set; }
         public BundleStatus Status { get; set; }
         public List<int> TourIds { get; set; }
-
-        //public BundleDto(int authorId, int price, BundleStatus status)
-        //{
-        //    AuthorId = authorId;
-        //    Price = price;
-        //    Status = status;
-        //    TourIds = new List<int>();
-        //}
+        public string Title { get; set; }
     }
 }

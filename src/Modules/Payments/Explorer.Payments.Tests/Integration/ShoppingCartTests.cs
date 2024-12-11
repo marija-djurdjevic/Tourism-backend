@@ -148,7 +148,7 @@ namespace Explorer.Payments.Tests.Integration
 
         [Theory]
         [InlineData(-2, -22, BundleStatus.Published)]
-        public void PusrchaseBundle(int bundleId, int touristId, BundleStatus expectedStatus)
+        public void PurchaseBundle(int bundleId, int touristId, BundleStatus expectedStatus)
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
@@ -165,6 +165,7 @@ namespace Explorer.Payments.Tests.Integration
                 TourIds = bundle.TourIds.ToList(),
                 Price = bundle.Price,
                 Status = BundleDto.BundleStatus.Published,
+                Title = bundle.Title,
             };
 
             // Act
