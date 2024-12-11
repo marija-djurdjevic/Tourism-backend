@@ -20,7 +20,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Explorer.Payments.API.Internal.Shopping;
-using static Explorer.Payments.API.Dtos.ShoppingDtos.BundleDto;
+using Explorer.Payments.Core.Domain.Shopping;
 
 
 namespace Explorer.Payments.Tests.Integration
@@ -146,48 +146,50 @@ namespace Explorer.Payments.Tests.Integration
 
         }
 
-        //[Theory]
-        //[InlineData(-2, -21, BundleStatus.Published)]
-        //public void PusrchaseBundle(int bundleId, int touristId, BundleStatus expectedStatus)
-        //{
-        //    // Arrange
-        //    using var scope = Factory.Services.CreateScope();
-        //    var controller = CreateController(scope);
-        //    var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
+        [Theory]
+        [InlineData(-2, -22, BundleStatus.Published)]
+        public void PusrchaseBundle(int bundleId, int touristId, BundleStatus expectedStatus)
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+            var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
 
-        //    var bundle = dbContext.Bundles.FirstOrDefault(b => b.Id == bundleId);
-        //    bundle.ShouldNotBeNull();
-        //    var newBundle = new BundleDto
-        //    {
-        //        AuthorId = bundle.AuthorId,
-        //        TourIds = bundle.TourIds.ToList(),
-        //        Price = bundle.Price,
-        //        Status = expectedStatus // Initial status should be Draft
-        //    };
+            var bundle = dbContext.Bundles.FirstOrDefault(b => b.Id == bundleId);
+            bundle.ShouldNotBeNull();
+            bundle.Status.ShouldBe(expectedStatus);
+            var newBundle = new BundleDto
+            {
+                Id = bundleId,
+                AuthorId = bundle.AuthorId,
+                TourIds = bundle.TourIds.ToList(),
+                Price = bundle.Price,
+                Status = BundleDto.BundleStatus.Published,
+            };
 
-        //    // Act
-        //    var result = ((ObjectResult)controller.Purchase(newBundle, touristId).Result)?.Value as PaymentRecordDto;
+            // Act
+            var result = ((ObjectResult)controller.Purchase(newBundle, touristId).Result)?.Value as PaymentRecordDto;
 
-        //    // Assert - Response
-        //    result.ShouldNotBeNull();
-        //    result.Id.ShouldNotBe(0);
-        //    result.TouristId.ShouldBe(touristId);
-        //    result.BundleId.ShouldBeEquivalentTo(newBundle.Id);
-        //    result.Price.ShouldBe(newBundle.Price);
-        //    result.PurchaseTime.ShouldBe(DateTime.UtcNow);
+            // Assert - Response
+            result.ShouldNotBeNull();
+            result.Id.ShouldNotBe(0);
+            result.TouristId.ShouldBe(touristId);
+            result.BundleId.ShouldBe((int)newBundle.Id);
+            result.Price.ShouldBe(newBundle.Price);
 
-        //    // Assert - Database
-        //    var storedEntity = dbContext.PaymentRecords.FirstOrDefault(pr => pr.Id == result.Id);
-        //    storedEntity.ShouldNotBeNull();
-        //    storedEntity.TouristId.ShouldBe(touristId);
-        //    storedEntity.BundleId.ShouldBeEquivalentTo(newBundle.Id);
-        //    storedEntity.Price.ShouldBe(newBundle.Price);
-        //    storedEntity.PurchaseTime.ShouldBe(DateTime.UtcNow);
-        //    var tokensEntities = dbContext.TourPurchaseTokens
-        //     .Where(i => i.TouristId == -1 && (i.TourId == 1 || i.TourId == 2))
-        //     .ToList();
-        //    tokensEntities.Count.ShouldBe(4);
-        //}
+            // Assert - Database
+            var storedEntity = dbContext.PaymentRecords.FirstOrDefault(pr => pr.Id == result.Id);
+            storedEntity.ShouldNotBeNull();
+            storedEntity.TouristId.ShouldBe(touristId);
+            storedEntity.BundleId.ShouldBeEquivalentTo(newBundle.Id);
+            storedEntity.Price.ShouldBe(newBundle.Price);
+
+            // varies based on other tests
+            var tokensEntities = dbContext.TourPurchaseTokens
+             .Where(i => i.TouristId == touristId && (i.TourId == -2 || i.TourId == -3))
+             .ToList();
+            tokensEntities.Count.ShouldBeGreaterThanOrEqualTo(2);
+        }
 
         private static ShoppingController CreateController(IServiceScope scope)
         {
