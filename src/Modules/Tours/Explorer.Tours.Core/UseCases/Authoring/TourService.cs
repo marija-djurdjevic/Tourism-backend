@@ -4,10 +4,12 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.GroupTourDtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.GroupTours;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.Tours;
 using FluentResults;
@@ -284,5 +286,16 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             return Result.Ok(true);
         }
 
+        public Result<GroupTourDto> CreateGroupTour(GroupTourDto groupTourDto)
+        {
+            Create(groupTourDto); 
+            return Result.Ok(groupTourDto);
+        }
+
+        public Result<GroupTourDto> UpdateGroupTour(GroupTourDto groupTourDto)
+        {
+            Update(groupTourDto);
+            return Result.Ok(groupTourDto);
+        }
     }
 }
