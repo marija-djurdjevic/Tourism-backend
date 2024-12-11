@@ -12,6 +12,9 @@ public class User : Entity
     public Location Location { get; set; }
     public int XP { get; set; }
 
+    public List<Achievement> Achievements { get; private set; }
+    
+
     public User(string username, string password, UserRole role, bool isActive)
     {
         Username = username;
@@ -19,6 +22,7 @@ public class User : Entity
         Role = role;
         IsActive = isActive;
         Location = new Location(0, 0);
+        Achievements = new List<Achievement>();
         XP = 0;
         Validate();
     }

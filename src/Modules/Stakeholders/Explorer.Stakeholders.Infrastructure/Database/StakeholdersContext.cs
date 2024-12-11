@@ -14,6 +14,8 @@ public class StakeholdersContext : DbContext
     public DbSet<UserProfile> UsersProfiles { get; set; }
     public DbSet<Image> Images { get; set; }
 
+    public DbSet<Achievement> Achievements { get; set; }
+
     public StakeholdersContext(DbContextOptions<StakeholdersContext> options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,6 +25,7 @@ public class StakeholdersContext : DbContext
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
 
         modelBuilder.Entity<User>().Property(item => item.Location).HasColumnType("jsonb");
+        modelBuilder.Entity<User>().Property(item => item.Achievements).HasColumnType("jsonb");
 
         ConfigureStakeholder(modelBuilder);
     }
