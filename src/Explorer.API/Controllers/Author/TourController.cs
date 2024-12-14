@@ -136,6 +136,13 @@ namespace Explorer.API.Controllers.Author
             var result = _tourService.Create(groupTourDto);
             return CreateResponse(result);
         }
+
+        [HttpGet("group-tours")]
+        public ActionResult<PagedResult<GroupTourDto>> GetAllGroupTours([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var result = _tourService.GetPagedGroupTours(page, pageSize);
+            return CreateResponse(result);
+        }
     }
 
     }

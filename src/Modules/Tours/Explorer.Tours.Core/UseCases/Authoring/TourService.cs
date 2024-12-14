@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Core.Domain;
@@ -297,5 +297,37 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             Update(groupTourDto);
             return Result.Ok(groupTourDto);
         }
+
+        public Result<PagedResult<GroupTourDto>> GetPagedGroupTours(int page, int pageSize)
+        {
+            try
+            {
+                // Dobavljanje svih tura sa repository-ja
+                var tours = GetPaged(page, pageSize);
+
+                if (tours.IsFailed)
+                {
+                    return Result.Fail<PagedResult<GroupTourDto>>("Failed to retrieve tours.");
+                }
+
+                // Filtriranje grupnih tura pomoću diskriminator kolone
+                var groupTours = tours.Value.Results
+                .Where(tour => tour.Price == 0) // Provera da li je cena 0
+                .ToList();
+
+                // Mapiranje na DTO
+                var groupTourDtos = groupTours.Select(t => _mapper.Map<GroupTourDto>(t)).ToList();
+
+                // Kreiranje paginiranog rezultata
+                var pagedGroupTours = new PagedResult<GroupTourDto>(groupTourDtos, groupTourDtos.Count);
+
+                return Result.Ok(pagedGroupTours);
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail<PagedResult<GroupTourDto>>($"An error occurred while retrieving group tours: {ex.Message}");
+            }
+        }
+
     }
 }
