@@ -137,7 +137,7 @@ namespace Explorer.API.Controllers.Tourist
         public ActionResult<PaymentRecordDto> Purchase([FromBody] BundleDto bundle, [FromQuery] int touristId)
         {
             var payment = _paymentRecordService.Purchase(bundle, touristId);
-            return CreateResponse(Result.Ok(payment));
+            return CreateResponse(payment);
         }
 
         [HttpGet("payments")]
