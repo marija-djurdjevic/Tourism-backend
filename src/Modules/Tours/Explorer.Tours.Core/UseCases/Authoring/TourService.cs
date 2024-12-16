@@ -91,7 +91,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         {
             var tours = GetPaged(page, pageSize);
             var filteredResults = tours.Value.Results
-                .Where(x => x.AuthorId == id)
+                .Where(x => x.AuthorId == id && !x.IsGroupTour)
                 .ToList();
 
             var pagedAuthorTours = new PagedResult<TourDto>(filteredResults, filteredResults.Count);
@@ -297,5 +297,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             Update(groupTourDto);
             return Result.Ok(groupTourDto);
         }
+
     }
 }

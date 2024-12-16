@@ -47,4 +47,14 @@ public class ToursContext : DbContext
         modelBuilder.Entity<Core.Domain.TourProblems.TourProblem>().Property(item => item.Details).HasColumnType("jsonb");
         modelBuilder.Entity<Core.Domain.TourProblems.TourProblem>().Property(item => item.Comments).HasColumnType("jsonb");
     }
+
+    public IQueryable<Tour> GetRegularTours()
+    {
+        return Tour.Where(t => EF.Property<string>(t, "Discriminator") == "Tour");
+    }
+
+    public IQueryable<GroupTour> GetGroupTours()
+    {
+        return Tour.OfType<GroupTour>();
+    }
 }

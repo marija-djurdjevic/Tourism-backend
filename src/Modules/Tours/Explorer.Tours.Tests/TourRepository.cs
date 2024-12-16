@@ -1,5 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.GroupTours;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.Tours;
 using Microsoft.EntityFrameworkCore;
@@ -48,5 +49,6 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
         {
             throw new NotImplementedException();
         }
+
     }
 }

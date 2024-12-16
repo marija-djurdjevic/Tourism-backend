@@ -136,6 +136,7 @@ namespace Explorer.API.Controllers.Author
             var result = _tourService.Create(groupTourDto);
             return CreateResponse(result);
         }
-    }
 
     }
+
+}

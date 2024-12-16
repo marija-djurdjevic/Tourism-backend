@@ -37,6 +37,7 @@ namespace Explorer.Tours.Core.Domain
         public DateTime ArchivedAt { get; private set; }
         public double AverageScore { get; private set; }
         public List<TourReview> Reviews { get; private set; }
+        public bool IsGroupTour {  get; private set; }
         public Tour(string name, string description, DifficultyStatus difficulty, List<string> tags, double price)
         {
             Name = name;

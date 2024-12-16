@@ -1,5 +1,6 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.GroupTourDtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using FluentResults;
 using System;

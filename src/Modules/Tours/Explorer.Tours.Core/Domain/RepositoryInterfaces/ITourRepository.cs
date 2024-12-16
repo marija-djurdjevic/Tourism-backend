@@ -1,3 +1,6 @@
+using Explorer.Tours.API.Dtos.GroupTourDtos;
+using Explorer.Tours.API.Dtos.TourLifecycleDtos;
+using Explorer.Tours.Core.Domain.GroupTours;
 using Explorer.Tours.Core.Domain.Tours;
 using System;
 using System.Collections.Generic;
@@ -15,5 +18,6 @@ namespace Explorer.Tours.Core.Domain.RepositoryInterfaces
         public Tour GetById(int tourId);
         public Tour GetByIdAsync(int tourId);
         public Tour GetKeyPointsForTour(int tourId);
+
     }
 }
