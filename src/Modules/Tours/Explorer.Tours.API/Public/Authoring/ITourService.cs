@@ -14,6 +14,8 @@ namespace Explorer.Tours.API.Public.Authoring
     public interface ITourService
     {
         Result<PagedResult<TourDto>> GetPaged(int page, int pageSize);
+
+        Result<PagedResult<GroupTourDto>> GetPagedGroupTours(int page, int pageSize);
         Result<TourDto> Create(TourDto tour);
         Result<PagedResult<TourDto>> GetByAuthorId(int page, int pageSize, int id);
         //public Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId);
