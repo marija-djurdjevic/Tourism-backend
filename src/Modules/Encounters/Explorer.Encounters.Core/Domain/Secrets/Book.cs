@@ -14,15 +14,18 @@ namespace Explorer.Encounters.Core.Domain.Secrets
         public int AdminId { get; private set; }
         public int PageNum { get; private set; }
 
+        public string BookColour { get; private set; }
+
         public Book() { }
 
-        public Book(string title, int adminId, int pageNum)
+        public Book(string title, int adminId, int pageNum, string bookColour)
         {
             if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Invalid Title.");
 
             Title = title;
             AdminId = adminId;
             PageNum = pageNum;
+            BookColour = bookColour;
         }
 
     }

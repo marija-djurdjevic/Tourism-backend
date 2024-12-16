@@ -16,5 +16,7 @@ namespace Explorer.Encounters.API.Public
         Result<BookDto> Create(BookDto storyUnlocked);
         Result Delete(int id);
         Result<BookDto> Update(BookDto storyUnlocked);
+
+        Result<BookDto> GetById(int bookId);
     }
 }

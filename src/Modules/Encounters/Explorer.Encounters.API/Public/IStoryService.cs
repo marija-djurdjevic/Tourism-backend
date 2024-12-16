@@ -17,5 +17,8 @@ namespace Explorer.Encounters.API.Public
         Result<StoryDto> Create(StoryDto story);
         Result Delete(int id);
         Result<StoryDto> Update(StoryDto story);
+        Result<StoryDto> GetById(int storyId);
+
+        
     }
 }

@@ -18,5 +18,11 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
         {
             _dbContext = dbContext;
         }
+
+        public Story? GetById(int storyId)
+        {
+            return _dbContext.Stories
+               .FirstOrDefault(t => t.Id == storyId);
+        }
     }
 }
