@@ -20,7 +20,8 @@ namespace Explorer.Encounters.API.Dtos.SecretsDtos
         public int AuthorId { get; set; }
         public int BookId { get; set; }
 
-        public List<int> ImageIds { get; set; }
+        public string Title { get; set; }
+        public int ImageId { get; set; }
 
         public StoryStatus StoryStatus { get; set; }
     }
