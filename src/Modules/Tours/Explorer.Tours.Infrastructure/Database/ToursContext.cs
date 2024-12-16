@@ -27,6 +27,8 @@ public class ToursContext : DbContext
 
     public DbSet<PublishRequest> PublishRequests { get; set; }
 
+    public DbSet<GroupTourExecution> GroupTourExecution { get; set; }
+
     public ToursContext(DbContextOptions<ToursContext> options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
