@@ -16,5 +16,7 @@ namespace Explorer.Encounters.Core.Domain.RepositoryInterfaces
         public Book Create(Book entity);
         public Book Update(Book entity);
         public void Delete(long id);
+
+        public Book? GetById(int bookId);
     }
 }

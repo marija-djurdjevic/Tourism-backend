@@ -17,5 +17,11 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
         {
             _dbContext = dbContext;
         }
+
+        public Book? GetById(int bookId)
+        {
+            return _dbContext.Books
+               .FirstOrDefault(t => t.Id == bookId);
+        }
     }
 }

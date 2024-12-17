@@ -12,5 +12,6 @@ namespace Explorer.Encounters.API.Dtos.SecretsDtos
         public int AdminId { get; set; }
         public string Title { get; set; }
         public int PageNum { get; set; }
+        public string BookColour { get; set; }
     }
 }

@@ -15,5 +15,6 @@ namespace Explorer.Encounters.Core.Domain.RepositoryInterfaces
         public Story Create(Story entity);
         public Story Update(Story entity);
         public void Delete(long id);
+        public Story GetById(int id);
     }
 }
