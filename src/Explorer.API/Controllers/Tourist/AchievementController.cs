@@ -38,6 +38,10 @@ namespace Explorer.API.Controllers.Tourist
                 if (user.Value.Achievements.Contains(achievement)){
                     achievement.isEarnedByMe = true;
                 }
+                else
+                {
+                    achievement.ImagePath = "assets/badge.png";
+                }
             }
             return Ok(achievements);
         }

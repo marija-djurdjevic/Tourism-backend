@@ -42,6 +42,7 @@ namespace Explorer.Stakeholders.Core.UseCases
                 {
                     user.Value.Achievements.Add(achi);
                     _userService.UpdateAchievements(user.Value);
+                    _userService.UpdateXPs(user.Value.Id, achi.XpReward);
                     var notification = new NotificationDto($"You have achieved {achi.Name} achievement", NotificationType.Achievement, 0, userId, false);
                     _notificationInternalService.Create(notification);
                 }

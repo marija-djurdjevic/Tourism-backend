@@ -53,8 +53,12 @@ namespace Explorer.Tours.Core.UseCases.Administration
                 throw new InvalidOperationException("Ne može se kreirati review zbog zadatog uslova.");
             }
             var returnValue = base.Create(tourReview);
-            var numberOfMyReviews = GetPaged(0, 0).Value.Results.FindAll(x => x.UserId == tourReview.UserId).Count();
+            var reviews = GetPaged(0, 0).Value.Results.FindAll(x => x.UserId == tourReview.UserId);
+            var numberOfMyReviews = reviews.Count();
+            var numberOfPhotos = reviews.Sum(x => x.Images.Split(',', StringSplitOptions.RemoveEmptyEntries).Length);
+
             _achievementService.AddAchievementToUser(AchievementDtoType.ReviewCreated, tourReview.UserId, numberOfMyReviews);
+            _achievementService.AddAchievementToUser(AchievementDtoType.PhotosInReview, tourReview.UserId, numberOfPhotos);
             return returnValue;
         }
 
