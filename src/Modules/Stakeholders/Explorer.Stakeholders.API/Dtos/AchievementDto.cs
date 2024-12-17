@@ -46,7 +46,7 @@ namespace Explorer.Stakeholders.Core.Application.Dtos
     {
         ReviewCreated,
         PhotosInReview,
-        SocialEnclounters,
+        SocialEncounters,
         SecretPlacesFound,
         ChallengesCompleted,
         TourCompleted,

@@ -51,7 +51,7 @@ namespace Explorer.Stakeholders.Core.Domain.Users
     {
         ReviewCreated,
         PhotosInReview,
-        SocialEnclounters,
+        SocialEncounters,
         SecretPlacesFound,
         ChallengesCompleted,
         TourCompleted,
