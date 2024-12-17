@@ -2,6 +2,7 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
+using Explorer.Tours.API.Internal;
 using Explorer.Tours.API.Public;
 using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.UseCases.Execution
 {
-    public class NotificationService : CrudService<NotificationDto, Notification>, INotificationService
+    public class NotificationService : CrudService<NotificationDto, Notification>, INotificationService, INotificationInternalService
     {
         public NotificationService(ICrudRepository<Notification> crudRepository, IMapper mapper) : base(crudRepository, mapper) {}
 
