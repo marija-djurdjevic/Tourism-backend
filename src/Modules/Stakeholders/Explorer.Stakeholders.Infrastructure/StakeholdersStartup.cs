@@ -1,6 +1,8 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
+using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.API.Public;
+using Explorer.Stakeholders.Core.Application.Services;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using Explorer.Stakeholders.Core.Domain.Users;
@@ -32,6 +34,8 @@ public static class StakeholdersStartup
         services.AddScoped<IUserProfileService, UserProfileService>();
         services.AddScoped<IUserRatingService, UserRatingService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAchievementService, AchievementService>();
+        services.AddScoped<IAchievementInternalService, AchievementService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -42,6 +46,7 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(ICrudRepository<UserProfile>), typeof(CrudDatabaseRepository<UserProfile, StakeholdersContext>));
         services.AddScoped<IUserRatingRepository, UserRatingDatabaseRepository>();
         services.AddScoped<IUserRepository, UserDatabaseRepository>();
+        services.AddScoped<IAchievementRepository, AchievementRepository>();
 
         services.AddDbContext<StakeholdersContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("stakeholders"),

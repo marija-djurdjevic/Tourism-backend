@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
-using Explorer.Stakeholders.Core.Application.DTOs;
+using Explorer.Stakeholders.API.Internal;
+using Explorer.Stakeholders.API.Public;
+using Explorer.Stakeholders.Core.Application.Dtos;
 using Explorer.Stakeholders.Core.Application.Services;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using Explorer.Stakeholders.Core.Domain.Users;
@@ -9,22 +11,35 @@ using System.Linq;
 
 namespace Explorer.Stakeholders.Core.UseCases
 {
-    public class AchievementService : IAchievementService
+    public class AchievementService : IAchievementService,IAchievementInternalService
     {
+        private readonly IUserService _userService;
         private readonly IAchievementRepository _achievementRepository;
         private readonly IMapper _mapper;
 
-        public AchievementService(IAchievementRepository achievementRepository, IMapper mapper)
+        public AchievementService(IAchievementRepository achievementRepository,IUserService userService, IMapper mapper)
         {
+            this._userService = userService;
             _achievementRepository = achievementRepository;
             _mapper = mapper;
         }
 
         public void AddAchievement(AchievementDto achievementDto)
         {
-            
             var achievement = _mapper.Map<Achievement>(achievementDto);
             _achievementRepository.Add(achievement);
+        }
+        public void AddAchievementToUser(AchievementDtoType type,int userId, int countedCriteriaForUser)
+        {
+            var user = _userService.GetUserById(userId);
+            foreach(var achi in GetAllAchievements())
+            {
+                if(achi.Criteria<=countedCriteriaForUser && achi.Type==type && !user.Value.Achievements.Contains(achi))
+                {
+                    user.Value.Achievements.Add(achi);
+                    _userService.UpdateAchievements(user.Value);
+                }
+            }
         }
 
         public void DeleteAchievement(int id)

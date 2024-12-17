@@ -1,7 +1,8 @@
-using Explorer.BuildingBlocks.Infrastructure.Database;
+﻿using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using Explorer.Stakeholders.Core.Domain.Users;
+using Microsoft.EntityFrameworkCore;
 
 namespace Explorer.Stakeholders.Infrastructure.Database.Repositories;
 
@@ -42,6 +43,47 @@ public class UserDatabaseRepository : CrudDatabaseRepository<User, StakeholdersC
         return user;
     }
 
+    public User UpdateAchievements(ICollection<Achievement> achievements, long userId)
+    {
+        if (achievements.Count > 0)
+        {
+            var existingUser = _dbContext.Users
+                .Include(u => u.Achievements)
+                .FirstOrDefault(u => u.Id == userId);
+
+            if (existingUser == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            // Učitajte postojeće achievement-e iz baze
+            _dbContext.Entry(existingUser).Collection(u => u.Achievements).Load();
+
+            // Očistite trenutne achievement-e korisnika
+            existingUser.Achievements.Clear();
+
+            // Pronađite ili priložite postojeće achievement-e
+            foreach (var achievement in achievements)
+            {
+                var existingAchievement = _dbContext.Achievements.Find(achievement.Id);
+                if (existingAchievement == null)
+                {
+                    throw new Exception($"Achievement with ID {achievement.Id} not found");
+                }
+
+                existingUser.Achievements.Add(existingAchievement);
+            }
+
+            // Sačuvajte promene
+            _dbContext.SaveChanges();
+
+            return existingUser;
+        }
+
+        return null;
+    }
+
+
     public long GetPersonId(long userId)
     {
         var person = _dbContext.People.FirstOrDefault(i => i.UserId == userId);
@@ -71,6 +113,6 @@ public class UserDatabaseRepository : CrudDatabaseRepository<User, StakeholdersC
     }
     public User? GetUserById(long userId)
     {
-        return _dbContext.Users.FirstOrDefault(i => i.Id == userId);
+        return _dbContext.Users.Include(a => a.Achievements).FirstOrDefault(i => i.Id == userId);
     }
 }

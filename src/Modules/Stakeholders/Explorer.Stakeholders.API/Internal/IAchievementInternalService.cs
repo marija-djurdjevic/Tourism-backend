@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Explorer.Stakeholders.Core.Application.Dtos;
 
-namespace Explorer.Stakeholders.Core.Application.Services
+namespace Explorer.Stakeholders.API.Internal
 {
-    public interface IAchievementService
+    public interface IAchievementInternalService
     {
         AchievementDto GetAchievementById(int id);
         IEnumerable<AchievementDto> GetAllAchievements();

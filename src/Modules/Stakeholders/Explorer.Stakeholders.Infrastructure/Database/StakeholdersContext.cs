@@ -25,8 +25,11 @@ public class StakeholdersContext : DbContext
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
 
         modelBuilder.Entity<User>().Property(item => item.Location).HasColumnType("jsonb");
-        modelBuilder.Entity<User>().Property(item => item.Achievements).HasColumnType("jsonb");
 
+        modelBuilder.Entity<User>()
+        .HasMany(u => u.Achievements)
+        .WithMany(a => a.Users)
+        .UsingEntity(j => j.ToTable("UserAchievements"));
         ConfigureStakeholder(modelBuilder);
     }
 

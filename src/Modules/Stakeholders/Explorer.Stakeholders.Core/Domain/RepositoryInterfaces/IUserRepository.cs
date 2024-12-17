@@ -11,6 +11,7 @@ public interface IUserRepository
     Person? GetPersonByUserId(long userId);
     Location? GetLocationByUserId(long userId);
     User Update(User user);
+    User UpdateAchievements(ICollection<Achievement> achievements, long userId);
 
     List<User> GetAll();
     List<User> GetAllTourists();

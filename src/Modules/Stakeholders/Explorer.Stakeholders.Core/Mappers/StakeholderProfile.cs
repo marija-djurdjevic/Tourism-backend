@@ -1,7 +1,7 @@
 using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.Stakeholders.API.Dtos;
-using Explorer.Stakeholders.Core.Application.DTOs;
+using Explorer.Stakeholders.Core.Application.Dtos;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.Users;
 
