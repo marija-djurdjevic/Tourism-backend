@@ -55,7 +55,7 @@ namespace Explorer.Stakeholders.Core.Domain.Users
         SecretPlacesFound,
         ChallengesCompleted,
         TourCompleted,
-        EnclountersCreated,
+        EncountersCreated,
         PointsEarned,
     }
 

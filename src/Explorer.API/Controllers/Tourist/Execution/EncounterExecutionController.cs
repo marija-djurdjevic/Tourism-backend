@@ -3,6 +3,7 @@ using Explorer.Encounters.API.Dtos.EncounterDtos;
 using Explorer.Encounters.API.Dtos.EncounterExecutionDtos;
 using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.Domain.Encounters;
+using Explorer.Encounters.Core.UseCases;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using FluentResults;
@@ -16,12 +17,14 @@ namespace Explorer.API.Controllers.Tourist.Execution
     [Route("api/tourist/encounterExecution")]
     public class EncounterExecutionController : BaseApiController
     {
+        private readonly IEncounterAchievementService _encounterAchievementService;
         private readonly IEncounterExecutionService _encounterExecutionService;
         private readonly IEncounterService _encounterService;
         private readonly IUserService userService;
 
-        public EncounterExecutionController(IEncounterExecutionService encounterExecutionService, IEncounterService encounterService, IUserService userService)
+        public EncounterExecutionController(IEncounterAchievementService encounterAchievementService, IEncounterExecutionService encounterExecutionService, IEncounterService encounterService, IUserService userService)
         {
+            _encounterAchievementService = encounterAchievementService;
             _encounterExecutionService = encounterExecutionService;
             _encounterService = encounterService;
             this.userService = userService;
@@ -53,7 +56,7 @@ namespace Explorer.API.Controllers.Tourist.Execution
                 {
                     userService.UpdateXPs(userId, encounter.Value.Xp);
                 }
-
+                _encounterAchievementService.CheckForAchievements(userId);
                 return CreateResponse(result);
             }
 
@@ -78,9 +81,9 @@ namespace Explorer.API.Controllers.Tourist.Execution
                     foreach (var socialEncounterExecution in socialEncounterExecutions)
                     {
                         // Update the CompletedTime and save the changes
-                        _encounterExecutionService.Update(socialEncounterExecution.Id);       
+                        _encounterExecutionService.Update(socialEncounterExecution.Id);
+                        _encounterAchievementService.CheckForAchievements(socialEncounterExecution.TouristId);
                     }
-
                     return Ok("Operation successful");
                 }
             }

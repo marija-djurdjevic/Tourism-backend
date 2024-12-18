@@ -50,7 +50,7 @@ namespace Explorer.Stakeholders.Core.Application.Dtos
         SecretPlacesFound,
         ChallengesCompleted,
         TourCompleted,
-        EnclountersCreated,
+        EncountersCreated,
         PointsEarned,
     }
 }
