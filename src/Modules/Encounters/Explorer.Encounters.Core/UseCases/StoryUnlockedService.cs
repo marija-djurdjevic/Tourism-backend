@@ -53,7 +53,14 @@ namespace Explorer.Encounters.Core.UseCases
         
         }
 
-        //sve korisnikove knjige
+        public Result<List<StoryDto>> GetUnlockedStoriesInBook(int bookId, int userId)
+        {
+            var stories= GetUserStories(userId).Value.Where(s => s.BookId == bookId).ToList();
+            return stories;
+
+        }
+
+       /* //sve korisnikove knjige
         public Result<List<BookDto>> GetUserBooks(int userId)
         {
             var bookResults = GetUserStories(userId).Value
@@ -67,7 +74,30 @@ namespace Explorer.Encounters.Core.UseCases
                 .ToList();
 
             return Result.Ok(books); 
+        }*/
+
+        public Result<List<BookDto>> GetUserBooks(int userId)
+        {
+            // Fetch user stories and extract unique BookIds
+            var uniqueBookIds = GetUserStories(userId).Value
+                .Select(s => s.BookId)
+                .Distinct() // Ensure no duplicate BookIds
+                .ToList();
+
+            // Fetch books using unique BookIds
+            var bookResults = uniqueBookIds
+                .Select(bookId => _bookService.GetById(bookId))
+                .ToList();
+
+            // Filter only successful results and extract values
+            var books = bookResults
+                .Where(result => result.IsSuccess)
+                .Select(result => result.Value)
+                .ToList();
+
+            return Result.Ok(books);
         }
+
 
     }
 }

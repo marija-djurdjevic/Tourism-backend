@@ -2,6 +2,8 @@
 using Explorer.Encounters.API.Dtos.SecretsDtos;
 using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
+using Explorer.Encounters.Core.UseCases;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.API.Public.Execution;
@@ -21,7 +23,12 @@ namespace Explorer.API.Controllers.Tourist
             _bookService = bookService;
         }
 
+        [HttpGet("byId")]
+        public ActionResult<BookDto> GetBookById(int bookId)
+        {
+            var result = _bookService.GetById(bookId);
+            return CreateResponse(result);
+        }
 
-        
     }
 }

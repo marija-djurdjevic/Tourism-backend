@@ -23,5 +23,6 @@ namespace Explorer.Encounters.API.Public
 
         Result<List<StoryDto>> GetUserStories(int userId);
         Result<List<BookDto>> GetUserBooks(int userId);
+        public Result<List<StoryDto>> GetUnlockedStoriesInBook(int bookId, int userId);
     }
 }

@@ -25,5 +25,13 @@ namespace Explorer.API.Controllers.Tourist
             var results = _storyUnlockedService.GetUserBooks(userId);
             return CreateResponse(results);
         }
+
+        [HttpGet("allInBook")]
+        public ActionResult<List<BookDto>> GetStoriesInBook(int bookId)
+        {
+            int userId = User.PersonId();
+            var results = _storyUnlockedService.GetUnlockedStoriesInBook(bookId,userId);
+            return CreateResponse(results);
+        }
     }
 }
