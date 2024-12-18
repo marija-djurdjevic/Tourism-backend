@@ -33,5 +33,12 @@ namespace Explorer.Encounters.Core.UseCases
            
             return MapToDto(_storyRepository.GetById(storyId));
         }
+
+
+        public Result<List<StoryDto>> GetByBookId(int storyId)
+        {
+
+            return MapToDto(_storyRepository.GetByBookId(storyId));
+        }
     }
 }

@@ -24,5 +24,11 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
             return _dbContext.Stories
                .FirstOrDefault(t => t.Id == storyId);
         }
+
+        public List<Story> GetByBookId(int bookId)
+        {
+            return _dbContext.Stories
+               .Where(s => s.BookId == bookId).ToList();
+        }
     }
 }
