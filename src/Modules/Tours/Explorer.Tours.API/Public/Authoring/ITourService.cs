@@ -31,5 +31,6 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<TourDto> Close(TourDto entity);
         public Result<bool> UpdateTransportInfo(int tourId, TransportInfoDto transportInfoDto);
         Result<TourDto> Update(TourDto encounter);
+        Result<GroupTourDto> UpdateGroup(GroupTourDto encounter);
     }
 }

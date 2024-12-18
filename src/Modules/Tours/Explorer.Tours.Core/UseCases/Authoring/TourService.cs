@@ -91,7 +91,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         {
             var tours = GetPaged(page, pageSize);
             var filteredResults = tours.Value.Results
-                .Where(x => x.AuthorId == id)
+                .Where(x => x.AuthorId == id && !x.IsGroupTour)
                 .ToList();
 
             var pagedAuthorTours = new PagedResult<TourDto>(filteredResults, filteredResults.Count);
@@ -286,18 +286,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             return Result.Ok(true);
         }
 
-        public Result<GroupTourDto> CreateGroupTour(GroupTourDto groupTourDto)
-        {
-            Create(groupTourDto); 
-            return Result.Ok(groupTourDto);
-        }
-
-        public Result<GroupTourDto> UpdateGroupTour(GroupTourDto groupTourDto)
-        {
-            Update(groupTourDto);
-            return Result.Ok(groupTourDto);
-        }
-
         public Result<PagedResult<GroupTourDto>> GetPagedGroupTours(int page, int pageSize)
         {
             try
@@ -312,7 +300,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
                 // Filtriranje grupnih tura pomoću diskriminator kolone
                 var groupTours = tours.Value.Results
-                .Where(tour => tour.Price == 0) // Provera da li je cena 0
+                .Where(tour => tour.IsGroupTour == true) 
                 .ToList();
 
                 // Mapiranje na DTO
@@ -329,5 +317,17 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             }
         }
 
+        public Result<GroupTourDto> UpdateGroup(GroupTourDto gt)
+        {
+            var tour = _mapper.Map<GroupTour>(gt);
+            tour.Duration = gt.Duration;
+            tour.TouristNumber = gt.TouristNumber;
+            tour.StartTime = gt.StartTime;
+            tour.Progress = (Domain.GroupTours.ProgressStatus)gt.Progress;
+            var tourDto = _mapper.Map<GroupTourDto>(tour);
+            Update(tourDto);
+            var updateee = tourDto;
+            return Result.Ok(tourDto);
+        }
     }
 }
