@@ -4,11 +4,14 @@ using Explorer.Encounters.API.Dtos.EncounterExecutionDtos;
 using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.Domain.Encounters;
 using Explorer.Encounters.Core.UseCases;
+using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.API.Public;
+using Explorer.Stakeholders.Core.Application.Services;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 using EncounterType = Explorer.Encounters.API.Dtos.EncounterDtos.EncounterType;
 
 namespace Explorer.API.Controllers.Tourist.Execution
@@ -21,12 +24,14 @@ namespace Explorer.API.Controllers.Tourist.Execution
         private readonly IEncounterExecutionService _encounterExecutionService;
         private readonly IEncounterService _encounterService;
         private readonly IUserService userService;
+        private readonly IAchievementService _achievementInternalService;
 
-        public EncounterExecutionController(IEncounterAchievementService encounterAchievementService, IEncounterExecutionService encounterExecutionService, IEncounterService encounterService, IUserService userService)
+        public EncounterExecutionController(IAchievementService achievementInternalService,IEncounterAchievementService encounterAchievementService, IEncounterExecutionService encounterExecutionService, IEncounterService encounterService, IUserService userService)
         {
             _encounterAchievementService = encounterAchievementService;
             _encounterExecutionService = encounterExecutionService;
             _encounterService = encounterService;
+            _achievementInternalService = achievementInternalService;
             this.userService = userService;
         }
 
@@ -55,6 +60,9 @@ namespace Explorer.API.Controllers.Tourist.Execution
                 if (result.IsSuccess)
                 {
                     userService.UpdateXPs(userId, encounter.Value.Xp);
+                    var user = userService.GetUserById(userId);
+                    if(user.IsSuccess && user.Value.XP!=null)
+                        _achievementInternalService.AddAchievementToUser(Stakeholders.Core.Application.Dtos.AchievementDtoType.PointsEarned, userId, (int)user.Value.XP);
                 }
                 _encounterAchievementService.CheckForAchievements(userId);
                 return CreateResponse(result);
