@@ -14,10 +14,12 @@ namespace Explorer.API.Controllers.Author
     public class TourController : BaseApiController
     {
         private readonly ITourService _tourService;
+        //private readonly IGroupTourService _groupTourService;
 
         public TourController(ITourService tourService)
         {
             _tourService = tourService;
+           // _groupTourService = groupTourService;
         }
 
         [HttpGet]
@@ -142,6 +144,29 @@ namespace Explorer.API.Controllers.Author
         {
             var result = _tourService.GetPagedGroupTours(page, pageSize);
             return CreateResponse(result);
+        }
+
+        [HttpPut("group/{id}")]
+        public IActionResult UpdateGroup(int id, [FromBody] GroupTourDto groupTourDto)
+        {
+            if (groupTourDto == null || groupTourDto.Id != id)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            var result = _tourService.UpdateGroup(groupTourDto);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+
+            if (result.Errors.Any(e => e.Message.Contains("not found")))
+            {
+                return NotFound("Encounter not found.");
+            }
+
+            return BadRequest("Invalid input data.");
         }
 
     }
