@@ -1,4 +1,6 @@
 using Explorer.API.Startup;
+using System.Net.WebSockets;
+using Explorer.BuildingBlocks.Core.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,36 @@ app.UseAuthorization();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseWebSockets();
+
+app.Map("/ws", async context =>
+{
+    if (context.WebSockets.IsWebSocketRequest)
+    {
+        // Izvla?enje userId iz query string-a
+        var userIdQuery = context.Request.Query["userId"];
+
+        if (string.IsNullOrEmpty(userIdQuery) || !int.TryParse(userIdQuery, out var userId))
+        {
+            // Ako userId nije validan, vratite grešku
+            context.Response.StatusCode = 400; // Bad Request
+            await context.Response.WriteAsync("Invalid or missing userId");
+            return;
+        }
+
+        // Prihvatanje WebSocket veze
+        var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+
+        // Prosle?ivanje userId WebSocket handleru
+        await WebSocketHandler.HandleAsync(webSocket, userId);
+    }
+    else
+    {
+        context.Response.StatusCode = 400; // Bad Request
+    }
+});
+
 
 app.Run();
 

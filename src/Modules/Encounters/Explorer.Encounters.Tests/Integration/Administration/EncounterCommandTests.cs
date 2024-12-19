@@ -180,7 +180,7 @@ namespace Explorer.Encounters.Tests.Integration.Administration
 
         private static EncounterController CreateController(IServiceScope scope,string userId)
         {
-            return new EncounterController(scope.ServiceProvider.GetRequiredService<IEncounterService>(), scope.ServiceProvider.GetRequiredService<ITourSessionService>(), scope.ServiceProvider.GetRequiredService<IUserService>(), scope.ServiceProvider.GetRequiredService<IKeyPointService>())
+            return new EncounterController(scope.ServiceProvider.GetRequiredService<IEncounterAchievementService>(), scope.ServiceProvider.GetRequiredService<IEncounterService>(), scope.ServiceProvider.GetRequiredService<ITourSessionService>(), scope.ServiceProvider.GetRequiredService<IUserService>(), scope.ServiceProvider.GetRequiredService<IKeyPointService>())
             {
                 ControllerContext = BuildContext(userId)
             };

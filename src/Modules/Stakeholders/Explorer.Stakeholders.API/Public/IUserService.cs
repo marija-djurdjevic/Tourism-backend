@@ -14,6 +14,7 @@ namespace Explorer.Stakeholders.API.Public
         Result<bool> Exists(string username);
         Result<UserDto> GetActiveByName(string username);
         Result<UserDto> Create(UserDto userDto);
+        Result<UserDto> Update(UserDto userDto);
         Result<long> GetPersonId(long userId);
         Result<UserDto> GetUserById(long userId);
         Result<PersonDto> GetPersonByUserId(long userId);
@@ -24,5 +25,6 @@ namespace Explorer.Stakeholders.API.Public
         Result<List<UserDto>> GetAllTourists();
         Result<UserDto> UpdateXPs(int userId, int xp);
         Result<int> GetLevelById(int userId);
+        Result<UserDto> UpdateAchievements(UserDto userDto);
     }
 }

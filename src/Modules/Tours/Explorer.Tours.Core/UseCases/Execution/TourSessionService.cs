@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using static Explorer.Tours.API.Dtos.TourLifecycleDtos.TourDto;
 using Explorer.Payments.API.Internal.Shopping;
 using Microsoft.EntityFrameworkCore;
+using Explorer.Stakeholders.API.Internal;
 
 namespace Explorer.Tours.Core.UseCases.Execution
 {
@@ -28,25 +29,26 @@ namespace Explorer.Tours.Core.UseCases.Execution
         private readonly ITourService _tourService;
         private readonly IKeyPointService _keyPointService;
         private readonly ITourPurchaseTokenServiceInternal _purchaseTokenService;
+        private readonly IAchievementInternalService _achievementService;
 
-
-        public TourSessionService(IMapper mapper, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService, ITourPurchaseTokenServiceInternal tourPurchaseTokenService) : base(mapper)
+        public TourSessionService(IMapper mapper, IAchievementInternalService achievementInternalService, ITourSessionRepository repository, ITourService tourService, IKeyPointService keyPointService, ITourPurchaseTokenServiceInternal tourPurchaseTokenService) : base(mapper)
         {
             _repository = repository;
+            _achievementService = achievementInternalService;
             _mapper = mapper;
             _tourService = tourService;
             _keyPointService = keyPointService;
             _purchaseTokenService = tourPurchaseTokenService;
 
         }
-        public Result<TourSessionDto> AbandonTour(int tourId,int userId)
+        public Result<TourSessionDto> AbandonTour(int tourId, int userId)
         {
 
             var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
 
 
             var tourSession = allSessions.FirstOrDefault(session =>
-                session.TourId == tourId && session.UserId==userId);
+                session.TourId == tourId && session.UserId == userId);
 
 
 
@@ -72,7 +74,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
             }
 
             var completedKeyPoints = _mapper.Map<List<CompletedKeyPointDto>>(tourSession.CompletedKeyPoints);
-            if(completedKeyPoints == null || !completedKeyPoints.Any())
+            if (completedKeyPoints == null || !completedKeyPoints.Any())
             {
                 return Result.Fail<int>("No completed key points found.");
             }
@@ -84,13 +86,13 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return Result.Ok(lastCompletedKeyPointId);
         }
 
-        public Result<TourSessionDto> CompleteTour(int tourId,int userId)
+        public Result<TourSessionDto> CompleteTour(int tourId, int userId)
         {
             var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
 
 
             var tourSession = allSessions.FirstOrDefault(session =>
-                session.TourId == tourId && session.UserId==userId);
+                session.TourId == tourId && session.UserId == userId);
 
 
             if (tourSession == null)
@@ -99,8 +101,10 @@ namespace Explorer.Tours.Core.UseCases.Execution
             }
 
             tourSession.CompleteSession();
-            _repository.Update(tourSession);
 
+            _repository.Update(tourSession);
+            var mySessions = allSessions.Where(session => session.UserId == userId && session.Status == TourSession.TourSessionStatus.Completed).ToList();
+            _achievementService.AddAchievementToUser(Stakeholders.Core.Application.Dtos.AchievementDtoType.TourCompleted, userId, mySessions.Count);
             return Result.Ok(_mapper.Map<TourSession, TourSessionDto>(tourSession));
         }
 
@@ -166,7 +170,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
 
 
-        public bool UpdateLocation(int tourId, LocationDto locationDto,int userId)
+        public bool UpdateLocation(int tourId, LocationDto locationDto, int userId)
         {
 
             var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(locationDto);
@@ -189,7 +193,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
             bool isNear = Domain.TourSessions.Location.IsWithinSimpleDistance(location, lastKeyPointLocation);
             var allSessions = _repository.GetPaged(1, int.MaxValue).Results;
             var existingSession = allSessions.FirstOrDefault(session =>
-                session.TourId == tourId && session.UserId==userId);
+                session.TourId == tourId && session.UserId == userId);
 
 
             if (isNear)
@@ -197,9 +201,11 @@ namespace Explorer.Tours.Core.UseCases.Execution
                 existingSession.UpdateCurrentLocation(location);
                 existingSession.CompleteSession();
                 _repository.Update(existingSession);
+                var mySessions = allSessions.Where(session => session.UserId == userId && session.Status == TourSession.TourSessionStatus.Completed).ToList();
+                _achievementService.AddAchievementToUser(Stakeholders.Core.Application.Dtos.AchievementDtoType.TourCompleted, userId, mySessions.Count);
             }
 
-             existingSession.UpdateCurrentLocation(location);
+            existingSession.UpdateCurrentLocation(location);
             _repository.Update(existingSession);
 
             return isNear;
@@ -211,7 +217,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
 
 
-        public void UpdateSession(int tourId, LocationDto locationDto,int userId)
+        public void UpdateSession(int tourId, LocationDto locationDto, int userId)
         {
 
             var location = _mapper.Map<LocationDto, Domain.TourSessions.Location>(locationDto);
