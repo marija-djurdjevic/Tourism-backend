@@ -40,14 +40,29 @@ app.Map("/ws", async context =>
 {
     if (context.WebSockets.IsWebSocketRequest)
     {
+        // Izvla?enje userId iz query string-a
+        var userIdQuery = context.Request.Query["userId"];
+
+        if (string.IsNullOrEmpty(userIdQuery) || !int.TryParse(userIdQuery, out var userId))
+        {
+            // Ako userId nije validan, vratite grešku
+            context.Response.StatusCode = 400; // Bad Request
+            await context.Response.WriteAsync("Invalid or missing userId");
+            return;
+        }
+
+        // Prihvatanje WebSocket veze
         var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-        await WebSocketHandler.HandleAsync(webSocket);
+
+        // Prosle?ivanje userId WebSocket handleru
+        await WebSocketHandler.HandleAsync(webSocket, userId);
     }
     else
     {
         context.Response.StatusCode = 400; // Bad Request
     }
 });
+
 
 app.Run();
 

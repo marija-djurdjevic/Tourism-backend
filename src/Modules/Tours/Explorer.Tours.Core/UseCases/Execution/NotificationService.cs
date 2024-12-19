@@ -27,9 +27,9 @@ namespace Explorer.Tours.Core.UseCases.Execution
             return Result.Ok(list.Value.Results.Where(x => x.RecieverId == userId && x.IsRead == false).ToList());
         }
 
-        public async Task NotifyUserAsync(int userId, string message)
+        public async Task NotifyUserAsync(int userId, NotificationDto notification)
         {
-            await WebSocketHandler.SendMessageToUserAsync(userId, message);
+            await WebSocketHandler.SendMessageToUserAsync(userId, notification);
         }
     }
 }

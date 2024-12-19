@@ -49,7 +49,8 @@ namespace Explorer.Stakeholders.Core.UseCases
                 
                     var notification = new NotificationDto($"You have achieved {achi.Name} achievement", NotificationType.Achievement, 0, userId, false);
                     _notificationInternalService.Create(notification);
-                    _notificationInternalService.NotifyUserAsync(123, "eeeee majmunee");
+                    notification.ImagePath = achi.ImagePath;
+                    _notificationInternalService.NotifyUserAsync(userId, notification);
                 }
             }
         }
