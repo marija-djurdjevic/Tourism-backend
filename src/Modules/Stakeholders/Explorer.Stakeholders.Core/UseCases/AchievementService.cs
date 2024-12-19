@@ -44,13 +44,15 @@ namespace Explorer.Stakeholders.Core.UseCases
                     _userService.UpdateAchievements(user.Value);
                     _userService.UpdateXPs(user.Value.Id, achi.XpReward);
                     user = _userService.GetUserById(userId);
-                    if(user.IsSuccess && user.Value.XP!=null)
-                        AddAchievementToUser(Stakeholders.Core.Application.Dtos.AchievementDtoType.PointsEarned, userId, (int)user.Value.XP);
-                
+
                     var notification = new NotificationDto($"You have achieved {achi.Name} achievement", NotificationType.Achievement, 0, userId, false);
                     _notificationInternalService.Create(notification);
                     notification.ImagePath = achi.ImagePath;
                     _notificationInternalService.NotifyUserAsync(userId, notification);
+
+                    if (user.IsSuccess && user.Value.XP!=null)
+                        AddAchievementToUser(Stakeholders.Core.Application.Dtos.AchievementDtoType.PointsEarned, userId, (int)user.Value.XP);
+                
                 }
             }
         }
