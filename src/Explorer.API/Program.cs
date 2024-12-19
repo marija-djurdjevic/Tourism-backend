@@ -1,4 +1,6 @@
 using Explorer.API.Startup;
+using System.Net.WebSockets;
+using Explorer.BuildingBlocks.Core.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,21 @@ app.UseAuthorization();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseWebSockets();
+
+app.Map("/ws", async context =>
+{
+    if (context.WebSockets.IsWebSocketRequest)
+    {
+        var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+        await WebSocketHandler.HandleAsync(webSocket);
+    }
+    else
+    {
+        context.Response.StatusCode = 400; // Bad Request
+    }
+});
 
 app.Run();
 

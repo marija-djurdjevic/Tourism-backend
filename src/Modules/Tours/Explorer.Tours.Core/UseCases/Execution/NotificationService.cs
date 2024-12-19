@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
@@ -24,6 +25,11 @@ namespace Explorer.Tours.Core.UseCases.Execution
         {
             var list = GetPaged(0, 0);
             return Result.Ok(list.Value.Results.Where(x => x.RecieverId == userId && x.IsRead == false).ToList());
+        }
+
+        public async Task NotifyUserAsync(int userId, string message)
+        {
+            await WebSocketHandler.SendMessageToUserAsync(userId, message);
         }
     }
 }
