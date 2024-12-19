@@ -18,11 +18,13 @@ namespace Explorer.Blog.Core.UseCases
         private readonly IBlogRepository _blogRepository;
         private readonly IMapper _mapper;
         private readonly ICommentService _commentService;
-        public BlogService(IBlogRepository repository, ICommentService commentService, IMapper mapper) : base(repository, mapper)
+        private readonly IMailService _mailService;
+        public BlogService(IBlogRepository repository, ICommentService commentService, IMailService mailService, IMapper mapper) : base(repository, mapper)
         {
             _blogRepository = repository;
             _mapper = mapper;
             _commentService = commentService;
+            _mailService = mailService;
         }
 
         public Result<BlogDto> GetBlogById(int blogId)
@@ -52,6 +54,8 @@ namespace Explorer.Blog.Core.UseCases
                 var resultDto = MapToDto(blog);
 
                 UpdateStatus(blogId);
+
+                _mailService.SendEmail("radmilovicivan@gmail.com", "Ajde", "ajde");
 
                 return Result.Ok(resultDto);
             }
