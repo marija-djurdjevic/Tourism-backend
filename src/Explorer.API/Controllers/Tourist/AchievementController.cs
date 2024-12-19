@@ -30,7 +30,17 @@ namespace Explorer.API.Controllers.Tourist
         [HttpGet]
         public ActionResult<PagedResult<AchievementDto>> getAchievements()
         {
-            int userId = User.PersonId();
+
+            int userId;
+            try
+            {
+                userId = User.PersonId();
+            }
+            catch (Exception)
+            {
+                userId = -2; // Postavi podrazumevanu vrednost u slučaju greške
+            }
+            
             var user = userService.GetUserById(userId);
             var achievements = achievementService.GetAllAchievements();
             foreach(var achievement in achievements)
