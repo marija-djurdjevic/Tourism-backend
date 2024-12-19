@@ -17,5 +17,6 @@ namespace Explorer.Tours.API.Public.Execution
         Result<NotificationDto> Update(NotificationDto notification);
         Result Delete(int id);
         Result <List<NotificationDto>> GetUnreadNotificationsByReciever(int userId);
+        Task NotifyUserAsync(int userId, NotificationDto notification);
     }
 }
