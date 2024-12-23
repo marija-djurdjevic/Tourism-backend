@@ -1,11 +1,8 @@
-﻿using Explorer.Encounters.API.Dtos.EncounterDtos;
-using Explorer.Encounters.API.Dtos.SecretsDtos;
+﻿using Explorer.Encounters.API.Dtos.SecretsDtos;
 using Explorer.Encounters.API.Public;
-using Explorer.Encounters.Core.UseCases;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos.PublishRequestDtos;
 using Explorer.Tours.API.Public.Authoring;
-using Explorer.Tours.Core.UseCases.Authoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,6 +30,16 @@ namespace Explorer.API.Controllers.Author.Authoring
             story.StoryStatus = StoryStatus.Pending;
 
             var result = _storyService.Create(story);
+         
+            if (result.IsSuccess)
+            {
+                PublishRequestDto publishRequestDto = new PublishRequestDto();
+                publishRequestDto.AuthorId = userId;
+                publishRequestDto.EntityId = result.Value.Id;
+                publishRequestDto.Type = PublishRequestDto.RegistrationRequestType.Story;
+
+                _publishRequestService.Create(publishRequestDto);
+            }
             return CreateResponse(result);
         }
     }

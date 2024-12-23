@@ -48,8 +48,9 @@ namespace Explorer.Encounters.Core.UseCases
             var stories = GetAllByUserId(0, 0, userId).Value
                    .Select(su => _storyService.GetById(su.StoryId).Value)
                    .ToList();
+            var results = stories.Where(s=> s.StoryStatus == API.Dtos.SecretsDtos.StoryStatus.Accepted).ToList();
 
-            return Result.Ok(stories);
+            return Result.Ok(results);
         
         }
 
