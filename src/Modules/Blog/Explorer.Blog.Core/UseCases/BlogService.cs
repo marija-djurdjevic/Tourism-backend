@@ -10,6 +10,10 @@ using Explorer.Blog.API.Public;
 using FluentResults;
 using AutoMapper;
 using Explorer.Blog.Core.Domain.RepositoryInterfaces;
+using System.Net;
+using Explorer.Stakeholders.Core.Domain.Users;
+using Explorer.Stakeholders.API.Public;
+using Explorer.Stakeholders.API.Dtos;
 
 namespace Explorer.Blog.Core.UseCases
 {
@@ -19,12 +23,14 @@ namespace Explorer.Blog.Core.UseCases
         private readonly IMapper _mapper;
         private readonly ICommentService _commentService;
         private readonly IMailService _mailService;
-        public BlogService(IBlogRepository repository, ICommentService commentService, IMailService mailService, IMapper mapper) : base(repository, mapper)
+        private readonly IUserService _userService;
+        public BlogService(IBlogRepository repository, ICommentService commentService, IMailService mailService, IUserService userService, IMapper mapper) : base(repository, mapper)
         {
             _blogRepository = repository;
             _mapper = mapper;
             _commentService = commentService;
             _mailService = mailService;
+            _userService = userService;
         }
 
         public Result<BlogDto> GetBlogById(int blogId)
@@ -55,11 +61,14 @@ namespace Explorer.Blog.Core.UseCases
 
                 UpdateStatus(blogId);
 
-                MessageDto mail = new MessageDto("zekovicognjen753@gmail.com",
+                PersonDto autor = _userService.GetPersonByUserId(voteDto.AuthorId).Value;
+
+                MessageDto mail = new MessageDto(autor.Email,
                     "pswtesttest@gmail.com",
                     "imqtapmbwgkjsmww",
-                    "Naslov",
-                    "<b>Boooooldovani<b>");
+                    "PSWTravel",
+                    "<b>Great job!<b><br>" +
+                    "<i>You've got one more vote! - from author: "+autor.Name + " " + autor.Surname + "<i>");
                 _mailService.SendEmail(mail);
                 //davon.will7@ethereal.email
                 //AUsRG4upyPMJRgHgaB
@@ -207,6 +216,16 @@ namespace Explorer.Blog.Core.UseCases
                 var resultDto = _commentService.Create(commentDto).Value;
 
                 UpdateStatus(blogId);
+
+                PersonDto autor = _userService.GetPersonByUserId(commentDto.AuthorId).Value;
+
+                MessageDto mail = new MessageDto(autor.Email,
+                    "pswtesttest@gmail.com",
+                    "imqtapmbwgkjsmww",
+                    "PSWTravel",
+                    "<b>Chek it out!<b><br>" +
+                    "<i>You've got a new comment! - from author: " + autor.Name + " " + autor.Surname + "<i>");
+                _mailService.SendEmail(mail);
 
                 return Result.Ok(resultDto);
 
