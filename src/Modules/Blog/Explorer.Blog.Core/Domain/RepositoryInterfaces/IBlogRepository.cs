@@ -10,5 +10,6 @@ namespace Explorer.Blog.Core.Domain.RepositoryInterfaces
     public interface IBlogRepository : ICrudRepository<Blogs>
     {
         Blogs GetBlogById(int id);
+        List<Blogs> GetTop3BLogs(List<Comment> comments);
     }
 }
