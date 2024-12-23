@@ -139,6 +139,7 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
+        [AllowAnonymous]
         [HttpGet("group-tours")]
         public ActionResult<PagedResult<GroupTourDto>> GetAllGroupTours([FromQuery] int page, [FromQuery] int pageSize)
         {
