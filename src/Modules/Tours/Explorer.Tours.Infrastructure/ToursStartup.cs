@@ -53,6 +53,8 @@ public static class ToursStartup
         services.AddScoped<IPublishRequestService, PublishRequestService>();
         services.AddScoped<IKeyPointRepository, KeyPointRepository>();
         services.AddScoped<IGroupTourExecutionService, GroupTourExecutionService>();
+        services.AddScoped<IGroupTourExecutionRepository, GroupTourExecutionRepository>();
+
     }
 
     private static void SetupInfrastructure(IServiceCollection services)

@@ -1,4 +1,5 @@
-﻿using Explorer.Tours.API.Dtos;
+﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.GroupTourDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.UseCases.Authoring;
@@ -17,12 +18,36 @@ namespace Explorer.API.Controllers.Tourist.Execution
         {
             _groupTourExecutionService = groupTourExecutionService;
         }
+
         [HttpPost]
         public ActionResult<GroupTourExecutionDto> Create([FromBody] GroupTourExecutionDto groupTourExecution)
         {
             var result = _groupTourExecutionService.Create(groupTourExecution);
             return CreateResponse(result);
         }
+
+        [HttpDelete("{touristId}/{groupTourId}")]
+        public async Task<ActionResult> Delete(int touristId, int groupTourId)
+        {
+            var result = await _groupTourExecutionService.CancelParticipation(touristId, groupTourId);
+            if (result.IsSuccess)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
+
+
+        [HttpGet]
+        public ActionResult<PagedResult<GroupTourExecutionDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var result = _groupTourExecutionService.GetPaged(page, pageSize);
+            return CreateResponse(result);
+        }
+
     }
 }
 
