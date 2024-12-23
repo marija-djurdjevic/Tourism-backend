@@ -6,30 +6,31 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Explorer.Blog.API.Public;
+using Explorer.Blog.API.Dtos;
 
 namespace Explorer.Blog.Core.UseCases
 {
     public class MailService : IMailService
     {
-        public void SendEmail(string toEmail, string subject, string body)
+        public void SendEmail(MessageDto message)
         {
             try
             {
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = new NetworkCredential("tutorialseu-dev@outlook.com", "Test12345678"),
+                    Credentials = new NetworkCredential(message.FromEmail, message.Password),
                     EnableSsl = true,
                 };
 
                 MailMessage mailMessage = new MailMessage
                 {
-                    From = new MailAddress("your-email@gmail.com"),
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = true, 
+                    From = new MailAddress(message.FromEmail),
+                    Subject = message.Subject,
+                    Body = message.Body,
+                    IsBodyHtml = true,
                 };
-                mailMessage.To.Add(toEmail);
+                mailMessage.To.Add(message.ToEmail);
 
                 smtpClient.Send(mailMessage);
                 Console.WriteLine("Email sent successfully.");

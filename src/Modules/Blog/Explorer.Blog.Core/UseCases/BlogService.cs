@@ -55,7 +55,16 @@ namespace Explorer.Blog.Core.UseCases
 
                 UpdateStatus(blogId);
 
-                _mailService.SendEmail("radmilovicivan@gmail.com", "Ajde", "ajde");
+                MessageDto mail = new MessageDto("zekovicognjen753@gmail.com",
+                    "pswtesttest@gmail.com",
+                    "imqtapmbwgkjsmww",
+                    "Naslov",
+                    "<b>Boooooldovani<b>");
+                _mailService.SendEmail(mail);
+                //davon.will7@ethereal.email
+                //AUsRG4upyPMJRgHgaB
+                //clotilde70@ethereal.email
+                //KvardNpSsCTQfwTGMm
 
                 return Result.Ok(resultDto);
             }

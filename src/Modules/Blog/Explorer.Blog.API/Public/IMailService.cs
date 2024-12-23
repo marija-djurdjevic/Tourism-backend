@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Explorer.Blog.API.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Explorer.Blog.API.Public
 {
     public interface IMailService
     {
-        void SendEmail(string toEmail, string subject, string body);
+        void SendEmail(MessageDto message);
     }
 }
