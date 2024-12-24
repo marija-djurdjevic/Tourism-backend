@@ -4,6 +4,7 @@ using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.GroupTourDtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.API.Public.Execution;
 using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
@@ -289,7 +290,7 @@ namespace Explorer.Tours.Tests.Integration.Authoring
 
         private static TourController CreateController(IServiceScope scope)
         {
-            return new TourController(scope.ServiceProvider.GetRequiredService<ITourService>())
+            return new TourController(scope.ServiceProvider.GetRequiredService<ITourService>(), scope.ServiceProvider.GetRequiredService<INotificationService>(), scope.ServiceProvider.GetRequiredService<IGroupTourExecutionService>())
             {
                 ControllerContext = BuildContext("-1")
             };
