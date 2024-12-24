@@ -20,5 +20,7 @@ namespace Explorer.Encounters.API.Public
         Result<StoryDto> GetById(int storyId);
 
         Result<List<StoryDto>> GetByBookId(int bookId);
+
+        
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
+using Explorer.Tours.API.Dtos.PublishRequestDtos;
 
 namespace Explorer.API.Controllers.Administrator
 {
@@ -28,7 +29,17 @@ namespace Explorer.API.Controllers.Administrator
             return CreateResponse(result);
         }
 
-   
+        [HttpPut("{id:int}")]
+        public ActionResult UpdateStory([FromBody] StoryDto storyDto)
+        {
+            
+            var result = _storyService.Update(storyDto);
+
+            return CreateResponse(result);
+        }
+
+
+
 
     }
 }

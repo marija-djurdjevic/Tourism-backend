@@ -40,5 +40,7 @@ namespace Explorer.Encounters.Core.UseCases
 
             return MapToDto(_storyRepository.GetByBookId(storyId));
         }
+
+        
     }
 }
