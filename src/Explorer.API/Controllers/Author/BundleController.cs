@@ -41,6 +41,7 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpGet("{authorId}/{bundleId}")]
+        [AllowAnonymous]
         public ActionResult<List<TourDto>> GetToursByBundleId(int authorId, int bundleId)
         {
             var pagedResult = tourService.GetByAuthorId(1, 100, authorId);

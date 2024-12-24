@@ -17,6 +17,11 @@ namespace Explorer.Payments.Infrastructure.Database.Repositories
             _dbContext = dbContext;
         }
 
+        public List<Sale> GetAllByAuthorId(int autordId)
+        {
+            return _dbContext.Sales.Where(s => s.AuthorId == autordId).ToList();
+        }
+
         public double GetLowestDiscountedPrice(int tourId, double tourPrice)
         {
             var now = DateTime.UtcNow;

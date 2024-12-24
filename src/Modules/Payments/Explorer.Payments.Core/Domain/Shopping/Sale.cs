@@ -10,6 +10,7 @@ namespace Explorer.Payments.Core.Domain.Shopping
     public class Sale : Entity
     {
         public DateTime StartTime { get; private set; }
+        public int AuthorId { get; private set; }
         public DateTime EndTime { get; private set; }
         public int Discount { get; private set; }   //in %
         public List<long> TourIds { get; private set; }
@@ -17,7 +18,7 @@ namespace Explorer.Payments.Core.Domain.Shopping
         {
             
         }
-        public Sale(DateTime startTime, DateTime endTime, int discount, List<long> tourIds)
+        public Sale(DateTime startTime, DateTime endTime, int discount, List<long> tourIds, int authorId)
         {
             if (endTime <= startTime)
             {
@@ -38,6 +39,7 @@ namespace Explorer.Payments.Core.Domain.Shopping
             EndTime = endTime;
             Discount = discount;
             TourIds = tourIds ?? new List<long>();
+            AuthorId = authorId;
         }
     }
 }

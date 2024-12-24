@@ -20,5 +20,14 @@ namespace Explorer.Blog.Infrastructure.Database.Repositories
                 .OrderBy(c => c.CreationDate)
                 .ToList();
         }
+
+        public List<Comment> GetLatestComments()
+        {
+            DateTime lastWeek = DateTime.UtcNow.AddDays(-7);
+
+            return DbContext.Comment
+                .Where(comment => comment.CreationDate >= lastWeek)
+                .ToList();
+        }
     }
 }

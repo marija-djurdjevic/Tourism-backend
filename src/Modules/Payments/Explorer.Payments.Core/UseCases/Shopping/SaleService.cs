@@ -21,6 +21,11 @@ namespace Explorer.Payments.Core.UseCases.Shopping
             _saleRepository = repository;
         }
 
+        public Result<List<SaleDto>> GetAllByAuthorId(int authroId)
+        {
+            return MapToDto(_saleRepository.GetAllByAuthorId(authroId));
+        }
+
         public Result<SaleDto> GetSaleById(int id)
         {
             return MapToDto(_saleRepository.GetSaleById(id));
