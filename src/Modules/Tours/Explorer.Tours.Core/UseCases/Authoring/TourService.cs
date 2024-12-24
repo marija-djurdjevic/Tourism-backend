@@ -323,7 +323,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             tour.Duration = gt.Duration;
             tour.TouristNumber = gt.TouristNumber;
             tour.StartTime = gt.StartTime;
-            tour.Progress = Domain.GroupTours.ProgressStatus.Scheduled;
+            tour.Progress = (Domain.GroupTours.ProgressStatus)gt.Progress;
             var tourDto = _mapper.Map<GroupTourDto>(tour);
             Update(tourDto);
             return Result.Ok(tourDto);
