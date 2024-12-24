@@ -196,7 +196,7 @@ namespace Explorer.API.Controllers.Author
             {
                 if (participant.GroupTourId == req.Id)
                 {
-                    _groupTourExecutionService.CancelParticipation(participant.TouristId, req.Id);
+                     _groupTourExecutionService.CancelParticipation(participant.TouristId, req.Id);
                     _notificationService.Create(new NotificationDto(content, NotificationType.GroupTourCancelationComment, req.Id, participant.TouristId, false));
                 }
             }

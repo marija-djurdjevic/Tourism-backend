@@ -14,6 +14,6 @@ namespace Explorer.Tours.API.Public.Authoring
     {
         Result<PagedResult<GroupTourExecutionDto>> GetPaged(int page, int pageSize);
         Result<GroupTourExecutionDto> Create(GroupTourExecutionDto groupTourExecution);
-        public Task<Result> CancelParticipation(int touristId, int groupTourId);
+        public Result CancelParticipation(int touristId, int groupTourId);
     }
 }
