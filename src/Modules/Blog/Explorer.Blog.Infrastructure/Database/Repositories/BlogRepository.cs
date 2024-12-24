@@ -35,23 +35,20 @@ namespace Explorer.Blog.Infrastructure.Database.Repositories
                 })
                 .ToList();
 
-            var blogsWithVotes = DbContext.Blogs
-                .Where(blog => commentCounts.Select(cc => cc.BlogId).Contains(blog.Id))
-                .ToList();
-
-            var topBlogs = blogsWithVotes
+            var blogsWithInteractionCounts = DbContext.Blogs
+                .AsEnumerable() 
                 .Select(blog => new
                 {
                     Blog = blog,
-                    InteractionCount = commentCounts.FirstOrDefault(cc => cc.BlogId == blog.Id)?.CommentCount ?? 0 +
+                    InteractionCount = (commentCounts.FirstOrDefault(cc => cc.BlogId == blog.Id)?.CommentCount ?? 0) +
                                        blog.Votes.Count(vote => vote.CreationDate >= lastWeek)
                 })
                 .OrderByDescending(blogWithCount => blogWithCount.InteractionCount)
-                .Take(3) // Get the top 3 blogs based on interaction count
+                .Take(3) 
                 .Select(blogWithCount => blogWithCount.Blog)
                 .ToList();
 
-            return topBlogs;
+            return blogsWithInteractionCounts;
         }
     }
 }
