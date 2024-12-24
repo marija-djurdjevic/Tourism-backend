@@ -2,8 +2,11 @@
 using Explorer.Encounters.API.Dtos;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.GroupTourDtos;
+using Explorer.Tours.API.Dtos.PublishRequestDtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
+using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.API.Public.Execution;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +17,14 @@ namespace Explorer.API.Controllers.Author
     public class TourController : BaseApiController
     {
         private readonly ITourService _tourService;
-        //private readonly IGroupTourService _groupTourService;
+        private readonly INotificationService _notificationService;
+        private readonly IGroupTourExecutionService _groupTourExecutionService;
 
-        public TourController(ITourService tourService)
+        public TourController(ITourService tourService, INotificationService notificationService, IGroupTourExecutionService groupTourExecutionService)
         {
             _tourService = tourService;
-           // _groupTourService = groupTourService;
+            _notificationService = notificationService;
+            _groupTourExecutionService = groupTourExecutionService;
         }
 
         [HttpGet]
@@ -168,6 +173,35 @@ namespace Explorer.API.Controllers.Author
             }
 
             return BadRequest("Invalid input data.");
+        }
+
+        [HttpPut("group/cancel/{id}")]
+        public IActionResult CancelGroup(int id, [FromBody] GroupTourDto groupTourDto)
+        {
+
+            var result = _tourService.CancelGroup(groupTourDto);
+            NotifyCanceledAsync(result.Value);
+            return CreateResponse(result);
+        }
+
+        private void NotifyCanceledAsync(GroupTourDto req)
+        {
+            int tourAuthorId = req.AuthorId;
+            string content = $"The group tour " + req.Name + " has been canceled.";
+            var pagedResult = _groupTourExecutionService.GetPaged(1, 10);
+
+            var participations = pagedResult.Value.Results.ToList();
+
+            foreach (var participant in participations)
+            {
+                if (participant.GroupTourId == req.Id)
+                {
+                    _groupTourExecutionService.CancelParticipation(participant.TouristId, req.Id);
+                    _notificationService.Create(new NotificationDto(content, NotificationType.GroupTourCancelationComment, req.Id, participant.TouristId, false));
+                }
+            }
+
+           
         }
 
     }

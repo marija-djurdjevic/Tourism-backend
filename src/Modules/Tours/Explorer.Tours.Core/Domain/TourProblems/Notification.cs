@@ -30,7 +30,8 @@ namespace Explorer.Tours.Core.Domain.TourProblems
     public enum NotificationType
     {
         TourProblemComment,
-        TourRefundComment
+        TourRefundComment,
+        GroupTourCancelationComment
         //Ko bude koristio notifikacije neka sebi doda tip koji mu treba
     }
 }
