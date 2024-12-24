@@ -289,5 +289,22 @@ namespace Explorer.Blog.Core.UseCases
                 return Result.Fail(FailureCode.NotFound).WithError(e.Message);
             }
         }
+
+        public Result<List<BlogDto>> GetTop3BLogs()
+        {
+            var latestCommentsDto = _commentService.GetLatestComments();
+
+            List<Comment> latestComments = new List<Comment>();
+            foreach (var comment in latestCommentsDto.Value)
+            {
+                latestComments.Add(_mapper.Map<CommentDto, Comment>(comment));
+            }
+
+            var blog = _blogRepository.GetTop3BLogs(latestComments);
+
+            var blogsDto = blog.Select(blog => _mapper.Map<Blogs, BlogDto>(blog)).ToList() ?? new List<BlogDto>();
+
+            return Result.Ok(blogsDto);
+        }
     }
 }

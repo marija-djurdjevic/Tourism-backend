@@ -30,6 +30,13 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
+        [HttpGet("top3")]
+        public ActionResult<PagedResult<BlogDto>> GetTop3Blogs()
+        {
+            var result = _blogService.GetTop3BLogs();
+            return CreateResponse(result);
+        }
+
         [HttpGet("{blogId}")]
         public ActionResult<BlogDto> GetBlogById(int blogId)
         {

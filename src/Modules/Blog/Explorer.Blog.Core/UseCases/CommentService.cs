@@ -44,5 +44,9 @@ namespace Explorer.Blog.Core.UseCases
             }
         }
 
+        public Result<List<CommentDto>> GetLatestComments()
+        {
+            return commentRepository.GetLatestComments();
+        }
     }
 }
