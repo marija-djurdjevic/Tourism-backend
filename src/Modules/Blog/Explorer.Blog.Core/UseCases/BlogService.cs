@@ -70,10 +70,6 @@ namespace Explorer.Blog.Core.UseCases
                     "<b>Great job!<b><br>" +
                     "<i>You've got one more vote! - from author: "+autor.Name + " " + autor.Surname + "<i>");
                 _mailService.SendEmail(mail);
-                //davon.will7@ethereal.email
-                //AUsRG4upyPMJRgHgaB
-                //clotilde70@ethereal.email
-                //KvardNpSsCTQfwTGMm
 
                 return Result.Ok(resultDto);
             }
