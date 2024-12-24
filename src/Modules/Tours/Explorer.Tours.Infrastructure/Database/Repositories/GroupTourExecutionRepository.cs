@@ -13,10 +13,10 @@ public class GroupTourExecutionRepository : CrudDatabaseRepository<GroupTourExec
         _dbContext = dbContext;
     }
 
-    public async Task<GroupTourExecution> GetByIdAsync(int touristId, int groupTourId)
+    public GroupTourExecution GetById(int touristId, int groupTourId)
     {
-        return await _dbContext.GroupTourExecution
-                               .AsNoTracking()
-                               .FirstOrDefaultAsync(k => k.GroupTourId == groupTourId && k.TouristId == touristId);
+        return _dbContext.GroupTourExecution
+                         .AsNoTracking()
+                         .FirstOrDefault(k => k.GroupTourId == groupTourId && k.TouristId == touristId);
     }
 }

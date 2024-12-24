@@ -5,6 +5,7 @@ using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.Domain.GroupTours;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using FluentResults;
+using Microsoft.EntityFrameworkCore;
 
 public class GroupTourExecutionService : CrudService<GroupTourExecutionDto, GroupTourExecution>, IGroupTourExecutionService
 {
@@ -18,9 +19,9 @@ public class GroupTourExecutionService : CrudService<GroupTourExecutionDto, Grou
         _mapper = mapper;
     }
 
-    public async Task<Result> CancelParticipation(int touristId, int groupTourId)
+    public Result CancelParticipation(int touristId, int groupTourId)
     {
-        var groupTourExecution = await _groupTourExecutionRepository.GetByIdAsync(touristId, groupTourId);
+        var groupTourExecution = _groupTourExecutionRepository.GetById(touristId, groupTourId);
         if (groupTourExecution == null)
         {
             return Result.Fail("GroupTourExecution not found");

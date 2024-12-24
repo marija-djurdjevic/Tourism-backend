@@ -27,9 +27,10 @@ namespace Explorer.API.Controllers.Tourist.Execution
         }
 
         [HttpDelete("{touristId}/{groupTourId}")]
-        public async Task<ActionResult> Delete(int touristId, int groupTourId)
+        public ActionResult Delete(int touristId, int groupTourId)
         {
-            var result = await _groupTourExecutionService.CancelParticipation(touristId, groupTourId);
+            var result = _groupTourExecutionService.CancelParticipation(touristId, groupTourId);
+
             if (result.IsSuccess)
             {
                 return NoContent();

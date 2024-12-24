@@ -323,11 +323,23 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             tour.Duration = gt.Duration;
             tour.TouristNumber = gt.TouristNumber;
             tour.StartTime = gt.StartTime;
-            tour.Progress = (Domain.GroupTours.ProgressStatus)gt.Progress;
+            tour.Progress = Domain.GroupTours.ProgressStatus.Scheduled;
             var tourDto = _mapper.Map<GroupTourDto>(tour);
             Update(tourDto);
-            var updateee = tourDto;
             return Result.Ok(tourDto);
         }
+
+        public Result<GroupTourDto> CancelGroup(GroupTourDto gt)
+        {
+            var tour = _mapper.Map<GroupTour>(gt);
+            tour.Duration = gt.Duration;
+            tour.TouristNumber = gt.TouristNumber;
+            tour.StartTime = gt.StartTime;
+            tour.Progress = Domain.GroupTours.ProgressStatus.Canceled;
+            var tourDto = _mapper.Map<GroupTourDto>(tour);
+            Update(tourDto);
+            return Result.Ok(tourDto);
+        }
+
     }
 }

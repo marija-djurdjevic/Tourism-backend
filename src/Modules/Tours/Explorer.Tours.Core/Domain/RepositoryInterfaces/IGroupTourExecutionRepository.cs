@@ -9,6 +9,6 @@ namespace Explorer.Tours.Core.Domain.RepositoryInterfaces
 {
     public interface IGroupTourExecutionRepository
     {
-        public Task<GroupTourExecution> GetByIdAsync(int touristId, int groupTourId);
+        public GroupTourExecution GetById(int touristId, int groupTourId);
     }
 }
