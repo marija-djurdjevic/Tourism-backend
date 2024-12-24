@@ -23,7 +23,7 @@ namespace Explorer.Blog.Infrastructure.Database.Repositories
 
         public List<Comment> GetLatestComments()
         {
-            DateTime lastWeek = DateTime.Now.AddDays(-7);
+            DateTime lastWeek = DateTime.UtcNow.AddDays(-7);
 
             return DbContext.Comment
                 .Where(comment => comment.CreationDate >= lastWeek)
