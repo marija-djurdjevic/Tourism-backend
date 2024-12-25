@@ -8,7 +8,7 @@ namespace Explorer.Tours.Core.Domain
         public string Name { get; private set; }
         public string Description { get; private set; }
         public string ImagePath { get; private set; }
-        //public long TourId { get; private set; }
+        public int? StoryId { get; private set; }
         public List<long> TourIds { get; private set; } = new List<long>();
         public Coordinates Coordinates { get; private set; }
 
@@ -17,7 +17,7 @@ namespace Explorer.Tours.Core.Domain
         {
             TourIds = new List<long>();
         }
-        public KeyPoint(string name, string description, string imagePath, long tourId, Coordinates coordinates)
+        public KeyPoint(string name, string description, string imagePath, int storyId, long tourId, Coordinates coordinates)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
@@ -27,13 +27,13 @@ namespace Explorer.Tours.Core.Domain
             Name = name;
             Description = description;
             ImagePath = imagePath;
-            //TourId = tourId;
+            StoryId = storyId;
             TourIds.Add(tourId);
             Coordinates = coordinates;
             Status = KeyPointStatus.Private;
 
         }
-        public KeyPoint(int id, string name, string description, string imagePath, int tourId, double latitude, double longitude)
+        public KeyPoint(int id, string name, string description, string imagePath, int storyId, int tourId, double latitude, double longitude)
         {
             if (id < 0) throw new ArgumentException("Invalid Id.");
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
@@ -46,13 +46,13 @@ namespace Explorer.Tours.Core.Domain
             Name = name;
             Description = description;
             ImagePath = imagePath;
-            //TourId = tourId;
+            StoryId = storyId;
             TourIds.Add(tourId);
             Coordinates = new Coordinates(latitude, longitude);
             Status = KeyPointStatus.Private;
         }
         //dodala sam ovaj kontruktor zbog sebe :D
-        public KeyPoint(string name, string description, string imagePath, long tourId, Coordinates coordinates, KeyPointStatus status)
+        public KeyPoint(string name, string description, string imagePath, int storyId, long tourId, Coordinates coordinates, KeyPointStatus status)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Description.");
@@ -64,7 +64,7 @@ namespace Explorer.Tours.Core.Domain
             Name = name;
             Description = description;
             ImagePath = imagePath;
-            //TourId = tourId;
+            StoryId = storyId;
             TourIds.Add(tourId);
             Coordinates = coordinates;
             Status = status;
