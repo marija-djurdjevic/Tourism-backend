@@ -27,7 +27,7 @@ namespace Explorer.Encounters.Core.UseCases
             _storyService = storyService;
         }
 
-       
+      
          public Result<PagedResult<StoryUnlockedDto>> GetAll(int page, int pageSize)
          {
             var storiesUnlocked = GetPaged(page, pageSize);

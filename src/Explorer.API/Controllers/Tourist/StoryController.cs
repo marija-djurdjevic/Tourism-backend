@@ -15,6 +15,8 @@ namespace Explorer.API.Controllers.Tourist
     {
 
         private readonly IStoryService _storyService;
+        private readonly IStoryUnlockedService _storyUnlockedService;
+
         public StoryController(IStoryService storyService)
         {
             _storyService = storyService;
@@ -33,6 +35,21 @@ namespace Explorer.API.Controllers.Tourist
         {
             var result = _storyService.GetByBookId(id);
             return CreateResponse(result);
+        }
+
+        [HttpGet("unlockStory")]
+        public ActionResult<bool> UnlockStory([FromQuery] int storyId)
+        {
+            int userId = User.PersonId();
+
+            var storyUnlocked = new StoryUnlockedDto
+            {
+                StoryId = storyId,
+                UserId = userId
+            };
+
+            var result = _storyUnlockedService.Create(storyUnlocked);
+            return Ok(true);
         }
 
     }
