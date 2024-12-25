@@ -20,7 +20,8 @@ namespace Explorer.Encounters.API.Public
         Result<StoryDto> GetById(int storyId);
 
         Result<List<StoryDto>> GetByBookId(int bookId);
+        Result<StoryDto> StoryStatusSet(StoryDto sstory);
 
-        
+
     }
 }

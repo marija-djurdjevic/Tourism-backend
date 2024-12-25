@@ -23,6 +23,7 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<KeyPointDto> UpdateList(int id, List<long> ids);
 
         public Result<KeyPointDto> UpdateKeyPoint(int id, KeyPointDto updatedDto);
+        public Result<KeyPointDto> UpdateKeyPointStory(int id, KeyPointDto updatedDto);
         public Result DeleteKeyPoint(int id); 
     }
 }

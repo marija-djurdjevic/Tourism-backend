@@ -41,6 +41,14 @@ namespace Explorer.Encounters.Core.UseCases
             return MapToDto(_storyRepository.GetByBookId(storyId));
         }
 
-        
+        public Result<StoryDto> StoryStatusSet(StoryDto sstory)
+        {
+            sstory.StoryStatus = API.Dtos.SecretsDtos.StoryStatus.Declined;
+            Update(sstory);
+
+            return Result.Ok(sstory);
+
+        }
+
     }
 }

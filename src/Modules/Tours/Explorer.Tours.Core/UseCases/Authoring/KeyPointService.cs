@@ -154,6 +154,30 @@ namespace Explorer.Tours.Core.UseCases.Authoring
 
             return Result.Ok(updatedKeyPointDto);
         }
+
+        public Result<KeyPointDto> UpdateKeyPointStory(int id, KeyPointDto updatedDto)
+        {
+            var keyPointDto = GetById(id);
+            if (keyPointDto == null || keyPointDto.Value == null)
+            {
+                return Result.Fail("Key point not found");
+            }
+
+            var keyPoint = MapToDomain(keyPointDto.Value);
+            if (keyPoint == null)
+            {
+                return Result.Fail("Key point not found in the domain");
+            }
+
+            keyPoint.UpdateStory(
+            (int)updatedDto.StoryId
+            );
+
+            var updatedKeyPointDto = _mapper.Map<KeyPointDto>(keyPoint);
+            Update(updatedKeyPointDto);
+
+            return Result.Ok(updatedKeyPointDto);
+        }
         public Result DeleteKeyPoint(int id)
         {
             var keyPoint = _keyPointRepository.GetByIdAsync(id); 

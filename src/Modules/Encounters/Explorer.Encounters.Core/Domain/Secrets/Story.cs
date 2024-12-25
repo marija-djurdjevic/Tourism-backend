@@ -39,5 +39,10 @@ namespace Explorer.Encounters.Core.Domain.Secrets
             StoryStatus = storyStatus;
             Title = title;
         }
+
+        public void Decline()
+        {
+            StoryStatus = StoryStatus.Declined;
+        }
     }
 }

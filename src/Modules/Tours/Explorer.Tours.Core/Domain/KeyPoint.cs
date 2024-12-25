@@ -117,13 +117,20 @@ namespace Explorer.Tours.Core.Domain
             TourIds = list;
         }
 
-        public void UpdateDetails(string name, string description, string imagePath, double longitude, double latitude)
+        public void UpdateDetails(string name,string description, string imagePath, double longitude, double latitude)
         {
 
             Name = name;
             Description = description;
             ImagePath = imagePath;
             Coordinates.UpdateCoordinates(longitude, latitude);
+        }
+
+
+        public void UpdateStory(int storyId)
+        {
+
+            StoryId = storyId;
         }
     }
     //dodala sam enum
