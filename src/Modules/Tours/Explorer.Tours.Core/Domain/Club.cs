@@ -16,6 +16,7 @@ namespace Explorer.Tours.Core.Domain
         public int ImageId {  get; private set; }
         public List<int> MemberIds { get; private set;}
         public List<int> InvitationIds { get; private set;}
+        public List<int> RequestIds { get; private set;}
 
         public Club(string name, string description, int imageId)
         {
@@ -27,6 +28,7 @@ namespace Explorer.Tours.Core.Domain
             ImageId = imageId;
             MemberIds = new List<int>();
             InvitationIds = new List<int>();
+            RequestIds = new List<int>();
         }
 
         // Add a new member
@@ -62,6 +64,32 @@ namespace Explorer.Tours.Core.Domain
         public void RejectInvitation(int userId)
         {
             InvitationIds.Remove(userId);
+        }
+
+        public void RequestJoin(int userId)
+        {
+            if (!RequestIds.Contains(userId))
+            {
+                RequestIds.Add(userId);
+            }
+        }
+
+        public void AcceptRequest(int userId)
+        {
+            if (!MemberIds.Contains(userId))
+            {
+                RequestIds.Remove(userId);
+                MemberIds.Add(userId);
+            }
+            if (InvitationIds.Contains(userId))
+            {
+                InvitationIds.Remove(userId);
+            }
+        }
+
+        public void DenyRequest(int userId)
+        {
+            RequestIds.Remove(userId);
         }
     }
 }

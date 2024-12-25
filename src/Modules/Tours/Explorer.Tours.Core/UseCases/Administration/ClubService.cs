@@ -100,5 +100,46 @@ namespace Explorer.Tours.Core.UseCases.Administration
             // Return the filtered results as a PagedResult
             return new PagedResult<ClubDto>(clubDtos, pagedClubs.TotalCount);
         }
+
+        public Result RequestJoin(int clubId, int userId)
+        {
+            var club = _repository.Get(clubId);
+            if (club == null)
+                return Result.Fail("Club not found.");
+
+            club.RequestJoin(userId);
+            _repository.Update(club);
+            return Result.Ok();
+        }
+
+        public Result AcceptRequest(int clubId, int userId, int personId)
+        {
+            var club = _repository.Get(clubId);
+            if (club == null)
+                return Result.Fail("Club not found.");
+
+            if(personId != club.OwnerId)
+            {
+                return Result.Fail("You are not club owner");
+            }
+            club.AcceptRequest(userId);
+            _repository.Update(club);
+            return Result.Ok();
+        }
+
+        public Result DenyRequest(int clubId, int userId, int personId)
+        {
+            var club = _repository.Get(clubId);
+            if (club == null)
+                return Result.Fail("Club not found.");
+
+            if (personId != club.OwnerId)
+            {
+                return Result.Fail("You are not club owner");
+            }
+            club.DenyRequest(userId);
+            _repository.Update(club);
+            return Result.Ok();
+        }
     }
 }

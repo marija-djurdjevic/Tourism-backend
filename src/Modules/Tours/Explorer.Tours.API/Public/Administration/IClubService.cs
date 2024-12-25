@@ -22,5 +22,8 @@ namespace Explorer.Tours.API.Public.Administration
         Result RejectInvitation(int clubId, int userId);
         Result RemoveMember(int clubId, int userId);
         PagedResult<ClubDto> GetUserInvitations(int userId, int page, int pageSize);
+        Result AcceptRequest(int clubId, int userId, int personId);
+        Result DenyRequest(int clubId, int userId, int personId);
+        Result RequestJoin(int clubId, int userId);
     }
 }

@@ -115,5 +115,35 @@ namespace Explorer.API.Controllers.Tourist
 
             return NotFound("No invitations found for the user.");
         }
+
+        [HttpPost("{clubId}/request")]
+        public ActionResult RequestJoin(int clubId)
+        {
+            int userId = User.PersonId();
+            var result = _clubService.RequestJoin(clubId, userId);
+            if (result.IsSuccess)
+                return Ok();
+            return BadRequest(result);
+        }
+
+        [HttpPost("{clubId}/acceptRequest")]
+        public ActionResult AcceptRequest(int clubId, [FromBody] int userId)
+        {
+            int persona = User.PersonId();//jer ovo treba moci samo clubOwner
+            var result = _clubService.AcceptRequest(clubId, userId, persona);
+            if (result.IsSuccess)
+                return Ok();
+            return BadRequest(result);
+        }
+
+        [HttpPost("{clubId}/denyRequest")]
+        public ActionResult DenyRequest(int clubId, [FromBody] int userId)
+        {
+            int persona = User.PersonId();//jer ovo treba moci samo clubOwner
+            var result = _clubService.DenyRequest(clubId, userId, persona);
+            if (result.IsSuccess)
+                return Ok();
+            return BadRequest(result);
+        }
     }
 }
