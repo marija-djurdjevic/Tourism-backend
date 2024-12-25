@@ -30,5 +30,7 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(result);
         }
 
+        
+
     }
 }

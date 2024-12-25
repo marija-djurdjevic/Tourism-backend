@@ -45,5 +45,12 @@ namespace Explorer.Encounters.Core.UseCases
             return MapToDto(_bookRepository.GetById(bookId));
         }
 
+        public Result<List<BookDto>> GetForAdmin(int adminId)
+        {
+            var books = GetPaged(0, 0);
+            var booksForAdmin = books.Value.Results.FindAll(x => x.AdminId == adminId);
+            return booksForAdmin;
+        }
+
     }
 }

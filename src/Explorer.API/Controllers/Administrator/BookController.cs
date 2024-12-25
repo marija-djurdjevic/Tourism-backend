@@ -1,5 +1,6 @@
 ﻿using Explorer.Encounters.API.Dtos.SecretsDtos;
 using Explorer.Encounters.API.Public;
+using Explorer.Encounters.Core.UseCases;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos.TourLifeCycleDtos;
 using Explorer.Tours.Core.Domain.Tours;
@@ -25,6 +26,15 @@ namespace Explorer.API.Controllers.Administrator
             book.AdminId = User.PersonId();
             var result = _bookService.Create(book);
             return CreateResponse(result);      
+        }
+
+        [HttpGet("forAdmin")]
+        public ActionResult<List<BookDto>> GetForAdmin()
+        {
+
+            int userId = User.PersonId();
+            var results = _bookService.GetForAdmin(userId);
+            return CreateResponse(results);
         }
     }
 }

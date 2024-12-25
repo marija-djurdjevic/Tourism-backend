@@ -18,5 +18,7 @@ namespace Explorer.Encounters.API.Public
         Result<BookDto> Update(BookDto storyUnlocked);
 
         Result<BookDto> GetById(int bookId);
+
+        Result<List<BookDto>> GetForAdmin(int adminId);
     }
 }
