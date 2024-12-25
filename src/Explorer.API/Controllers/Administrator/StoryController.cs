@@ -8,6 +8,7 @@ using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Dtos.PublishRequestDtos;
 using Explorer.Tours.API.Public.Authoring;
+using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
 
 namespace Explorer.API.Controllers.Administrator
 {
@@ -17,10 +18,12 @@ namespace Explorer.API.Controllers.Administrator
     {
         private readonly IPublishRequestService _publishRequestService;
         private readonly IStoryService _storyService;
-        public StoryController(IStoryService storyService, IPublishRequestService publishRequestService)
+        private readonly IStoryRepository _storyRepository;
+        public StoryController(IStoryService storyService, IPublishRequestService publishRequestService, IStoryRepository storyRepository)
         {
             _storyService = storyService;
             _publishRequestService = publishRequestService;
+            _storyRepository = storyRepository;
 
         }
 
@@ -48,7 +51,7 @@ namespace Explorer.API.Controllers.Administrator
 
             if (publishRequest.Status == PublishRequestDto.RegistrationRequestStatus.Rejected)
             {
-                _storyService.StoryStatusSet(_storyService.GetById(publishRequest.EntityId).Value);
+                _storyRepository.Update(_storyRepository.GetById(publishRequest.EntityId));
             }
 
             return CreateResponse(result);
