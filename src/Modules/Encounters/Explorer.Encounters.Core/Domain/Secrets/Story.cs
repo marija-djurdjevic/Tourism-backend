@@ -44,5 +44,10 @@ namespace Explorer.Encounters.Core.Domain.Secrets
         {
             StoryStatus = StoryStatus.Declined;
         }
+        public void Accept()
+        {
+            StoryStatus = StoryStatus.Accepted;
+        }
+
     }
 }

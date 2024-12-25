@@ -9,6 +9,7 @@ using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Dtos.PublishRequestDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
+using Explorer.Encounters.Core.Domain.Secrets;
 
 namespace Explorer.API.Controllers.Administrator
 {
@@ -51,6 +52,14 @@ namespace Explorer.API.Controllers.Administrator
 
             if (publishRequest.Status == PublishRequestDto.RegistrationRequestStatus.Rejected)
             {
+                Story story = _storyRepository.GetById(publishRequest.EntityId);
+                story.Decline();
+                _storyRepository.Update(_storyRepository.GetById(publishRequest.EntityId));
+            }
+            else
+            {
+                Story story = _storyRepository.GetById(publishRequest.EntityId);
+                story.Accept();
                 _storyRepository.Update(_storyRepository.GetById(publishRequest.EntityId));
             }
 
