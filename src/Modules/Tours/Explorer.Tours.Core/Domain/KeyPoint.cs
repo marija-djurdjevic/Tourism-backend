@@ -127,7 +127,7 @@ namespace Explorer.Tours.Core.Domain
         }
 
 
-        public void UpdateStory(int storyId)
+        public void UpdateStory(int? storyId)
         {
 
             StoryId = storyId;

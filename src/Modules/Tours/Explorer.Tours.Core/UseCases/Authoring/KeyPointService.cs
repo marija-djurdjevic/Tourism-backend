@@ -84,6 +84,28 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             return Result.Ok(MapToDto(keyPoint));
         }
 
+        public Result<KeyPointDto> GetByStoryId(int id)
+        {
+            var keyPoint = _keyPointRepository.GetByStoryId(id);
+            if (keyPoint == null)
+                return Result.Fail("Publish request not found");
+
+            return Result.Ok(MapToDto(keyPoint));
+        }
+
+        public Result<KeyPointDto> RemoveStoryId(int id)
+        {
+            var keyPoint = _keyPointRepository.GetByStoryId(id);
+
+            keyPoint.UpdateStory(
+            null
+            );
+            var updatedKeyPointDto = _mapper.Map<KeyPointDto>(keyPoint);
+            Update(updatedKeyPointDto);
+
+            return Result.Ok(MapToDto(keyPoint));
+        }
+
         public Result<KeyPointDto> PublishKeyPoint(int id, int flag)
         {
             var keyPointDto = GetById(id);

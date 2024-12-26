@@ -10,6 +10,8 @@ using Explorer.Tours.API.Dtos.PublishRequestDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
 using Explorer.Encounters.Core.Domain.Secrets;
+using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 
 namespace Explorer.API.Controllers.Administrator
 {
@@ -20,12 +22,15 @@ namespace Explorer.API.Controllers.Administrator
         private readonly IPublishRequestService _publishRequestService;
         private readonly IStoryService _storyService;
         private readonly IStoryRepository _storyRepository;
-        public StoryController(IStoryService storyService, IPublishRequestService publishRequestService, IStoryRepository storyRepository)
+        private readonly IKeyPointRepository _keyPointRepository;
+        private readonly IKeyPointService _keyPointService;
+        public StoryController(IStoryService storyService, IPublishRequestService publishRequestService, IStoryRepository storyRepository, IKeyPointService keyPointService, IKeyPointRepository keyPointRepository)
         {
             _storyService = storyService;
             _publishRequestService = publishRequestService;
             _storyRepository = storyRepository;
-
+            _keyPointService = keyPointService;
+            _keyPointRepository = keyPointRepository;
         }
 
         [HttpGet("byId")]
@@ -53,12 +58,22 @@ namespace Explorer.API.Controllers.Administrator
             if (publishRequest.Status == PublishRequestDto.RegistrationRequestStatus.Rejected)
             {
                 Story story = _storyRepository.GetById(publishRequest.EntityId);
-                story.Decline();
+                KeyPoint keyPoint = _keyPointRepository.GetByStoryId((int)story.Id);
+                keyPoint.UpdateStory(
+                    null
+                );
+                _keyPointRepository.Update(_keyPointRepository.GetByStoryId((int)story.Id));
+                story.Decline();             
                 _storyRepository.Update(_storyRepository.GetById(publishRequest.EntityId));
             }
             else
             {
                 Story story = _storyRepository.GetById(publishRequest.EntityId);
+                KeyPoint keyPoint = _keyPointRepository.GetByStoryId((int)story.Id);
+                keyPoint.UpdateStory(
+                    (int)story.Id
+                );
+                _keyPointRepository.Update(_keyPointRepository.GetByStoryId((int)story.Id));
                 story.Accept();
                 _storyRepository.Update(_storyRepository.GetById(publishRequest.EntityId));
             }
