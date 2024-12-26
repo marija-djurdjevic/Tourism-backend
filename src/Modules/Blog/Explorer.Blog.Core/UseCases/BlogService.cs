@@ -10,6 +10,10 @@ using Explorer.Blog.API.Public;
 using FluentResults;
 using AutoMapper;
 using Explorer.Blog.Core.Domain.RepositoryInterfaces;
+using System.Net;
+using Explorer.Stakeholders.Core.Domain.Users;
+using Explorer.Stakeholders.API.Public;
+using Explorer.Stakeholders.API.Dtos;
 
 namespace Explorer.Blog.Core.UseCases
 {
@@ -18,11 +22,15 @@ namespace Explorer.Blog.Core.UseCases
         private readonly IBlogRepository _blogRepository;
         private readonly IMapper _mapper;
         private readonly ICommentService _commentService;
-        public BlogService(IBlogRepository repository, ICommentService commentService, IMapper mapper) : base(repository, mapper)
+        private readonly IMailService _mailService;
+        private readonly IUserService _userService;
+        public BlogService(IBlogRepository repository, ICommentService commentService, IMailService mailService, IUserService userService, IMapper mapper) : base(repository, mapper)
         {
             _blogRepository = repository;
             _mapper = mapper;
             _commentService = commentService;
+            _mailService = mailService;
+            _userService = userService;
         }
 
         public Result<BlogDto> GetBlogById(int blogId)
@@ -52,6 +60,16 @@ namespace Explorer.Blog.Core.UseCases
                 var resultDto = MapToDto(blog);
 
                 UpdateStatus(blogId);
+
+                PersonDto autor = _userService.GetPersonByUserId(voteDto.AuthorId).Value;
+
+                MessageDto mail = new MessageDto(autor.Email,
+                    "pswtesttest@gmail.com",
+                    "imqtapmbwgkjsmww",
+                    "PSWTravel",
+                    "<b>Great job!<b><br>" +
+                    "<i>You've got one more vote! - from author: "+autor.Name + " " + autor.Surname + "<i>");
+                _mailService.SendEmail(mail);
 
                 return Result.Ok(resultDto);
             }
@@ -195,6 +213,16 @@ namespace Explorer.Blog.Core.UseCases
 
                 UpdateStatus(blogId);
 
+                PersonDto autor = _userService.GetPersonByUserId(commentDto.AuthorId).Value;
+
+                MessageDto mail = new MessageDto(autor.Email,
+                    "pswtesttest@gmail.com",
+                    "imqtapmbwgkjsmww",
+                    "PSWTravel",
+                    "<b>Chek it out!<b><br>" +
+                    "<i>You've got a new comment! - from author: " + autor.Name + " " + autor.Surname + "<i>");
+                _mailService.SendEmail(mail);
+
                 return Result.Ok(resultDto);
 
             }
@@ -256,6 +284,23 @@ namespace Explorer.Blog.Core.UseCases
             {
                 return Result.Fail(FailureCode.NotFound).WithError(e.Message);
             }
+        }
+
+        public Result<List<BlogDto>> GetTop3BLogs()
+        {
+            var latestCommentsDto = _commentService.GetLatestComments();
+
+            List<Comment> latestComments = new List<Comment>();
+            foreach (var comment in latestCommentsDto.Value)
+            {
+                latestComments.Add(_mapper.Map<CommentDto, Comment>(comment));
+            }
+
+            var blog = _blogRepository.GetTop3BLogs(latestComments);
+
+            var blogsDto = blog.Select(blog => _mapper.Map<Blogs, BlogDto>(blog)).ToList() ?? new List<BlogDto>();
+
+            return Result.Ok(blogsDto);
         }
     }
 }

@@ -25,8 +25,8 @@ namespace Explorer.Payments.Tests.Integration
         public BundleTests(PaymentsTestFactory factory) : base(factory) { }
 
         [Theory]
-        [InlineData(1, new[] { -1, -2 }, 199.99, BundleStatus.Draft)]
-        public void CreateBundle(int authorId, int[] tourIds, double price, BundleStatus expectedStatus)
+        [InlineData(1, new[] { -1, -2 }, 199.99, BundleStatus.Draft, "TitleTest")]
+        public void CreateBundle(int authorId, int[] tourIds, double price, BundleStatus expectedStatus, string title)
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
@@ -38,7 +38,8 @@ namespace Explorer.Payments.Tests.Integration
                 AuthorId = authorId,
                 TourIds = tourIds.ToList(),
                 Price = price,
-                Status = BundleDto.BundleStatus.Draft // Initial status should be Draft
+                Status = BundleDto.BundleStatus.Draft,
+                Title = title,
             };
 
             // Act
@@ -62,8 +63,8 @@ namespace Explorer.Payments.Tests.Integration
         }
 
         [Theory]
-        [InlineData(1, new[] { -1, -2 }, 199.99, BundleStatus.Published)]
-        public void UpdateBundle(int authorId, int[] tourIds, double price, BundleStatus newStatus)
+        [InlineData(-1, new[] { -1, -2 }, 199.99, BundleStatus.Published, "TitleUpdated")]
+        public void UpdateBundle(int authorId, int[] tourIds, double price, BundleStatus newStatus, string title)
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
@@ -76,7 +77,8 @@ namespace Explorer.Payments.Tests.Integration
                 AuthorId = authorId,
                 TourIds = tourIds.ToList(),
                 Price = price,
-                Status = BundleDto.BundleStatus.Published // New status
+                Status = BundleDto.BundleStatus.Published,
+                Title = title,
             };
 
             // Act

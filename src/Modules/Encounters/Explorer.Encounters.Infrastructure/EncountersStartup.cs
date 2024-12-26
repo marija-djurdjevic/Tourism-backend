@@ -1,4 +1,4 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.Domain.EncounterExecutions;
@@ -42,6 +42,8 @@ namespace Explorer.Encounters.Infrastructure
             services.AddScoped<IStoryUnlockedRepository, StoryUnlockedRepository>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IEncounterAchievementService, EncounterAchievementService>();
+
         }
 
         private static void SetupInfrastructure(IServiceCollection services)

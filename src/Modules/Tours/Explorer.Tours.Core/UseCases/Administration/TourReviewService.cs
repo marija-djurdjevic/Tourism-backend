@@ -15,24 +15,28 @@ using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.BuildingBlocks.Core.Domain;
 using Microsoft.EntityFrameworkCore;
+using Explorer.Stakeholders.Core.Application.Services;
+using Explorer.Stakeholders.Core.Application.Dtos;
 
 namespace Explorer.Tours.Core.UseCases.Administration
 {
     public class TourReviewService : CrudService<TourReviewDto, TourReview>, ITourReviewService
     {
         private readonly ITourSessionService _sessionService;
+        private readonly IAchievementService _achievementService;
 
         public TourReviewService(ICrudRepository<TourReview> repository, ITourSessionService tourSessionService,
-            IMapper mapper) : base(repository, mapper)
+            IMapper mapper, IAchievementService achievementService) : base(repository, mapper)
         {
             _sessionService = tourSessionService;
+            this._achievementService = achievementService;
         }
         public override Result<TourReviewDto> Create(TourReviewDto tourReview)
         {
             (tourReview.TourProgressPercentage, tourReview.TourVisitDate) = _sessionService.GetProgressAndLastActivity(tourReview.TourId, tourReview.UserId);
             var canCreate = _sessionService.CanUserReviewTour(tourReview.TourId, tourReview.UserId);
             var existingReview = Get(tourReview.TourId, tourReview.UserId).Value;
-            
+
             tourReview.Id = existingReview?.Id ?? 0;
 
             if (IsTourReviewedByTourist(tourReview.UserId, tourReview.TourId))
@@ -48,7 +52,14 @@ namespace Explorer.Tours.Core.UseCases.Administration
             {
                 throw new InvalidOperationException("Ne može se kreirati review zbog zadatog uslova.");
             }
-            return base.Create(tourReview);
+            var returnValue = base.Create(tourReview);
+            var reviews = GetPaged(0, 0).Value.Results.FindAll(x => x.UserId == tourReview.UserId);
+            var numberOfMyReviews = reviews.Count();
+            var numberOfPhotos = reviews.Sum(x => x.Images.Split(',', StringSplitOptions.RemoveEmptyEntries).Length);
+
+            _achievementService.AddAchievementToUser(AchievementDtoType.ReviewCreated, tourReview.UserId, numberOfMyReviews);
+            _achievementService.AddAchievementToUser(AchievementDtoType.PhotosInReview, tourReview.UserId, numberOfPhotos);
+            return returnValue;
         }
 
         public bool IsTourReviewedByTourist(int userId, int tourId)

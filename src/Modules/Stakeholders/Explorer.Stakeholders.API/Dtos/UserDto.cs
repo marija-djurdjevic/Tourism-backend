@@ -1,4 +1,6 @@
 ﻿
+using Explorer.Stakeholders.Core.Application.Dtos;
+
 namespace Explorer.Stakeholders.API.Dtos;
 
 public class UserDto
@@ -10,6 +12,7 @@ public class UserDto
     public bool IsActive { get; set; }
     public LocationDto? Location { get; set; }
     public int? XP { get; set; }
+    public ICollection<AchievementDto> Achievements { get; private set; }
 }
 
 public enum UserRole

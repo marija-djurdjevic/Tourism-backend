@@ -4,6 +4,7 @@ using Explorer.Tours.Core.Domain.TourProblems;
 using Microsoft.EntityFrameworkCore;
 using Explorer.Tours.Core.Domain.Tours;
 using Explorer.Tours.Core.Domain.PublishRequests;
+using Explorer.Tours.Core.Domain.GroupTours;
 
 
 namespace Explorer.Tours.Infrastructure.Database;
@@ -26,10 +27,18 @@ public class ToursContext : DbContext
 
     public DbSet<PublishRequest> PublishRequests { get; set; }
 
+    public DbSet<GroupTourExecution> GroupTourExecution { get; set; }
+
     public ToursContext(DbContextOptions<ToursContext> options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("tours");
+
+        modelBuilder.Entity<Tour>()
+            .HasDiscriminator<string>("Discriminator")
+            .HasValue<Tour>("Tour")
+            .HasValue<GroupTour>("GroupTour");
         modelBuilder.HasDefaultSchema("tours");
         //modelBuilder.Entity<ShoppingCart>().Property(item => item.Tokens).HasColumnType("jsonb");
 
@@ -39,5 +48,15 @@ public class ToursContext : DbContext
         modelBuilder.Entity<Tour>().Property(item => item.TransportInfo).HasColumnType("jsonb");
         modelBuilder.Entity<Core.Domain.TourProblems.TourProblem>().Property(item => item.Details).HasColumnType("jsonb");
         modelBuilder.Entity<Core.Domain.TourProblems.TourProblem>().Property(item => item.Comments).HasColumnType("jsonb");
+    }
+
+    public IQueryable<Tour> GetRegularTours()
+    {
+        return Tour.Where(t => EF.Property<string>(t, "Discriminator") == "Tour");
+    }
+
+    public IQueryable<GroupTour> GetGroupTours()
+    {
+        return Tour.OfType<GroupTour>();
     }
 }
