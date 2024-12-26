@@ -34,7 +34,7 @@ namespace Explorer.Encounters.Infrastructure
             services.AddScoped<IEncounterRepository, EncounterRepository>();
             services.AddScoped<IEncounterExecutionService, EncounterExecutionService>();
             services.AddScoped<IEncounterExecutionRepository, EncounterExecutionRepository>();
-
+            services.AddScoped<IEncounterAchievementService, EncounterAchievementService>();
         }
 
         private static void SetupInfrastructure(IServiceCollection services)

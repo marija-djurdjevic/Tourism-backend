@@ -22,6 +22,7 @@ namespace Explorer.Blog.API.Public
         Result<CommentDto> UpdateComment(int blogId, CommentDto comment);
         Result RemoveComment(int blogId, int commentId);
         Result<List<CommentDto>> GetAllCommentsByBlogId(int blogId);
+        Result<List<BlogDto>> GetTop3BLogs();
         Result Delete(int id);
     }
 }

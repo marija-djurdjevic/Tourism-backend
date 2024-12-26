@@ -20,6 +20,8 @@ using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.UseCases.Authoring;
 using Explorer.Tours.Core.Domain.PublishRequests;
 using Explorer.Tours.Core.Domain.GroupTours;
+using Explorer.Tours.API.Internal;
+
 
 namespace Explorer.Tours.Infrastructure;
 
@@ -50,6 +52,7 @@ public static class ToursStartup
         services.AddScoped<ITourProblemRepository, TourProblemRepository>();
         services.AddScoped<ITourProblemService, TourProblemService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<INotificationInternalService, NotificationService>();
         services.AddScoped<IPublishRequestService, PublishRequestService>();
         services.AddScoped<IKeyPointRepository, KeyPointRepository>();
         services.AddScoped<IGroupTourExecutionService, GroupTourExecutionService>();

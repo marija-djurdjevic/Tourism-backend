@@ -35,6 +35,13 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
+        [HttpGet("{authorId:int}")]
+        public ActionResult<PagedResult<SaleDto>> GetAllByAutorId(int authorId)
+        {
+            var result = _saleService.GetAllByAuthorId(authorId);
+            return CreateResponse(result);
+        }
+
         [HttpPost]
         public ActionResult<SaleDto> Create([FromBody] SaleDto sale)
         {
