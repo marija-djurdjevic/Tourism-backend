@@ -1,5 +1,6 @@
 ﻿using Explorer.Encounters.API.Dtos.SecretsDtos;
 using Explorer.Encounters.API.Public;
+using Explorer.Encounters.Core.UseCases;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.PublishRequestDtos;
@@ -23,6 +24,17 @@ namespace Explorer.API.Controllers.Author.Authoring
             _publishRequestService = publishRequestService;
             _keyPointService = keyPointService;
         }
+
+      
+
+        [HttpGet("getAll")]
+        public ActionResult<List<StoryDto>> GetAll()
+        {
+            var results = _storyService.GetPaged(0, 0);
+            return CreateResponse(results);
+        }
+
+
 
         [HttpPost]
         public ActionResult<StoryDto> Create([FromBody] StoryDto story, [FromQuery] int keyId)

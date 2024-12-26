@@ -1,4 +1,5 @@
-﻿using Explorer.Encounters.API.Dtos.SecretsDtos;
+﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Encounters.API.Dtos.SecretsDtos;
 using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.UseCases;
 using Explorer.Stakeholders.Infrastructure.Authentication;
@@ -34,6 +35,13 @@ namespace Explorer.API.Controllers.Administrator
 
             int userId = User.PersonId();
             var results = _bookService.GetForAdmin(userId);
+            return CreateResponse(results);
+        }
+
+        [HttpGet("getAll")]
+        public ActionResult<List<BookDto>> GetAll()
+        {
+            var results = _bookService.GetPaged(0,0);
             return CreateResponse(results);
         }
     }
