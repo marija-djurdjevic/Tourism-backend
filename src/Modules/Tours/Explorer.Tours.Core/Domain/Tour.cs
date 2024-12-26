@@ -37,6 +37,7 @@ namespace Explorer.Tours.Core.Domain
         public DateTime ArchivedAt { get; private set; }
         public double AverageScore { get; private set; }
         public List<TourReview> Reviews { get; private set; }
+        public bool IsGroupTour {  get; private set; }
         public Tour(string name, string description, DifficultyStatus difficulty, List<string> tags, double price)
         {
             Name = name;
@@ -129,10 +130,18 @@ namespace Explorer.Tours.Core.Domain
 
         public bool ValidateInput()
         {
+            if(!IsGroupTour)
+            {
+                return !string.IsNullOrWhiteSpace(Name) &&
+                !string.IsNullOrWhiteSpace(Description) &&
+                Tags.Count != 0 &&
+                Price > 0;
+            }
+
             return !string.IsNullOrWhiteSpace(Name) &&
-           !string.IsNullOrWhiteSpace(Description) &&
-           Tags.Count != 0 &&
-           Price > 0;
+            !string.IsNullOrWhiteSpace(Description) &&
+            Tags.Count != 0; 
+
         }
 
         public bool HasKeyPointsInDesiredDistance(Coordinates coordinates, double distance)

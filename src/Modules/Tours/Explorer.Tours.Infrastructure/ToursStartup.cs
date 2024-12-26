@@ -19,7 +19,9 @@ using Explorer.Tours.Core.Domain.TourProblems;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.UseCases.Authoring;
 using Explorer.Tours.Core.Domain.PublishRequests;
+using Explorer.Tours.Core.Domain.GroupTours;
 using Explorer.Tours.API.Internal;
+
 
 namespace Explorer.Tours.Infrastructure;
 
@@ -53,6 +55,9 @@ public static class ToursStartup
         services.AddScoped<INotificationInternalService, NotificationService>();
         services.AddScoped<IPublishRequestService, PublishRequestService>();
         services.AddScoped<IKeyPointRepository, KeyPointRepository>();
+        services.AddScoped<IGroupTourExecutionService, GroupTourExecutionService>();
+        services.AddScoped<IGroupTourExecutionRepository, GroupTourExecutionRepository>();
+
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -69,7 +74,9 @@ public static class ToursStartup
         services.AddScoped(typeof(ICrudRepository<Notification>), typeof(CrudDatabaseRepository<Notification, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<TourSession>), typeof(CrudDatabaseRepository<TourSession, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<PublishRequest>), typeof(CrudDatabaseRepository<PublishRequest, ToursContext>));
-    
+        services.AddScoped(typeof(ICrudRepository<GroupTour>), typeof(CrudDatabaseRepository<GroupTour, ToursContext>));
+        services.AddScoped(typeof(ICrudRepository<GroupTourExecution>), typeof(CrudDatabaseRepository<GroupTourExecution, ToursContext>));
+
         services.AddDbContext<ToursContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "tours")));

@@ -32,6 +32,9 @@ public enum NotificationType
     TourProblemComment,
     PublicRequest,
     TourRefundComment,
+
     Achievement,
+    GroupTourCancelationComment
+
     //Ko bude koristio notifikacije neka sebi doda tip koji mu treba
 }
