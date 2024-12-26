@@ -77,6 +77,7 @@ namespace Explorer.API.Controllers.Tourist.Execution
             int userId = User.PersonId();
 
             var result = _tourProblemService.GetByTouristId(userId);
+            
             return CreateResponse(result);
         }
 

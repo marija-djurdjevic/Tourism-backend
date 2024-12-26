@@ -17,6 +17,7 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<List<KeyPointDto>> GetKeyPointsByTourId(int tourId);
 
         Result<KeyPointDto> GetById(int keyPointId);
+        Result<KeyPointDto> GetByStoryId(int id);
 
         Result<KeyPointDto> PublishKeyPoint(int keyPointId, int flag);
         Result<List<KeyPointDto>> GetPublic();
@@ -24,6 +25,7 @@ namespace Explorer.Tours.API.Public.Authoring
 
         public Result<KeyPointDto> UpdateKeyPoint(int id, KeyPointDto updatedDto);
         public Result<KeyPointDto> UpdateKeyPointStory(int id, KeyPointDto updatedDto);
-        public Result DeleteKeyPoint(int id); 
+        public Result DeleteKeyPoint(int id);
+        Result<KeyPointDto> RemoveStoryId(int id);
     }
 }

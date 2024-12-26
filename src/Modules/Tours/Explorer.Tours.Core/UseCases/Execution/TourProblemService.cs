@@ -110,7 +110,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
 
         public Result<PagedResult<TourProblemDto>> GetByTouristId(int id)
         {
-            var results = GetAll().Value.Results.Where(x => x.TouristId == id).ToList();
+            var results = GetAll().Value.Results.Where(x => x.TouristId == id && x.Status==API.Dtos.TourProblemDtos.ProblemStatus.Pending).ToList();
 
             return new PagedResult<TourProblemDto>(
               results,
