@@ -17,9 +17,10 @@ namespace Explorer.API.Controllers.Tourist
         private readonly IStoryService _storyService;
         private readonly IStoryUnlockedService _storyUnlockedService;
 
-        public StoryController(IStoryService storyService)
+        public StoryController(IStoryService storyService, IStoryUnlockedService storyUnlockedService)
         {
             _storyService = storyService;
+            _storyUnlockedService = storyUnlockedService;
 
         }
 
