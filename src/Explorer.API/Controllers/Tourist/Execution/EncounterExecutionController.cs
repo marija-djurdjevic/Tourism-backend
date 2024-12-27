@@ -1,4 +1,4 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.API.Dtos.EncounterDtos;
 using Explorer.Encounters.API.Dtos.EncounterExecutionDtos;
 using Explorer.Encounters.API.Public;
@@ -8,6 +8,9 @@ using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Application.Services;
 using Explorer.Stakeholders.Infrastructure.Authentication;
+using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Public.Authoring;
+using Explorer.Tours.Core.Domain;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,15 +26,19 @@ namespace Explorer.API.Controllers.Tourist.Execution
         private readonly IEncounterAchievementService _encounterAchievementService;
         private readonly IEncounterExecutionService _encounterExecutionService;
         private readonly IEncounterService _encounterService;
+        private readonly IKeyPointService _keyPointService;
         private readonly IUserService userService;
         private readonly IAchievementService _achievementInternalService;
 
+
         public EncounterExecutionController(IAchievementService achievementInternalService,IEncounterAchievementService encounterAchievementService, IEncounterExecutionService encounterExecutionService, IEncounterService encounterService, IUserService userService)
+
         {
             _encounterAchievementService = encounterAchievementService;
             _encounterExecutionService = encounterExecutionService;
             _encounterService = encounterService;
             _achievementInternalService = achievementInternalService;
+
             this.userService = userService;
         }
 

@@ -37,6 +37,7 @@ namespace Explorer.Tours.Core.Domain.PublishRequests
     public enum RegistrationRequestType
     {
         Object,
-        KeyPoint
+        KeyPoint,
+        Story
     }
 }

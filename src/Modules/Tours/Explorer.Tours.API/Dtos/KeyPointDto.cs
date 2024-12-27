@@ -25,6 +25,7 @@ namespace Explorer.Tours.API.Dtos
         public double Latitude { get; set; }
         public List<int> TourIds { get; set; }
 
+        public int? StoryId { get; set; }
         public KeyPointStatus Status { get; set;}
 
     }

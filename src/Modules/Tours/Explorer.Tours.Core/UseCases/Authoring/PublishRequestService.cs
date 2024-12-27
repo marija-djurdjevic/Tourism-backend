@@ -40,5 +40,6 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             return Result.Ok(MapToDto(publishRequest));
 
         }
+
     }
 }
