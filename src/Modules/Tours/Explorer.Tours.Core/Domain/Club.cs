@@ -47,7 +47,10 @@ namespace Explorer.Tours.Core.Domain
         // Invite a user
         public void InviteUser(int userId)
         {
+            if (!InvitationIds.Contains(userId))
+            {
                 InvitationIds.Add(userId);
+            }
         }
 
         // Accept an invitation
