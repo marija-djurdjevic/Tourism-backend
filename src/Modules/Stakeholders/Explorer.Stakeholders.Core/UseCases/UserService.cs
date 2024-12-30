@@ -72,13 +72,13 @@ namespace Explorer.Stakeholders.Core.UseCases
         }
         public Result<bool> Exists(string username)
         {
-            
+
             return Result.Ok(_userRepository.Exists(username));
         }
 
         public Result<UserDto> GetActiveByName(string username)
         {
-          
+
             var user = _userRepository.GetActiveByName(username);
 
             if (user == null)
@@ -86,21 +86,21 @@ namespace Explorer.Stakeholders.Core.UseCases
                 return Result.Fail(FailureCode.NotFound).WithError($"User with username '{username}' not found.");
             }
 
-         
+
             return Result.Ok(MapToDto(user));
         }
 
-    
+
         public Result<UserDto> Create(UserDto userDto)
         {
-            
+
             var user = MapToDomain(userDto);
 
             try
             {
 
                 var createdUser = _userRepository.Create(user);
-                
+
                 return Result.Ok(MapToDto(createdUser));
             }
             catch (Exception e)
@@ -109,12 +109,40 @@ namespace Explorer.Stakeholders.Core.UseCases
             }
         }
 
-       
+        public Result<UserDto> Update(UserDto userDto)
+        {
+            var user = MapToDomain(userDto);
+            try
+            {
+                var createdUser = _userRepository.Update(user);
+                return Result.Ok(MapToDto(createdUser));
+            }
+            catch (Exception e)
+            {
+                return Result.Fail(FailureCode.Internal).WithError(e.Message);
+            }
+        }
+
+        public Result<UserDto> UpdateAchievements(UserDto userDto)
+        {
+            var user = MapToDomain(userDto);
+            try
+            {
+                var createdUser = _userRepository.UpdateAchievements(user.Achievements,user.Id);
+                return Result.Ok(MapToDto(createdUser));
+            }
+            catch (Exception e)
+            {
+                return Result.Fail(FailureCode.Internal).WithError(e.Message);
+            }
+        }
+
+
         public Result<long> GetPersonId(long userId)
         {
             try
             {
-                
+
                 var personId = _userRepository.GetPersonId(userId);
 
                 return Result.Ok(personId);
@@ -125,7 +153,7 @@ namespace Explorer.Stakeholders.Core.UseCases
             }
         }
 
-        
+
         public Result<PersonDto> GetPersonByUserId(long userId)
         {
             try
@@ -137,7 +165,7 @@ namespace Explorer.Stakeholders.Core.UseCases
                     return Result.Fail(FailureCode.NotFound).WithError($"Person with user ID '{userId}' not found.");
                 }
 
-                var personDto = _mapper.Map<PersonDto>(person); 
+                var personDto = _mapper.Map<PersonDto>(person);
                 return Result.Ok(personDto);
             }
             catch (Exception e)
@@ -172,7 +200,7 @@ namespace Explorer.Stakeholders.Core.UseCases
             }
 
             return Result.Ok(user.Username);
-        }   
+        }
         public Result<UserDto> GetUserById(long userId)
         {
             try

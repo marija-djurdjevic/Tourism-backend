@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.API.Dtos.EncounterDtos;
 using Explorer.Encounters.API.Public;
+using Explorer.Encounters.Core.UseCases;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Public.Authoring;
@@ -16,12 +17,14 @@ namespace Explorer.API.Controllers.Tourist
     [Route("api/tourist/encounter")]
     public class EncounterController : BaseApiController
     {
+        private readonly IEncounterAchievementService encounterAchievementService;
         private readonly IEncounterService _encounterService;
         private readonly ITourSessionService tourSessionService;
         private readonly IUserService userService;
         private readonly IKeyPointService _keyPointService;
-        public EncounterController(IEncounterService encounterService,ITourSessionService tourSessionServic,IUserService userService,IKeyPointService keyPointService)
+        public EncounterController(IEncounterAchievementService encounterAchievementService,IEncounterService encounterService,ITourSessionService tourSessionServic,IUserService userService,IKeyPointService keyPointService)
         {
+            this.encounterAchievementService = encounterAchievementService;
             _encounterService = encounterService;
             this.tourSessionService = tourSessionServic;
             this.userService = userService;
@@ -75,6 +78,7 @@ namespace Explorer.API.Controllers.Tourist
                 });
             }
             var result = _encounterService.Create(encounter);
+            encounterAchievementService.CheckForAchievementsForCreatedEnclounters(userId);
             return CreateResponse(result);
         }
     }

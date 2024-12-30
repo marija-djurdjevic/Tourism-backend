@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Author
 {
-    [Authorize(Policy = "authorPolicy")]
+    //[Authorize(Policy = "authorPolicy")]
     [Route("api/author/blog")]
     public class BlogController : BaseApiController
     {
@@ -27,6 +27,13 @@ namespace Explorer.API.Controllers.Author
         public ActionResult<PagedResult<BlogDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _blogService.GetPaged(page, pageSize);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("top3")]
+        public ActionResult<PagedResult<BlogDto>> GetTop3Blogs()
+        {
+            var result = _blogService.GetTop3BLogs();
             return CreateResponse(result);
         }
 

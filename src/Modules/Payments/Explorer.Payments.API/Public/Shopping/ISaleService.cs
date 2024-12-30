@@ -12,6 +12,7 @@ namespace Explorer.Payments.API.Public.Shopping
     public interface ISaleService
     {
         Result<SaleDto> GetSaleById(int id);
+        Result<List<SaleDto>> GetAllByAuthorId(int authroId);
         Result<PagedResult<SaleDto>> GetPaged(int page, int pageSize);
         Result<SaleDto> Create(SaleDto sale);
         Result<SaleDto> Update(SaleDto blog);

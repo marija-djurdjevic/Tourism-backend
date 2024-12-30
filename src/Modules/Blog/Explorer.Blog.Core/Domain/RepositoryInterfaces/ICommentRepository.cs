@@ -10,5 +10,6 @@ namespace Explorer.Blog.Core.Domain.RepositoryInterfaces
     public interface ICommentRepository : ICrudRepository<Comment>
     {
         List<Comment> GetByBlogId(int blogId);
+        List<Comment> GetLatestComments();
     }
 }

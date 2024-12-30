@@ -35,7 +35,7 @@ namespace Explorer.Blog.Tests.Integration
                 456,
                 "dadadsdadsdasdasdas",
                 DateTime.UtcNow,
-                "slika.png",
+                1,
                 1
             };
 
@@ -49,14 +49,14 @@ namespace Explorer.Blog.Tests.Integration
                 789,
                 "AnotherDescription",
                 DateTime.UtcNow,
-                "anotherImage.png",
+                1,
                 2
             };
         }
 
         [Theory]
         [MemberData(nameof(GetTestData))]
-        public void Create(string blogTitle, List<VoteDto> votes, int voteAuthorId, string description, DateTime voteCreationDate, string img, int status)
+        public void Create(string blogTitle, List<VoteDto> votes, int voteAuthorId, string description, DateTime voteCreationDate, int img, int status)
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
@@ -69,7 +69,7 @@ namespace Explorer.Blog.Tests.Integration
                 Votes = votes,
                 Description = description,
                 CreationDate = voteCreationDate,
-                Image = img,
+                ImageId = img,
                 Status = BlogDto.BlogStatus.Published,
             };
 
@@ -83,7 +83,7 @@ namespace Explorer.Blog.Tests.Integration
             result.Title.ShouldBe(newEntity.Title);
             result.Description.ShouldBe(newEntity.Description);
             result.CreationDate.ShouldBe(newEntity.CreationDate);
-            result.Image.ShouldBe(newEntity.Image);
+            result.ImageId.ShouldBe(newEntity.ImageId);
             result.Status.ShouldBe(newEntity.Status);
             result.AuthorId.ShouldBe(newEntity.AuthorId);
             result.Votes.Count.ShouldBe(newEntity.Votes.Count);

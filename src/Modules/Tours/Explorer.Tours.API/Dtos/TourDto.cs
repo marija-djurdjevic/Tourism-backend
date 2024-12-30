@@ -43,6 +43,7 @@ namespace Explorer.Tours.API.Dtos.TourLifecycleDtos
         public TransportInfoDto? TransportInfo { get; set; }
         public List<KeyPointDto> KeyPoints { get; set; }
         public List<TourReviewDto> Reviews { get; set; }
+        public bool IsGroupTour {  get; set; }
     }
 
 }

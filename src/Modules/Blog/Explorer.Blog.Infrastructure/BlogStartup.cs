@@ -27,6 +27,7 @@ public static class BlogStartup
     {
         services.AddScoped<IBlogService, BlogService>();
         services.AddScoped<ICommentService, CommentService>();
+        services.AddScoped<IMailService, MailService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -35,7 +36,6 @@ public static class BlogStartup
         //services.AddScoped(typeof(ICrudRepository<Blogs>), typeof(CrudDatabaseRepository<Blogs, BlogContext>));
         services.AddScoped<IBlogRepository, BlogRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
-
 
         services.AddDbContext<BlogContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("blog"),

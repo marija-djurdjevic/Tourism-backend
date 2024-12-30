@@ -84,6 +84,28 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             return Result.Ok(MapToDto(keyPoint));
         }
 
+        public Result<KeyPointDto> GetByStoryId(int id)
+        {
+            var keyPoint = _keyPointRepository.GetByStoryId(id);
+            if (keyPoint == null)
+                return Result.Fail("Publish request not found");
+
+            return Result.Ok(MapToDto(keyPoint));
+        }
+
+        public Result<KeyPointDto> RemoveStoryId(int id)
+        {
+            var keyPoint = _keyPointRepository.GetByStoryId(id);
+
+            keyPoint.UpdateStory(
+            null
+            );
+            var updatedKeyPointDto = _mapper.Map<KeyPointDto>(keyPoint);
+            Update(updatedKeyPointDto);
+
+            return Result.Ok(MapToDto(keyPoint));
+        }
+
         public Result<KeyPointDto> PublishKeyPoint(int id, int flag)
         {
             var keyPointDto = GetById(id);
@@ -147,6 +169,30 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             updatedDto.ImagePath,
             updatedDto.Longitude,
             updatedDto.Latitude
+            );
+
+            var updatedKeyPointDto = _mapper.Map<KeyPointDto>(keyPoint);
+            Update(updatedKeyPointDto);
+
+            return Result.Ok(updatedKeyPointDto);
+        }
+
+        public Result<KeyPointDto> UpdateKeyPointStory(int id, KeyPointDto updatedDto)
+        {
+            var keyPointDto = GetById(id);
+            if (keyPointDto == null || keyPointDto.Value == null)
+            {
+                return Result.Fail("Key point not found");
+            }
+
+            var keyPoint = MapToDomain(keyPointDto.Value);
+            if (keyPoint == null)
+            {
+                return Result.Fail("Key point not found in the domain");
+            }
+
+            keyPoint.UpdateStory(
+            (int)updatedDto.StoryId
             );
 
             var updatedKeyPointDto = _mapper.Map<KeyPointDto>(keyPoint);

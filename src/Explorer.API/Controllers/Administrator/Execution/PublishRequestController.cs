@@ -39,6 +39,13 @@ namespace Explorer.API.Controllers.Administrator.Execution
             return CreateResponse(result);
         }
 
+        [HttpGet("getById")]
+        public ActionResult<PublishRequestDto> Get([FromQuery] int id)
+        {
+            var result = _publishService.Get(id);
+            return CreateResponse(result);
+        }
+
         [HttpPut("{id:int}")]
         public ActionResult<PublishRequestDto> Update([FromBody] PublishRequestDto publishRequest)
         {

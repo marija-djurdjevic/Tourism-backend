@@ -22,5 +22,10 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
             return _dbContext.KeyPoints.AsNoTracking()
                                         .FirstOrDefault(k => k.Id == keyPointId);
         }
+
+        public KeyPoint GetByStoryId(int storyId)
+        {
+            return _dbContext.KeyPoints.FirstOrDefault(k => k.StoryId == storyId);
+        }
     }
 }

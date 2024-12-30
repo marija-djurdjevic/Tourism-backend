@@ -13,7 +13,7 @@ namespace Explorer.Encounters.API.Public
     {
         Result<PagedResult<EncounterDto>> GetPaged(int page, int pageSize);
         Result<EncounterDto> Get(int id);
-        Result<EncounterDto> Create(EncounterDto tour);
+        Result<EncounterDto> Create(EncounterDto encounter);
         Result Delete(int id);
         Result<EncounterDto> Update(EncounterDto encounter);
         Result<List<EncounterDto>> GetPagedForUserAndTour(int userId, int keyPointId);

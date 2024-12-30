@@ -18,5 +18,7 @@ namespace Explorer.Tours.API.Public.Authoring
         Result<PublishRequestDto> Create(PublishRequestDto publishRequest);
 
         Result<PublishRequestDto> Update(PublishRequestDto publishRequest);
+
+        Result<PublishRequestDto> Get(int id);
     }
 }

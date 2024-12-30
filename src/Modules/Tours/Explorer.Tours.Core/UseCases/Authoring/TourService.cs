@@ -1,13 +1,15 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.GroupTourDtos;
 using Explorer.Tours.API.Dtos.TourLifecycleDtos;
 using Explorer.Tours.API.Dtos.TourProblemDtos;
 using Explorer.Tours.API.Public.Authoring;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.GroupTours;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Domain.Tours;
 using FluentResults;
@@ -89,7 +91,7 @@ namespace Explorer.Tours.Core.UseCases.Authoring
         {
             var tours = GetPaged(page, pageSize);
             var filteredResults = tours.Value.Results
-                .Where(x => x.AuthorId == id)
+                .Where(x => x.AuthorId == id && !x.IsGroupTour)
                 .ToList();
 
             var pagedAuthorTours = new PagedResult<TourDto>(filteredResults, filteredResults.Count);
@@ -282,6 +284,61 @@ namespace Explorer.Tours.Core.UseCases.Authoring
             Update(updatedTourDto);
 
             return Result.Ok(true);
+        }
+
+        public Result<PagedResult<GroupTourDto>> GetPagedGroupTours(int page, int pageSize)
+        {
+            try
+            {
+                // Dobavljanje svih tura sa repository-ja
+                var tours = GetPaged(page, pageSize);
+
+                if (tours.IsFailed)
+                {
+                    return Result.Fail<PagedResult<GroupTourDto>>("Failed to retrieve tours.");
+                }
+
+                // Filtriranje grupnih tura pomoću diskriminator kolone
+                var groupTours = tours.Value.Results
+                .Where(tour => tour.IsGroupTour == true) 
+                .ToList();
+
+                // Mapiranje na DTO
+                var groupTourDtos = groupTours.Select(t => _mapper.Map<GroupTourDto>(t)).ToList();
+
+                // Kreiranje paginiranog rezultata
+                var pagedGroupTours = new PagedResult<GroupTourDto>(groupTourDtos, groupTourDtos.Count);
+
+                return Result.Ok(pagedGroupTours);
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail<PagedResult<GroupTourDto>>($"An error occurred while retrieving group tours: {ex.Message}");
+            }
+        }
+
+        public Result<GroupTourDto> UpdateGroup(GroupTourDto gt)
+        {
+            var tour = _mapper.Map<GroupTour>(gt);
+            tour.Duration = gt.Duration;
+            tour.TouristNumber = gt.TouristNumber;
+            tour.StartTime = gt.StartTime;
+            tour.Progress = (Domain.GroupTours.ProgressStatus)gt.Progress;
+            var tourDto = _mapper.Map<GroupTourDto>(tour);
+            Update(tourDto);
+            return Result.Ok(tourDto);
+        }
+
+        public Result<GroupTourDto> CancelGroup(GroupTourDto gt)
+        {
+            var tour = _mapper.Map<GroupTour>(gt);
+            tour.Duration = gt.Duration;
+            tour.TouristNumber = gt.TouristNumber;
+            tour.StartTime = gt.StartTime;
+            tour.Progress = Domain.GroupTours.ProgressStatus.Canceled;
+            var tourDto = _mapper.Map<GroupTourDto>(tour);
+            Update(tourDto);
+            return Result.Ok(tourDto);
         }
 
     }
