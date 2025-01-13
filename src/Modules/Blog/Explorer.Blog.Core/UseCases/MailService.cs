@@ -12,7 +12,7 @@ namespace Explorer.Blog.Core.UseCases
 {
     public class MailService : IMailService
     {
-        public void SendEmail(MessageDto message)
+        public async Task SendEmail(MessageDto message)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace Explorer.Blog.Core.UseCases
                 };
                 mailMessage.To.Add(message.ToEmail);
 
-                smtpClient.Send(mailMessage);
+                await smtpClient.SendMailAsync(mailMessage);
                 Console.WriteLine("Email sent successfully.");
             }
             catch (Exception ex)

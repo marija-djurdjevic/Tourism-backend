@@ -9,6 +9,6 @@ namespace Explorer.Blog.API.Public
 {
     public interface IMailService
     {
-        void SendEmail(MessageDto message);
+        Task SendEmail(MessageDto message);
     }
 }
