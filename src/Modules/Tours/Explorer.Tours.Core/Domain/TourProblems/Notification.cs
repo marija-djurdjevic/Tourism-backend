@@ -15,6 +15,7 @@ namespace Explorer.Tours.Core.Domain.TourProblems
         public int ReferenceId { get; private set;  } //U zavisnosti koji je tip notifikacije ovde ce biti id komentara, problema itd
         public int RecieverId {get; private set; }
         public bool IsRead { get; private set; }
+        public string? ImagePath { get; private set; }
           
         [JsonConstructor]
         public Notification(string content, int referenceId, NotificationType type, int recieverId, bool isRead)
