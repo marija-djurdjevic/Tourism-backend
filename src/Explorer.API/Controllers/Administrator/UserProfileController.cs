@@ -11,10 +11,12 @@ namespace Explorer.API.Controllers.Administrator
     public class UserProfileController : BaseApiController
     {
         private readonly IUserProfileService _userProfileService;
+        private readonly IAccountService _accountService;
 
-        public UserProfileController(IUserProfileService userProfileService)
+        public UserProfileController(IUserProfileService userProfileService, IAccountService accountService)
         {
             _userProfileService = userProfileService;
+            _accountService = accountService;
         }
 
         [HttpGet]
@@ -26,6 +28,7 @@ namespace Explorer.API.Controllers.Administrator
                 return Unauthorized();
             }
             var result = _userProfileService.Get(Int32.Parse(userId));
+            result.Value.Email = _accountService.GetAccount(Int32.Parse(userId)).Value.Email;
             return CreateResponse(result);
         }
 

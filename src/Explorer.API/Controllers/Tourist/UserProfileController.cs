@@ -10,10 +10,14 @@ namespace Explorer.API.Controllers.Tourist
     public class UserProfileController : BaseApiController
     {
         private readonly IUserProfileService _userProfileService;
+        private readonly IUserService _userService;
+        private readonly IAccountService _accountService;
 
-        public UserProfileController(IUserProfileService userProfileService)
+        public UserProfileController(IUserProfileService userProfileService, IUserService userService, IAccountService accountService)
         {
             _userProfileService = userProfileService;
+            _userService = userService;
+            _accountService = accountService;
         }
 
         [HttpGet]
@@ -26,6 +30,8 @@ namespace Explorer.API.Controllers.Tourist
             }
 
             var result = _userProfileService.Get(Int32.Parse(userId));
+            result.Value.Email = _accountService.GetAccount(Int32.Parse(userId)).Value.Email;
+            result.Value.XP = _userService.GetUserById(Int32.Parse(userId)).Value.XP;
             return CreateResponse(result);
         }
 

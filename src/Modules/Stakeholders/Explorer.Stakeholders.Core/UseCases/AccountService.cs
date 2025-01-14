@@ -32,6 +32,8 @@ namespace Explorer.Stakeholders.Core.UseCases
                 var user = userRepository.Get(person.UserId);
                 var accountDto = new AccountReviewDto();
                 accountDto.Id = user.Id;
+                accountDto.FirstName = person.Name;
+                accountDto.LastName = person.Surname;
                 accountDto.Username = user.Username;
                 accountDto.Role = user.Role.ToString();
                 accountDto.IsActive = user.IsActive;
@@ -41,6 +43,21 @@ namespace Explorer.Stakeholders.Core.UseCases
             PagedResult<AccountReviewDto> pageResult = new PagedResult<AccountReviewDto>(dtos, dtos.Count);
             Result<PagedResult<AccountReviewDto>> result = new Result<PagedResult<AccountReviewDto>>();
             result.WithValue(pageResult);
+            return result;
+        }
+
+        public Result<AccountReviewDto> GetAccount(int id)
+        {
+            var person = personRepository.Get((long)id);
+            var user = userRepository.Get(person.UserId);
+            var accountDto = new AccountReviewDto();
+            accountDto.Id = user.Id;
+            accountDto.Username = user.Username;
+            accountDto.Role = user.Role.ToString();
+            accountDto.IsActive = user.IsActive;
+            accountDto.Email = person.Email;
+            Result<AccountReviewDto> result = new Result<AccountReviewDto>();
+            result.WithValue(accountDto);
             return result;
         }
 
