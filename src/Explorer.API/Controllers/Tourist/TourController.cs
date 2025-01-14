@@ -40,6 +40,7 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(result);
         }
 
+        [AllowAnonymous]
         [HttpGet("keyPoints")]
         public ActionResult<PagedResult<KeyPointDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {

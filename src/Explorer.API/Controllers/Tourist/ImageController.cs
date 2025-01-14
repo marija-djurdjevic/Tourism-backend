@@ -34,6 +34,7 @@ namespace Explorer.API.Controllers.Tourist
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetImage(long id)
         {
