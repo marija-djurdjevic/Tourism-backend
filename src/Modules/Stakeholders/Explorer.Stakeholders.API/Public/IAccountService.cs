@@ -13,5 +13,6 @@ namespace Explorer.Stakeholders.API.Public
     {
         Result<PagedResult<AccountReviewDto>> GetPaged(int page, int pageSize);
         Result<AccountReviewDto> BlockAccount(AccountReviewDto accountReview);
+        public Result<AccountReviewDto> GetAccount(int id);
     }
 }
