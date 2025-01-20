@@ -24,7 +24,7 @@ namespace Explorer.Tours.Core.UseCases.Execution
         public Result<List<NotificationDto>> GetUnreadNotificationsByReciever(int userId)
         {
             var list = GetPaged(0, 0);
-            return Result.Ok(list.Value.Results.Where(x => x.RecieverId == userId /*&& x.IsRead == false*/).ToList());
+            return Result.Ok(list.Value.Results.Where(x => x.RecieverId == userId && !x.IsDeleted /*&& x.IsRead == false*/).ToList());
         }
 
         public async Task NotifyUserAsync(int userId, NotificationDto notification)

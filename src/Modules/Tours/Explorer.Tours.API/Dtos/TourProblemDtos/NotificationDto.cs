@@ -14,6 +14,7 @@ namespace Explorer.Tours.API.Dtos.TourProblemDtos
         public int ReferenceId { get; set; }
         public int RecieverId { get; set; }
         public bool IsRead { get; set; }
+        public bool IsDeleted { get; set; }
         public string? ImagePath { get; set; }
 
         public NotificationDto(string content, NotificationType type, int referenceId, int recieverId, bool isRead)

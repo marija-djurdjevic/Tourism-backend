@@ -31,5 +31,13 @@ namespace Explorer.API.Controllers.Author.Layout
             var result = _notificationService.Update(notification);
             return CreateResponse(result);
         }
+
+        [HttpPut("delete")]
+        public ActionResult<TourPreferencesDto> Delete([FromBody] NotificationDto notification)
+        {
+            notification.IsDeleted = true;
+            var result = _notificationService.Update(notification);
+            return CreateResponse(result);
+        }
     }
 }
